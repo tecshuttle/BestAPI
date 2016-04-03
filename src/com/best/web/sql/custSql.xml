@@ -1,0 +1,809 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="custSql">
+
+	<select id="testConn" parameterType="String" resultType="CustInfo">
+		SELECT * from USERS WHERE id=#{id}
+	</select>
+
+	<!-- 	安信 -->
+	<select id="syncCust" parameterType="Map" resultType="CustInfo">
+		SELECT a.cust_name name,
+		       a.mobile phone,
+		       DECODE (a.cret_type, '1', a.cret_no, NULL) id_no,
+		       d.card_name card_type,
+		       c.card_no,
+		       to_char(b.bind_date,'yyyy-MM-dd HH24:mi:ss') register_time,
+		       g.package_name selectPackage,
+		       e.company_name partment
+		  FROM v_bd_cust a,XZH_CUST_CARD b,xzh_card_no c,xzh_card d,pf_company2 e,(select * from xzh_cust_card_package  where active_flag='1') f,xzh_card_package g
+		 WHERE EXISTS
+		          (SELECT 1
+		             FROM XZH_CUST_CARD bb
+		            WHERE     a.id = bb.cust_id
+		                  AND bb.card_id IN ('872E533DB1FD49209DC79244B6B1575F',
+		                                     '7758B34AA5154685A3A8DDD27B0B7982',
+		                                     '8165869E9FF14F83B8DEB07329DD7C66',
+		                                     '153A6E1CB5CC4744837EDDCD7B72BDF5',
+		                                     '1F3FF40BB9A044F985A2EC4105C8A0CB',
+		                                     '5C9A0163CD654B86A68C0EEC4F11F5D2'))
+		   and a.id = b.cust_id
+		   and b.card_no_id = c.id
+		   and b.card_id = d.id
+		   and B.OPERATOR = e.id(+)
+		   and b.id = f.cust_card_id(+)
+		   and f.package_id = g.id(+)
+		   <if test="start_date != null">
+		   and b.bind_date &gt;= to_date(#{start_date},'yyyy-MM-dd')
+		   </if>
+		   <if test="end_date != null">
+		   and b.bind_date &lt; to_date(#{end_date},'yyyy-MM-dd')+1
+		   </if>
+		   order by b.bind_date
+	</select>
+	<!-- 	会员信息         -->
+	<select id="findCustBaseInfoById" parameterType="String" resultType="CustBaseInfo">
+		select a.id custId,a.cust_name name,
+		       a.sex,to_char(birth_date,'yyyy/MM/dd') birthday,
+		       a.cret_type cretType,a.cret_no cretNo,a.mobile,marriage,a.email mail
+		  from v_bd_cust a
+		  where id = #{custId}
+	</select>
+	
+	<select id="checkMobileExists" parameterType="Map" resultType="String">
+		select mobile from v_bd_cust 
+		 where mobile = #{mobile}
+		 <if test="custId != null">
+		   and id != #{custId}
+		 </if>
+	</select>
+	
+	<select id="checkMailExists" parameterType="Map" resultType="String">
+		select email from v_bd_cust 
+		 where email = #{mail}
+		 <if test="custId != null">
+		   and id != #{custId}
+		 </if>
+	</select>
+	
+	<select id="checkCretNoExists" parameterType="Map" resultType="String">
+		select cret_no from v_bd_cust 
+		 where cret_no = #{cretNo}
+		 <if test="cretType != null">
+		  and cret_type = #{cretType}
+		 </if>
+		 <if test="custId != null">
+		   and id != #{custId}
+		 </if>
+	</select>
+	
+	<insert id="insertOrgEmp" parameterType="Cust">
+		insert into org_emp 
+		(
+   			id, creator, create_date, active_flag, 
+   			cust_org_type, care_type, care_no, el_account_id, 
+   			source_type, data_status, 
+   			emp_name, cret_type, cret_no, 
+   			birth_date,sex,blood_type,height, weight, 
+		   	mobile,insurance_type,insurance_no, 
+		  	marriage, education,job, ethnic, 
+		   	special_notice
+		   	
+   		) 
+		values 
+		( 
+			#{id}, #{creator}, sysdate , '1', 
+   			#{custOrgType}, #{careType}, bd_get_no('MEMBER_NO','H',1,null), #{elAccountId}, 
+   			#{sourceType}, #{dataStatus}, 
+   			#{empName}, #{cretType}, #{cretNo}, 
+   			#{birthDate},#{sex},#{bloodType},#{height}, #{weight}, 
+		   	#{mobile},#{insuranceType},#{insuranceNo}, 
+		  	#{marriage}, #{education},#{job}, #{ethnic}, 
+		   	#{specialNotice}
+		)
+	</insert>
+	
+	<insert id="insertElAccountByLoginName" parameterType="Cust">
+		insert into el_account
+		(
+			id,
+   			creator, 
+   			create_date, 
+   			active_flag,
+   			login_name
+		)
+		values
+		(
+			#{elAccountId},
+   			#{creator}, 
+   			sysdate, 
+   			'1',
+   			#{loginName}
+		)
+	</insert>
+	
+	<insert id="insertCustReginfo">
+		insert into bd_cust_reginfo
+		(
+			id,creator,create_date,modifier,modify_date,active_flag,
+			site_id,
+		  	cust_id,
+		  	rec_date,
+		  	case_type,
+		  	belong_type,
+		  	start_date,
+		  	end_date,
+		  	close_user,
+		  	close_date,
+		  	close_reason,
+		  	available_flag,
+		  	service_id,
+		  	service_fq,
+		  	close_type,
+		  	check_flag,
+		  	memo	  	
+		)
+		values
+		(
+			sys_guid(),#{modifier},SYSDATE,#{modifier},SYSDATE,'1',
+			#{siteId},
+		  	#{custId},
+		  	decode(#{recDate},null,sysdate,#{recDate}),
+		  	#{caseType},
+		  	#{belongType},
+		  	#{startDate},
+		  	#{endDate},
+		  	#{closeUser},
+		  	#{closeDate},
+		  	#{closeReason},
+		  	#{availableFlag},
+		  	#{serviceId},
+		  	#{serviceFq},
+		  	#{closeType},
+		  	#{checkFlag},
+		  	#{memo}
+		)
+	</insert>
+	
+	<update id="updateCustBaseInfo" parameterType="Cust" >
+		update org_emp
+		   set modifier = #{modifier}, 
+		       modify_date = sysdate,
+		       emp_name = #{empName},
+		       sex = #{sex},
+		       birth_date = to_date(#{birthDate},'yyyy/MM/dd'), 
+   			   cret_type = #{cretType}, 
+   			   cret_no = #{cretNo}
+   		 where el_account_id = #{id}
+	</update>
+	
+	<update id="updateMobile" parameterType="CustBaseInfo">
+		update org_emp
+		   set mobile = #{mobile}
+		 where el_account_id = #{custId}
+	</update>
+	
+	<update id="updateMail" parameterType="CustBaseInfo">
+		update org_emp
+		   set email = #{mail}
+		 where el_account_id = #{custId}
+	</update>
+	
+	<delete id="deleteOrgEmp" parameterType="String">
+		delete org_emp where mobile = #{mobile} and mobile!='18682056889'
+	</delete>
+	
+	<delete id="deleteElAccount" parameterType="String">
+		delete el_account a where exists(select 'x' from org_emp b where a.id = b.el_account_id and b.mobile = #{mobile} and b.mobile!='18682056889'  ) 
+	</delete>
+	
+	<!-- 家庭成员 -->
+	
+	<select id="findFamilyList" parameterType="String" resultType="Family">
+		select id,cust_id custId,name, sex, birthday, 
+   			   cret_type cretType, cret_no cretNo, insurance_type insuranceType, 
+   			   insurance_no insuranceNo, mobile, marriage
+		  from xzh_cust_family
+		 where cust_id = #{custId}
+		  and active_flag = '1'
+		  order by create_date desc
+	</select>
+	
+	<select id="findFamilyBaseInfoList" parameterType="String" resultType="FamilyBaseInfo">
+		select id,name,familyType
+		 from  (select a.id ,a.cust_name name,'SELF' familyType,create_date
+		          from v_bd_cust a
+		         where id = #{custId}
+		         union all
+				 select id,name,'FAMILY' familyType,create_date
+		          from xzh_cust_family
+		         where cust_id = #{custId}
+		           and active_flag = '1'
+			   )
+		 order by create_date
+		
+	</select>
+	
+	<select id="findFamilyById" parameterType="String" resultType="Family">
+		select id,cust_id custId,name, sex, birthday, 
+   			   cret_type cretType, cret_no cretNo, insurance_type insuranceType, 
+   			   insurance_no insuranceNo, mobile, marriage
+		  from xzh_cust_family
+		 where id = #{id} and active_flag = '1'
+	</select>
+	
+	<insert id="insertFamily" parameterType="Family">
+		insert into xzh_cust_family 
+		(
+			id, creator, create_date,active_flag, 
+		   	cust_id, name, sex, 
+		   	birthday, cret_type, cret_no, 
+		   	insurance_type, insurance_no, mobile, 
+		   	marriage
+		) 
+		values 
+		( 
+			#{id}, null, sysdate,'1', 
+		   	#{custId}, #{name}, #{sex}, 
+		   	to_date(#{birthday},'yyyy/MM/dd'), #{cretType}, #{cretNo}, 
+		   	#{insuranceType}, #{insuranceNo}, #{mobile}, 
+		   	#{marriage}
+		)
+	</insert>
+	
+	<update id="updateFamily" parameterType="Family">
+		update xzh_cust_family
+		   set id = #{id},
+		       modifier = null,
+		       modify_date = sysdate,
+		       name = #{name},
+		       sex = #{sex},
+		       birthday = to_date(#{birthday},'yyyy/MM/dd'),
+		       cret_type = #{cretType},
+		       cret_no = #{cretNo},
+		       insurance_type = #{insuranceType},
+		       insurance_no = #{insuranceNo},
+		       mobile = #{mobile},
+		       marriage = #{marriage}
+		 where id = #{id}
+	</update>
+	
+	<update id="deleteFamily">
+		update xzh_cust_family
+		   set modifier = null,
+		       modify_date = sysdate,
+		       active_flag = '0'
+		 where id = #{id}
+	</update>
+	
+	<!-- 会员卡 -->
+	
+	<select id="checkCardNoExists" parameterType="String" resultType="String">
+		select card_no from xzh_card_no where active_flag = '1' and card_no = #{cardNo}
+	</select>
+	
+	<select id="findCardByCardNo" parameterType="CardParam" resultType="CardParam">
+		select a.id cardNoId,
+			   a.card_no cardNo,
+			   a.status,
+			   a.card_code cardCode,
+			   a.memo cardNoMemo,
+			   b.id cardId,
+               b.card_name cardName,
+               b.intro,
+               b.logo_img logoImg,
+               b.use_rule useRule,
+               nvl(a.open_date,b.open_date) openDate,
+               nvl(a.close_date,b.close_date) closeDate,
+               b.price,
+               b.package_total packageTotal,
+               b.select_count selectCount,
+               b.allow_change_count allowChangeCount,
+               b.valid_date_begin validDateBegin,
+               b.valid_date_end validDateEnd,
+               nvl(verify_count,0) verifyCount
+          from xzh_card_no a, xzh_card b, pf_company2 c
+         where a.active_flag = '1'
+           and a.card_id = b.id 
+           and b.company_id = c.id
+           and a.card_no = #{cardNo}
+	</select>
+	
+	<update id="addCardNoVerifyCount" parameterType="String">
+		update xzh_card_no
+		   set verify_count = nvl(verify_count,0)+1
+		 where card_no = #{cardNo}
+	</update>
+	
+	<update id="updateCardNoStatus" parameterType="CardParam">
+		update xzh_card_no
+		   set modify_date = sysdate,
+		   	   status = #{status}
+		 where id = #{cardNoId}
+	</update>
+	
+	<insert id="insertCustCard" parameterType="CardParam">
+		insert into xzh_cust_card 
+		(
+			id,
+            creator,
+            create_date,
+            active_flag,
+            cust_id,
+            card_id,
+            card_no_id,
+            bind_type,
+            operator,
+            bind_date,
+            valid_date_begin,
+            valid_date_end,
+            change_package_count
+        )
+     	(
+     		select #{custCardId} id,
+	            #{creator} creator,
+	            sysdate create_date,
+	            '1' active_flag,
+	            #{custId} custId,
+	            #{cardId} cardId,
+	            #{cardNoId} cardNoId,
+	            #{bindType} bindType,
+	            #{operator} operator,
+	            sysdate,
+	            sysdate validDateBegin,
+	            DECODE(a.valid_date_type,'YEAR',ADD_MONTHS(sysdate,a.valid_date_value*12),'MONTH',ADD_MONTHS(sysdate,a.valid_date_value),'DAY',sysdate+a.valid_date_value) validDateEnd,
+	            0 changePackageCount
+	        from xzh_card a where a.id = #{cardId}
+     	)
+	</insert>
+	
+	<update id="updateChangePackageCount" parameterType="String">
+		update xzh_cust_card set change_package_count = nvl(change_package_count,0)+1 where id = #{custCardId}
+	</update>
+	
+	<select id="checkCustCardPackageExists" parameterType="String" resultType="String">
+		select id from xzh_cust_card_package where active_flag = '1' and cust_card_id = #{custCardId}
+	</select>
+	
+	<insert id="insertCustCardPackage" parameterType="CardParam">
+		insert into xzh_cust_card_package
+		(
+			id,
+            creator,
+            create_date,
+            active_flag,
+            cust_id,
+            card_id,
+            cust_card_id,
+            package_id
+        )
+     	(                                
+            select #{custCardPackageId} id,
+            	   #{creator} creator,
+            	   sysdate create_date,
+                   '1' active_flag,
+		           a.cust_id,
+		           a.card_id,
+		           a.id,
+		           #{packageId}
+			  from xzh_cust_card a, xzh_card_package b
+			 where b.active_flag = '1'
+			   and a.id = #{custCardId}
+			   and a.card_id = b.card_id
+			   and b.id = #{packageId}
+        )
+	</insert>
+	
+	<update id="deleteCustCardPackage" parameterType="CardParam">
+		update xzh_cust_card_package a
+		   set modify_date = sysdate,
+		       active_flag = '0'
+		 where a.active_flag = '1'
+		   and a.cust_card_id = #{custCardId}
+	</update>
+	
+	<insert id="insertCustService" parameterType="CardParam">
+		insert into xzh_cust_service 
+		(
+			id,
+            creator,
+            create_date,
+            active_flag,
+            cust_id,
+            service_id,
+            status,
+            quantity,
+            amount,
+            payment_status,
+            payment_type,
+            service_from,
+            rel_id,
+            valid_date_begin,
+            valid_date_end
+       )
+       (
+       		sys_guid() id,
+            creator,
+            create_date,
+            '1' activeFlag,
+            #{custId} custId,
+            #{service_id} serviceId,
+            #{status} status,
+            #{quantity} quantity,
+            #{amount} amount,
+            #{payment_status} paymentStatus,
+            #{payment_type} paymentType,
+            #{service_from} serviceFrom,
+            #{rel_id} relId,
+            #{valid_date_begin} validDateBegin,
+            #{valid_date_end} validDateEnd
+       )
+	</insert>
+	
+	<insert id="insertCustServiceByPackage" parameterType="CardParam">
+		insert into xzh_cust_service 
+		(
+			id,
+            creator,
+            create_date,
+            active_flag,
+            cust_id,
+            service_id,
+            status,
+            quantity,
+            amount,
+            payment_status,
+            payment_type,
+            service_from,
+            rel_id,
+            valid_date_begin,
+            valid_date_end
+       )
+       (
+       		select sys_guid() id,
+		           b.creator,
+		           sysdate create_date,
+		           '1' activeFlag,
+		           a.cust_id custId,
+		           c.service_id serviceId,
+		           '1' status,
+		           c.quantity quantity,
+		           nvl(c.quantity,0)*nvl(d.price,0) amount,
+		           'PAID' paymentStatus,
+		           f.card_name||e.card_no paymentType,
+		           'CARD' serviceFrom,
+		           b.id relId,
+		           a.valid_date_begin validDateBegin,
+		           a.valid_date_end validDateEnd
+  			  from xzh_cust_card a,xzh_cust_card_package b, xzh_card_package_dtl c,xzh_service d,xzh_card_no e,xzh_card f
+  			 where c.active_flag = '1'
+  			   and c.status = '1'
+  			   and c.service_id = d.id
+  			   and a.card_no_id = e.id
+  			   and e.card_id = f.id
+  			   and b.package_id = c.package_id
+  			   and a.id = b.cust_card_id
+  			   and b.id = #{custCardPackageId}
+       )
+	</insert>
+	
+	<select id="checkWhetherChangePackage" parameterType="String" resultType="CardParam">
+		select nvl(b.allow_change_count,0) allowChangeCount,
+		       nvl(a.change_package_count,0) changePackageCount
+          from xzh_cust_card a,xzh_card b 
+         where a.card_id = b.id
+           and a.id = #{custCardId}
+	</select>
+	
+	<select id="checkUsedServiceExistsInPackage" parameterType="String" resultType="String">
+		select d.service_name
+		  from xzh_cust_card a,
+		       xzh_cust_card_package b,
+		       xzh_cust_service c,
+		       xzh_service d
+		 where b.active_flag = '1'
+		   and c.active_flag = '1'
+		   and c.service_id = d.id
+		   and b.id = c.rel_id
+	       and c.used_quantity &gt; 0
+		   and a.id = b.cust_card_id
+		   and a.id = #{custCardId}
+	</select>
+	
+	<update id="deleteCustServiceInPackage" parameterType="String">
+		update xzh_cust_service a
+		   set modify_date = sysdate,
+		       active_flag = '0'
+		 where a.active_flag = '1'
+		   and a.rel_id in (select b.id from xzh_cust_card_package b where b.active_flag = '1' and b.cust_card_id = #{custCardId})
+	</update>
+	
+	<select id="findCustCardById" parameterType="String" resultType="Card">
+		select d.id custCardId,
+			   a.id cardNoId,
+               a.card_no cardNo,
+               to_char(d.bind_date,'yyyy/MM/dd') bindDate,
+               to_char(d.valid_date_begin,'yyyy/MM/dd') validDateBegin,
+               to_char(d.valid_date_end,'yyyy/MM/dd') validDateEnd,
+               b.id cardId,
+               b.card_name cardName,
+               c.company_name companyName,
+               b.company_abbr companyAbbr,
+               b.city_select citySelect,
+               b.intro,
+               b.logo_img logoImg,
+               b.use_rule useRule,
+               b.price,
+               b.package_total packageTotal,
+               b.select_count selectCount,
+               b.allow_change_count allowChangeCount,
+               d.change_package_count changePackageCount,
+               nvl(f.total_select_package,0) selectPackageTotal,
+               case when b.allow_change_count > nvl(d.change_package_count,0) then 'Y' ELSE 'N' end as changePackageFlag
+          from xzh_card_no a, xzh_card b, pf_company2 c,xzh_cust_card d,
+               (select count(id) total_select_package,cust_card_id from xzh_cust_card_package where active_flag = '1' group by cust_card_id ) f
+         where a.active_flag = '1'
+           and a.card_id = b.id 
+           and b.company_id = c.id
+           and a.id = d.card_no_id
+           and d.id = f.cust_card_id(+)
+           and d.id = #{custCardId}
+	</select>
+	
+	<select id="findCustCardInfo" parameterType="String" resultType="HashMap">
+		select 'notBindCardTotal' mgr_code, count (a.id) quantity
+		  from xzh_card_no a,xzh_rel_order b
+		 where a.active_flag = '1'
+		   and status = '2'
+		   and b.id = a.rel_order_id
+		   and b.cust_id = #{custId}
+		
+		union all
+		
+		select 'bindCardTotal' mgr_code, count (a.id) quantity
+		  from xzh_cust_card a
+		 where a.active_flag = '1' and cust_id = #{custId}
+	</select>
+	
+	<select id="findCustNotBindCardList" parameterType="String" resultType="Card">
+		select a.id cardNoId,
+               a.card_no cardNo,
+               to_char(a.open_date,'yyyy/MM/dd') openDate,
+               to_char(a.close_date,'yyyy/MM/dd') closeDate,
+               b.id cardId,
+               b.card_name cardName,
+               c.company_name companyName,
+               b.company_abbr companyAbbr,
+               b.city_select citySelect,
+               b.intro,
+               b.logo_img logoImg,
+               b.use_rule useRule,
+               b.price,
+               b.package_total packageTotal,
+               b.select_count selectCount,
+               b.allow_change_count allowChangeCount
+          from xzh_card_no a, xzh_card b, pf_company2 c,xzh_rel_order d
+         where a.active_flag = '1'
+           and a.card_id = b.id
+           and b.company_id = c.id
+           and a.rel_order_id = d.id
+       	   and a.status = '2'
+           and d.cust_id = #{custId}
+	</select>
+	
+	<select id="findCustCardList" parameterType="String" resultType="Card">
+		select d.id custCardId,
+			   a.id cardNoId,
+               a.card_no cardNo,
+               to_char(d.bind_date,'yyyy/MM/dd') bindDate,
+               to_char(d.valid_date_begin,'yyyy/MM/dd') validDateBegin,
+               to_char(d.valid_date_end,'yyyy/MM/dd') validDateEnd,
+               b.id cardId,
+               b.card_name cardName,
+               c.company_name companyName,
+               b.company_abbr companyAbbr,
+               b.city_select citySelect,
+               b.intro,
+               b.logo_img logoImg,
+               b.use_rule useRule,
+               b.price,
+               b.package_total packageTotal,
+               b.select_count selectCount,
+               b.allow_change_count allowChangeCount,
+               d.change_package_count changePackageCount,
+               nvl(f.total_select_package,0) selectPackageTotal,
+               case when  (b.allow_change_count > nvl(d.change_package_count,0)) and (g.cust_card_id is null ) then 'Y' ELSE 'N' end as changePackageFlag
+          from xzh_card_no a, xzh_card b, pf_company2 c,xzh_cust_card d,
+               (select count(id) total_select_package,cust_card_id from xzh_cust_card_package where active_flag = '1' group by cust_card_id ) f,
+               (select distinct b.cust_card_id  from xzh_cust_service a, xzh_cust_card_package b 
+                 where a.cust_id = #{custId} and a.rel_id = b.id and a.active_flag = '1' and nvl(a.used_quantity,0)>0) g
+         where a.active_flag = '1'
+           and a.card_id = b.id 
+           and b.company_id = c.id
+           and a.id = d.card_no_id
+           and d.id = f.cust_card_id(+)
+           and d.id = g.cust_card_id(+)
+           and d.cust_id = #{custId}
+           order by d.create_date desc
+	</select>
+	
+	<select id="findCardPackageListByCardId" parameterType="String" resultType="CardPackage">
+		select b.card_id cardId,
+               b.id packageId,
+               b.package_name packageName,
+               b.is_required isRequired,
+               b.sex_select sexSelect,
+               b.city_select citySelect,
+               b.dtl_count serviceTotal,
+               b.price price,
+               b.intro,
+               b.use_rule useRule
+            from xzh_card_package b
+          where b.active_flag = '1'
+            and b.card_id = #{cardId}
+          order by b.seq
+	</select>
+	
+	<select id="findServiceListInPackage" parameterType="String" resultType="PackageService">
+		  select a.service_id serviceId,
+	             b.service_name serviceName,
+	             a.quantity,
+	             decode(b.service_type,'SOURCE',rel_type,'OUTSOURCE',rel_type,b.service_type) serviceType,
+	             b.logo_img logoImg,
+	             b.sex_select sexSelect,
+	             b.city_select citySelect,
+	             b.price,
+	             b.intro
+		    from xzh_card_package_dtl a,xzh_service b
+		   where a.active_flag = '1' 
+		     and a.status = '1'
+		     and a.service_id = b.id
+		     and a.package_id = #{packageId}
+		order by a.seq
+	</select>
+	
+	<select id="findCardPackageListByCustCardId" parameterType="String" resultType="CardPackage">
+		select b.card_id cardId,
+               b.id packageId,
+               b.package_name packageName,
+               decode(c.id,null,'N','Y') hasSelected,
+               b.is_required isRequired,
+               b.sex_select sexSelect,
+               b.city_select citySelect,
+               b.dtl_count serviceTotal,
+               b.price price,
+               b.intro,
+               b.use_rule useRule
+            from xzh_cust_card a,xzh_card_package b,(select * from xzh_cust_card_package where active_flag = '1' and cust_card_id = #{custCardId}) c
+          where b.active_flag = '1'
+            and a.card_id = b.card_id
+            and b.id = c.package_id(+)
+            and a.id = #{custCardId}
+          order by b.seq
+	</select>
+	
+	<select id="findCardPackageServiceList" parameterType="String" resultType="CardService">
+		select a.id,
+		       a.id custServiceId,
+		       to_char(a.create_date,'yyyy/MM/dd') strCreateDate,
+		       a.cust_id custId,
+		       a.status custServiceStatus,
+		       nvl(a.quantity,0) quantity,
+		       nvl(a.used_quantity,0) usedQuantity,
+		       a.amount,
+		       a.payment_status paymentStatus,
+		       a.payment_type paymentType,
+		       a.service_from serviceFrom,
+		       to_char(a.valid_date_begin,'yyyy/MM/dd') validDateBegin,
+		       to_char(a.valid_date_end,'yyyy/MM/dd') validDateEnd,
+		       case when trunc(sysdate) &lt; a.valid_date_end then 'Y' else 'N' end as validFlag,
+		       a.service_id serviceId,
+		       b.service_name serviceName,
+		       decode(b.service_type,'SOURCE',rel_type,'OUTSOURCE',rel_type,b.service_type) serviceType,
+		       b.logo_img logoImg,
+		       b.sex_select sexSelect,
+		       b.city_select citySelect,
+		       b.price,
+		       b.intro
+		  from xzh_cust_service a,xzh_service b,xzh_cust_card_package c, xzh_cust_card d
+		 where a.active_flag = '1'
+		   and c.active_flag = '1'
+		   and a.service_id = b.id
+		   and a.service_from = 'CARD'
+		   and a.rel_id = c.id
+		   and d.id = c.cust_card_id
+		   and d.id = #{custCardId}
+	</select>
+	
+	<select id="findCustServiceList" parameterType="Map" resultType="CardService">
+		select a.id,
+		       a.id custServiceId,
+               to_char(a.create_date,'yyyy/MM/dd') strCreateDate,
+               a.cust_id custId,
+               a.status custServiceStatus,
+               nvl(a.quantity,0) quantity,
+               nvl(a.used_quantity,0) usedQuantity,
+               a.amount,
+               a.payment_status paymentStatus,
+               a.payment_type paymentType,
+               a.service_from serviceFrom,
+               to_char(a.valid_date_begin,'yyyy/MM/dd') validDateBegin,
+               to_char(a.valid_date_end,'yyyy/MM/dd') validDateEnd,
+               case when trunc(sysdate) &lt; a.valid_date_end then 'Y' else 'N' end as validFlag,
+               a.service_id serviceId,
+               b.service_name serviceName,
+               decode(b.service_type,'SOURCE',rel_type,'OUTSOURCE',rel_type,b.service_type) serviceType,
+               b.logo_img logoImg,
+               b.sex_select sexSelect,
+               b.city_select citySelect,
+               b.price,
+               b.intro
+          from xzh_cust_service a,xzh_service b
+		 where a.active_flag = '1'
+       	   and a.service_id = b.id(+)
+       	   and b.service_type in ('SOURCE','OUTSOURCE')
+       	   <if test="status != null">
+       	   and a.status = #{status}
+       	   </if>
+       	   <if test="validFlag=='1'.toString() ">
+       	   and trunc(sysdate) &lt; nvl(a.valid_date_end,sysdate)
+       	   and nvl(a.quantity,0) > nvl(a.used_quantity,0)
+       	   </if>
+       	   <if test="validFlag=='0'.toString() ">
+       	   and trunc(sysdate) &gt; nvl(a.valid_date_end,sysdate)
+       	   </if>
+       	   <if test="serviceType!=null and serviceType!=''">
+       	   and decode(b.service_type,'SOURCE',rel_type,'OUTSOURCE',rel_type,b.service_type) = #{serviceType}
+       	   </if>
+       	   <if test="serviceId!=null and serviceId!=''">
+       	   and a.service_id = #{serviceId}
+       	   </if>
+           and a.cust_id = #{custId}
+        order by a.create_date desc
+	</select>
+	
+	<select id="findCustServiceTotalList" parameterType="String" resultType="CardTotalService">
+		  select serviceId, serviceName, serviceType, sum (qty) total
+		    from (select b.id serviceid,
+		                 b.service_name serviceName,
+		                 (nvl(a.quantity,0) - nvl(a.used_quantity,0)) qty,
+		                 decode(b.service_type, 'SOURCE', rel_type, 'OUTSOURCE', rel_type, b.service_type) serviceType
+		            from xzh_cust_service a, xzh_service b
+		           where a.active_flag = '1'
+		             AND a.service_id = b.id(+)
+		             AND b.service_type IN ('SOURCE', 'OUTSOURCE')
+		             and a.status = '1'
+		             and trunc(sysdate) &lt; nvl(a.valid_date_end,sysdate)
+		             and nvl(a.quantity,0) > nvl(a.used_quantity,0)
+		             AND a.cust_id = #{custId})
+		   group by serviceId, serviceName, serviceType
+		   order by serviceType
+	</select>
+	
+	<select id="findCustServiceLogList" parameterType="String" resultType="ServiceLog">
+		SELECT a.id orderId,
+		       to_char (a.create_date, 'yyyy/MM/dd HH24:mi') usedDate,
+		       a.payment_no serviceFrom,
+		       c.id serviceId,
+		       c.service_name serviceName,
+		       DECODE (c.service_type,
+		               'SOURCE', rel_type,
+		               'OUTSOURCE', rel_type,
+		               c.service_type)
+		          serviceType,
+		       c.logo_img logoImg,
+		       c.sex_select sexSelect,
+		       c.city_select citySelect,
+		       c.price,
+		       c.intro
+		  from xzh_order a, xzh_cust_service b, xzh_service c
+		 where a.active_flag = '1'
+		   and a.order_status not in ('0','3','4')
+		   and a.payment_type in ('CARD', 'XZH_WEB_MALL')
+		   and a.cust_service_id = b.id
+		   and b.service_id = c.id
+           and a.cust_id = #{custId}
+           order by a.create_date desc
+	</select>
+	
+</mapper>

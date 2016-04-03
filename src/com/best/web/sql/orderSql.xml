@@ -1,0 +1,799 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="orderSql">
+	
+	<select id="checkCardCodeExists" parameterType="String" resultType="String">
+		select card_code from xzh_card where active_flag = '1' and card_code = #{cardCode}
+	</select>
+	
+	<select id="checkServiceCodeExists" parameterType="String" resultType="String">
+		select service_code from xzh_service where active_flag = '1' and service_code = #{serviceCode}
+	</select>
+	
+	<select id="findAvailableCardNoTotal" parameterType="OrderParam" resultType="int">
+		select count(a.id) total
+          from xzh_card_no a,xzh_card b
+         where a.active_flag = '1' 
+           and a.status = '1' 
+           and a.card_id = b.id
+           and a.dept_id is null
+           and a.card_no_type = #{cardNoType}
+           and b.card_code = #{orderCode}
+	</select>
+	
+	<select id="checkCardNoOrderExists" parameterType="OrderParam" resultType="String">
+		select id 
+		  from xzh_rel_order
+		 where active_flag = '1'
+		   and order_from = #{orderFrom}
+		   and order_no = #{orderNo}
+		   and order_code = #{orderCode}
+	</select>
+	
+	<select id="findCardNoForSale" parameterType="OrderParam" resultType="OrderParam">
+		select a.*
+  		  from ( select a.id cardNoId,
+	                 	a.card_id cardId,
+	                 	a.card_no cardNo,
+		                a.card_code cardCode,
+		                a.card_no_type card_noType,
+		                a.version
+		           from xzh_card_no a,xzh_card b
+		          where a.active_flag = '1' 
+		            and a.status = '1' 
+		            and a.card_id = b.id
+		            and a.dept_id is null
+		            and a.card_no_type = #{cardNoType}
+		            and b.card_code = #{orderCode}
+		          order by card_no
+		       ) a
+         where rownum = 1
+	</select>
+	
+	<insert id="insertRelOrder" parameterType="OrderParam">
+		insert into xzh_rel_order 
+		(
+			id,
+            creator,
+            create_date,
+            active_flag,
+            order_from,
+            order_no,
+            order_date,
+            order_dtl_id,
+            order_type,
+            order_code,
+            quantity,
+            cust_id,
+            cust_name,
+            sex,
+            cret_type,
+            cret_no,
+            birthday,
+            mobile
+        )
+    	values 
+        (
+        	#{relOrderId},
+            #{orderFrom},
+            sysdate,
+            '1',
+            #{orderFrom},
+            #{orderNo},
+            to_date(#{orderDate},'yyyyMMddHH24MISS'),
+            #{orderDtlId},
+            #{orderType},
+            #{orderCode},
+            #{quantity},
+            #{custId},
+            #{custName},
+            #{sex},
+            #{cretType},
+            #{cretNo},
+            #{birthday},
+            #{mobile}
+    	)
+	</insert>
+	
+	<update id="updateCardNoForSold" parameterType="OrderParam">
+		update xzh_card_no
+		   set modifier = #{orderFrom},
+       		   modify_date = sysdate,
+		       status = #{status},
+		       version = nvl(version,0)+1,
+		       rel_order_id = #{relOrderId}
+		 where version = #{version}
+		   and id = #{cardNoId}
+	</update>
+	
+	<update id="restoreCardNoForSold" parameterType="List">
+		update xzh_card_no
+		   set modify_date = sysdate,
+		       status = '1',
+		       version = 0,
+		       rel_order_id = null
+		 where 1=1
+		   and id in
+		 	<foreach collection="list" item="id" open="(" close=")" separator=",">
+		 	#{id}
+		 	</foreach>
+		 
+	</update>
+	
+	<update id="restoreRelOrderForSold" parameterType="String">
+		update xzh_rel_order
+		   set modify_date = sysdate,
+		       active_flag = '0'
+		 where active_flag = '1'
+		   and id = #{relOrderId}
+	</update>
+	
+	<insert id="insertCustServiceByOrder" parameterType="OrderParam">
+		insert into xzh_cust_service 
+		(
+			id,
+            creator,
+            create_date,
+            active_flag,
+            cust_id,
+            service_id,
+            status,
+            quantity,
+            amount,
+            payment_status,
+            payment_type,
+            service_from,
+            rel_id
+            
+       )
+       (
+       		select sys_guid() id,
+		           #{orderFrom} creator,
+		           sysdate create_date,
+		           '1' activeFlag,
+		           #{custId} custId,
+		           a.id serviceId,
+		           '1' status,
+		           #{quantity} quantity,
+		           nvl(#{quantity},0)*nvl(a.price,0) amount,
+		           'PAID' paymentStatus,
+		           decode(#{orderFrom},'XZH_WEB_MALL','商城','XZH_WX_MALL','商城','XZH_APP_MALL','商城','IDEAL_FINANCE','前海理想金融')||'订单号'||#{orderNo} paymentType,
+		           #{orderFrom} serviceFrom,
+		           #{relOrderId} relId
+  			  from xzh_service a
+  			 where a.active_flag = '1'
+  			   and a.status = '1'
+  			   and a.service_code = #{orderCode}
+       )
+	</insert>
+	
+	<select id="findCardNoList" parameterType="String" resultType="CardNo">
+		select b.card_no cardNo,
+		       b.card_code cardCode,
+		       decode(b.status,'1','异常','2','未绑定','3','已绑定','4','已失效') status 
+		  from xzh_rel_order a ,xzh_card_no b 
+		 where a.active_flag = '1'
+		   and a.id = b.rel_order_id
+		   and a.order_dtl_id = #{orderDtlId}
+	</select>
+	
+	<select id="checkCardOrderAvailable" parameterType="String" resultType="String">
+		select b.card_no
+		  from xzh_rel_order a ,xzh_card_no b 
+		 where a.active_flag = '1'
+		   and a.id = b.rel_order_id
+		   and b.status = '2'
+		   and a.order_dtl_id = #{orderDtlId}
+	</select>
+	
+	<select id="checkServiceOrderAvailable" parameterType="String" resultType="String">
+		select b.id
+		  from xzh_rel_order a ,xzh_cust_service b 
+		 where a.active_flag = '1'
+		   and a.id = b.rel_id
+		   and b.status = '1'
+		   and b.quantity > nvl(b.used_quantity,0)
+		   and a.order_dtl_id = #{orderDtlId}
+	</select>
+	
+	<select id="findServiceInfo" parameterType="String" resultType="ServiceInfo">
+		select a.cust_id custId,
+		       a.id custServiceId,
+               a.status custServiceStatus,
+               nvl(a.quantity,0) quantity,
+               nvl(a.used_quantity,0) usedQuantity,
+               a.payment_type paymentType,
+               a.service_from serviceFrom,
+               to_char(a.valid_date_begin,'yyyy/MM/dd') validDateBegin,
+               to_char(a.valid_date_end,'yyyy/MM/dd') validDateEnd,
+               case when trunc(sysdate) &lt; a.valid_date_end then 'Y' else 'N' end as validFlag,
+               a.service_id serviceId,
+               b.service_name serviceName,
+               decode(b.service_type,'SOURCE',rel_type,'OUTSOURCE',rel_type,b.service_type) serviceType,
+               b.logo_img logoImg,
+               b.sex_select sexSelect,
+               b.city_select citySelect,
+               b.intro
+          from xzh_cust_service a,xzh_service b
+         where a.active_flag = '1'
+              and a.service_id = b.id
+              and a.id = #{custServiceId}
+	</select>
+	
+	<select id="findServiceSupplierList" parameterType="String" resultType="SupplierInfo">
+		select c.id supplierServiceId,
+		       d.id supplierId,
+               d.supplier_name supplierName,
+               d.supplier_abbr supplierAbbr,
+               d.supplier_code supplierCode,
+               d.intro
+          from xzh_cust_service a,xzh_service_mapping b,xzh_supplier_service c,xzh_supplier d
+         where b.active_flag = '1'
+           and a.service_id = b.xzh_service_id
+           and b.supplier_service_id = c.id
+           and c.supplier_id = d.id
+           and a.id = #{custServiceId}
+	</select>
+	
+	<select id="findSupplierOrgList" parameterType="Map" resultType="SupplierOrgInfo">
+		select id,
+		       org_name orgName,
+		       province_id provinceId,
+		       city_id cityId,
+		       area_id areaId,
+		       address,
+		       contact_phone contactPhone,
+		       traffic_guide trafficGuide,
+		       review_score reviewScore,
+		       business_hours businessHours,
+		       weekday_start weekdayStart,
+		       weekday_end weekdayEnd,
+		       reserve_time_start reserveTimeStart,
+		       reserve_time_end reserveTimeEnd,
+		       intro
+		  from xzh_supplier_org
+		 where active_flag = '1'
+		   and supplier_id = #{supplierId}
+		  <if test="provinceId != null">
+		   and province_id = #{provinceId}
+		  </if>
+		  <if test="cityName != null">
+		   and city_id = #{cityName}
+		  </if>
+		  <if test="areaId != null">
+		   and area_id = #{areaId}
+		  </if>
+		  <if test="orderType == 'PHYSICAL'">
+		   and has_physical = 'Y'
+		  </if>
+		  <if test="orderType == 'TEETH'">
+		   and has_tooth_care = 'Y'
+		  </if>
+		  <if test="orderType == 'GENE'">
+		   and has_gen = 'Y'
+		  </if>
+		  order by province_id,city_id,area_id
+	</select>
+	
+	<select id="findServiceOrderQuantityList" parameterType="String" resultType="ServiceOrderQuantity">
+		select 'ALL' orderType,(select count(a.id) quantity from xzh_order a  where a.active_flag = '1'  and a.cust_id = #{custId}) quantity from dual
+		union 
+		select 'DOCTOR_RESERVE' orderType,(select count(a.id) quantity from xzh_order a  where a.active_flag = '1'  and order_type = 'DOCTOR_RESERVE' and a.cust_id = #{custId})  quantity from dual
+		union 
+		select 'DOCTOR_ACCOMPANY' orderType,(select count(a.id) quantity from xzh_order a  where a.active_flag = '1'  and order_type = 'DOCTOR_ACCOMPANY' and a.cust_id = #{custId})  quantity from dual
+		union 
+		select 'PHYSICAL' orderType,(select count(a.id) quantity from xzh_order a  where a.active_flag = '1'  and order_type = 'PHYSICAL' and a.cust_id = #{custId})  quantity from dual
+		union 
+		select 'TEETH' orderType,(select count(a.id) quantity from xzh_order a  where a.active_flag = '1'  and order_type = 'TEETH' and a.cust_id = #{custId})  quantity from dual
+		union 
+		select 'GENE' orderType,(select count(a.id) quantity from xzh_order a  where a.active_flag = '1'  and order_type = 'GENE' and a.cust_id = #{custId}) quantity from dual
+	</select>
+	
+	<select id="findTodayCustServiceOrderQuantity" parameterType="String" resultType="int">
+		select count(a.id) quantity from xzh_order a  where trunc(create_date) = trunc(sysdate) and a.cust_id = #{custId} 
+	</select>
+	
+	<select id="findServiceOrderList" parameterType="String" resultType="ServiceOrder">
+		select a.id, 
+			   to_char(a.create_date,'yyyy/MM/dd HH24:mi:ss') createDate, 
+			   a.cust_id custId, 
+			   a.order_no orderNo, 
+			   a.order_type orderType,
+			   decode(a.order_type,'DOCTOR_RESERVE','名医预约','DOCTOR_ACCOMPANY','全程导医',D.SERVICE_NAME) serviceName,
+			   a.order_status orderStatus, 
+			   a.order_payment_status orderPaymentStatus, 
+			   nvl(a.order_amount,0) orderAmount, 
+			   a.order_memo orderMemo, 
+			   a.cust_service_id custServiceId, 
+			   a.supplier_service_id supplierServiceId, 
+			   a.service_city serviceCity, 
+			   a.family_id familyId, 
+			   a.name, 
+			   a.sex, 
+			   a.marriage, 
+			   a.cret_type cretType, 
+			   a.cret_no cretNo, 
+			   a.mobile, 
+			   a.phone, 
+			   to_char(a.apply_date_start,'yyyy/MM/dd') applyDateStart, 
+			   to_char(a.apply_date_end,'yyyy/MM/dd') applyDateEnd, 
+			   a.apply_period_start applyPeriodStart, 
+			   a.apply_period_end applyPeriodEnd, 
+			   a.apply_memo applyMemo, 
+			   a.payment_type paymentType, 
+			   to_char(payment_date,'yyyy/MM/dd') paymentDate, 
+			   a.payment_amount paymentAmount, 
+			   a.payment_no paymentNo, 
+			   a.refund_type refundType, 
+			   to_char(a.refund_date,'yyyy/MM/dd') refundDate, 
+			   a.refund_amount refundAmount, 
+			   a.refund_no refundNo, 
+			   to_char(a.reserve_date_begin,'yyyy/MM/dd HH24:mi')||decode(a.reserve_date_end,null,'',' ~ ')||to_char(a.reserve_date_end,'HH24:mi') reserveDate
+		  from xzh_order a,xzh_cust_service c,xzh_service d
+		 where a.active_flag = '1'
+		   and a.cust_service_id = c.id(+)
+           and c.service_id = d.id(+)
+		   and a.cust_id = #{custId}
+		   <if test="orderType!=null and orderType!=''">
+		   and a.order_type = #{orderType}
+		   </if>
+		 order by a.create_date desc
+	</select>
+	
+	<select id="findServiceOrder" parameterType="String" resultType="ServiceOrder">
+		select a.id, 
+			   to_char(a.create_date,'yyyy/MM/dd HH24:mi:ss') createDate, 
+			   a.cust_id custId, 
+			   a.order_no orderNo, 
+			   a.order_type orderType, 
+			   a.order_status orderStatus, 
+			   a.order_payment_status orderPaymentStatus, 
+			   nvl(a.order_amount,0) orderAmount, 
+			   a.order_memo orderMemo, 
+			   a.cust_service_id custServiceId, 
+			   a.supplier_service_id supplierServiceId, 
+			   a.service_city serviceCity, 
+			   a.family_id familyId, 
+			   a.name, 
+			   a.sex, 
+			   a.marriage, 
+			   a.cret_type cretType, 
+			   a.cret_no cretNo, 
+			   a.mobile, 
+			   a.phone, 
+			   to_char(a.apply_date_start,'yyyy/MM/dd') applyDateStart, 
+			   to_char(a.apply_date_end,'yyyy/MM/dd') applyDateEnd, 
+			   a.apply_period_start applyPeriodStart, 
+			   a.apply_period_end applyPeriodEnd, 
+			   a.apply_memo applyMemo, 
+			   a.payment_type paymentType, 
+			   to_char(payment_date,'yyyy/MM/dd') paymentDate, 
+			   a.payment_amount paymentAmount, 
+			   a.payment_no paymentNo, 
+			   a.refund_type refundType, 
+			   to_char(a.refund_date,'yyyy/MM/dd') refundDate, 
+			   a.refund_amount refundAmount, 
+			   a.refund_no refundNo, 
+			   to_char(a.reserve_date_begin,'yyyy/MM/dd HH24:mi')||decode(a.reserve_date_end,null,'',' ~ ')||to_char(a.reserve_date_end,'HH24:mi') reserveDate
+		  from xzh_order a
+		 where a.active_flag = '1'
+		   and a.id = #{id}
+	</select>
+	
+	<select id="checkServiceOrderResubmit" parameterType="ServiceOrder" resultType="String">
+		select  a.id
+          from xzh_order a
+         where a.active_flag = '1'
+           and (sysdate-a.create_date)*24*60*60 &lt;=3
+           and a.cust_service_id = #{custServiceId}
+           and a.name = #{name}
+           and a.cust_id = #{custId}
+           
+	</select>
+	<select id="checkDoctorOrderResubmit" parameterType="DoctorOrder" resultType="String">
+		select a.id
+          from xzh_order a,xzh_order_doctor b
+         where a.active_flag = '1'
+           and a.id = b.order_id
+           and (sysdate-a.create_date)*24*60*60 &lt;=3
+           and b.chief_complaint = #{chiefComplaint}
+           and a.name = #{name}
+           and a.cust_id = #{custId}
+	</select>
+	
+	<select id="findPhysicalOrder" parameterType="String" resultType="PhysicalOrder">
+		select a.id, 
+			   to_char(a.create_date,'yyyy/MM/dd HH24:mi:ss') createDate, 
+			   a.cust_id custId, 
+			   a.order_no orderNo, 
+			   a.order_type orderType, 
+			   a.order_status orderStatus, 
+			   a.order_payment_status orderPaymentStatus, 
+			   nvl(a.order_amount,0) orderAmount, 
+			   a.order_memo orderMemo, 
+			   a.cust_service_id custServiceId, 
+			   a.supplier_service_id supplierServiceId, 
+			   a.service_city serviceCity, 
+			   a.family_id familyId, 
+			   a.name, 
+			   a.sex, 
+			   a.marriage, 
+			   a.cret_type cretType, 
+			   a.cret_no cretNo, 
+			   a.mobile, 
+			   a.phone, 
+			   to_char(a.apply_date_start,'yyyy/MM/dd') applyDateStart, 
+			   to_char(a.apply_date_end,'yyyy/MM/dd') applyDateEnd, 
+			   a.apply_period_start applyPeriodStart, 
+			   a.apply_period_end applyPeriodEnd, 
+			   a.apply_memo applyMemo, 
+			   a.payment_type paymentType, 
+			   to_char(payment_date,'yyyy/MM/dd') paymentDate, 
+			   a.payment_amount paymentAmount, 
+			   a.payment_no paymentNo, 
+			   a.refund_type refundType, 
+			   to_char(a.refund_date,'yyyy/MM/dd') refundDate, 
+			   a.refund_amount refundAmount, 
+			   a.refund_no refundNo, 
+			   c.supplier_id supplierId,
+			   d.supplier_name supplierName,
+               b.reserve_org_id reserveOrgId,
+               c.org_name reserveOrgName,
+               c.province_id provinceName,
+		   	   c.city_id cityName,
+		   	   c.area_id areaName,
+		   	   c.address,
+		   	   c.contact_phone contactPhone,
+               b.reserve_card_no reserveCardNo,
+               b.reserve_card_code reserveCardCode,
+               to_char(a.reserve_date_begin,'yyyy/MM/dd HH24:mi')||decode(a.reserve_date_end,null,'',' ~ ')||to_char(a.reserve_date_end,'HH24:mi') reserveDate
+          from xzh_order a,xzh_order_physical b,xzh_supplier_org c,xzh_supplier d
+		 where a.active_flag = '1'
+		   and a.id = b.order_id
+		   and b.reserve_org_id = c.id
+		   and c.supplier_id = d.id
+		   and a.id = #{id}
+	</select>
+	
+	<select id="findDoctorOrder" parameterType="String" resultType="DoctorOrder">
+		select a.id, 
+			   to_char(a.create_date,'yyyy/MM/dd HH24:mi:ss') createDate, 
+			   a.cust_id custId, 
+			   a.order_no orderNo, 
+			   a.order_type orderType, 
+			   a.order_status orderStatus, 
+			   a.order_payment_status orderPaymentStatus, 
+			   a.order_amount orderAmount, 
+			   a.order_memo orderMemo, 
+			   a.cust_service_id custServiceId, 
+			   a.supplier_service_id supplierServiceId, 
+			   a.service_city serviceCity, 
+			   a.family_id familyId, 
+			   a.name, 
+			   a.sex, 
+			   a.marriage, 
+			   a.cret_type cretType, 
+			   a.cret_no cretNo, 
+			   a.mobile, 
+			   a.phone, 
+			   to_char(a.apply_date_start,'yyyy/MM/dd') applyDateStart, 
+			   to_char(a.apply_date_end,'yyyy/MM/dd') applyDateEnd, 
+			   a.apply_period_start applyPeriodStart, 
+			   a.apply_period_end applyPeriodEnd, 
+			   a.apply_memo applyMemo, 
+			   a.payment_type paymentType, 
+			   to_char(payment_date,'yyyy/MM/dd') paymentDate, 
+			   a.payment_amount paymentAmount, 
+			   a.payment_no paymentNo, 
+			   a.refund_type refundType, 
+			   to_char(a.refund_date,'yyyy/MM/dd') refundDate, 
+			   a.refund_amount refundAmount, 
+			   a.refund_no refundNo, 
+			   b.chief_complaint chiefComplaint,
+	           b.apply_hospital_name applyHospitalName,
+	           b.apply_department_name applyDepartmentName,
+	           b.apply_doctor_name applyDoctorName,
+	           b.is_need_assist isNeedAssist,
+	           b.reserve_hospital_name reserveHospitalName,
+	           b.reserve_department_name reserveDepartmentName,
+	           b.reserve_doctor_name reserveDoctorName,
+	           to_char(a.reserve_date_begin,'yyyy/MM/dd HH24:mi')||decode(a.reserve_date_end,null,'',' ~ ')||to_char(a.reserve_date_end,'HH24:mi') reserveDate,
+	           b.assist_name assistName,
+	           b.assist_sex assistSex,
+	           b.assist_mobile assistMobile,
+	           b.insurance_card insuranceCard,
+	           b.hospital_card hospitalCard
+		  from xzh_order a,xzh_order_doctor b
+		 where a.active_flag = '1'
+		   and a.id = b.order_id
+		   and a.id = #{id}
+	</select>
+	
+	<select id="findGeneOrder" parameterType="String" resultType="GeneOrder">
+		select a.id, 
+			   to_char(a.create_date,'yyyy/MM/dd HH24:mi:ss') createDate, 
+			   a.cust_id custId,
+			   b.order_id orderId,
+			   a.order_no orderNo, 
+			   a.order_type orderType, 
+			   a.order_status orderStatus, 
+			   a.order_payment_status orderPaymentStatus, 
+			   nvl(a.order_amount,0) orderAmount, 
+			   a.order_memo orderMemo, 
+			   a.cust_service_id custServiceId, 
+			   a.supplier_service_id supplierServiceId, 
+			   a.service_city serviceCity, 
+			   a.family_id familyId, 
+			   a.name, 
+			   a.sex, 
+			   a.marriage, 
+			   a.cret_type cretType, 
+			   a.cret_no cretNo, 
+			   a.mobile, 
+			   a.phone, 
+			   a.mail,
+			   a.apply_date_start, 
+			   a.apply_date_end, 
+			   a.apply_period_start applyPeriodStart, 
+			   a.apply_period_end applyPeriodEnd, 
+			   a.apply_memo applyMemo, 
+			   a.payment_type paymentType, 
+			   payment_date paymentDate, 
+			   a.payment_amount paymentAmount, 
+			   a.payment_no paymentNo, 
+			   a.refund_type refundType, 
+			   refund_date refundDate, 
+			   a.refund_amount refundAmount, 
+			   a.refund_no refundNo, 
+			   to_char(a.reserve_date_begin,'yyyy/MM/dd HH24:mi')||decode(a.reserve_date_end,null,'',' ~ ')||to_char(a.reserve_date_end,'HH24:mi') reserveDate,
+			   c.supplier_id supplierId,
+			   d.supplier_name supplierName,
+			   b.address,
+	           b.ship_express shipExpress,
+	           b.ship_express_no shipExpressNo,
+	           b.cust_Receive_Flag custReceiveFlag,
+	           b.fetch_express fetchExpress,
+	           b.fetch_express_no fetchExpressNo,
+	           b.cust_Send_Flag custSendFlag
+          from xzh_order a,xzh_order_gene b,xzh_supplier_service c,xzh_supplier d
+         where a.active_flag = '1'
+           and a.id = b.order_id
+           and A.SUPPLIER_SERVICE_ID = c.id
+           and c.supplier_id = d.id
+           and a.id = #{id}
+	</select>
+	
+	<update id="addCustServiceUsedQuantity" parameterType="ServiceInfo">
+		update xzh_cust_service
+		   set used_quantity = nvl(used_quantity,0)+1,
+		       modify_date = sysdate
+		 where nvl(used_quantity,0) = #{usedQuantity}
+		   and id = #{custServiceId}
+	</update>
+	
+	<update id="reduceServiceUsedQuantity" parameterType="ServiceInfo">
+		update xzh_cust_service
+		   set used_quantity = nvl(used_quantity,0)-1,
+		       modify_date = sysdate
+		 where nvl(used_quantity,0) = #{usedQuantity}
+		   and id = #{custServiceId}
+	</update>
+	
+	<insert id="insertServiceOrder" parameterType="ServiceOrder">
+		insert into xzh_order 
+		(	
+			id,
+            creator,
+            create_date,
+            active_flag,
+            cust_id,
+            order_no,
+            order_type,
+            order_status,
+            order_payment_status,
+            order_amount,
+            order_memo,
+            cust_service_id,
+            supplier_service_id,
+            service_city,
+            family_id,
+            name,
+            sex,
+            marriage,
+            cret_type,
+            cret_no,
+            mobile,
+            phone,
+            mail,
+            apply_date_start,
+            apply_date_end,
+            apply_period_start,
+            apply_period_end,
+            apply_memo,
+            payment_type,
+            payment_date,
+            payment_amount,
+            payment_no
+        )
+		values 
+		(
+			#{id},
+			#{creator},
+			sysdate,
+			'1',
+            #{custId},
+            bd_get_no('SERVICE_ORDER_NO',NULL,1,NULL),
+            #{orderType},
+            #{orderStatus},
+            #{orderPaymentStatus},
+            #{orderAmount},
+            #{orderMemo},
+            #{custServiceId},
+            #{supplierServiceId},
+            #{serviceCity},
+            #{familyId},
+            #{name},
+            #{sex},
+            #{marriage},
+            #{cretType},
+            #{cretNo},
+            #{mobile},
+            #{phone},
+            #{mail},
+            to_date(#{applyDateStart},'yyyy/MM/dd'),
+            to_date(#{applyDateEnd},'yyyy/MM/dd'),
+            #{applyPeriodStart},
+            #{applyPeriodEnd},
+            #{applyMemo},
+            #{paymentType},
+            decode(#{paymentType},'ONLINE',NULL,sysdate),
+            #{paymentAmount},
+            #{paymentNo}
+		)
+	</insert>
+	
+	<update id="updateServiceOrder" parameterType="ServiceOrder">
+		update xzh_order
+		   set modify_date = sysdate,
+		   	   modifier = #{modifier},
+		   	   service_city = #{serviceCity},
+               family_id = #{familyId},
+               name = #{name},
+               sex = #{sex},
+               marriage = #{marriage},
+               cret_type = #{cretType},
+               cret_no = #{cretNo},
+               mobile = #{mobile},
+               phone = #{phone},
+               mail = #{mail},
+               apply_date_start = #{applyDateStart},
+               apply_date_end = #{applyDateEnd},
+               apply_period_start = #{applyPeriodStart},
+               apply_period_end = #{applyPeriodEnd},
+               apply_memo = #{applyMemo}
+         where id = #{id}
+	</update>
+	
+	<update id="createOrderPayment" parameterType="ServiceOrder">
+		update xzh_order
+		   set modify_date = sysdate,
+               payment_date = to_date(#{paymentDate},'yyyyMMddHH24miss'),
+               payment_amount = #{paymentAmount},
+               payment_no = #{paymentNo}
+         where id = #{orderId}
+	</update>
+	
+	<update id="updateOrderStatus" parameterType="ServiceOrder">
+		update xzh_order
+		   set modify_date = sysdate,
+		       <if test="orderPaymentStatus!=null and orderPaymentStatus!=''">
+		       order_payment_status = #{orderPaymentStatus},
+		       </if>
+		   	   order_status = #{orderStatus}
+         where id = #{id}
+	</update>
+	
+	<insert id="insertPhysicalOrder" parameterType="PhysicalOrder">
+		insert into	xzh_order_physical 
+		(
+			id,
+			creator,
+			create_date,
+            active_flag,
+            order_id,
+            reserve_org_id,
+            reserve_card_no,
+            reserve_card_code
+        )
+		values
+		(
+			sys_guid(),
+			#{creator},
+			sysdate,
+			'1',
+			#{orderId},
+			#{reserveOrgId},
+			#{reserveCardNo},
+			#{reserveCardCode}
+		)
+	</insert>
+	
+	<insert id="insertDoctorOrder" parameterType="DoctorOrder">
+		insert into xzh_order_doctor 
+		(
+			id,
+        	creator,
+        	create_date,
+	        active_flag,
+	        order_id,
+	        chief_complaint,
+	        apply_hospital_name,
+	        apply_department_name,
+	        apply_doctor_name,
+	        is_need_assist,
+	        reserve_type,
+	        reserve_hospital_name,
+	        reserve_department_name,
+	        reserve_doctor_name,
+	        insurance_card,
+	        hospital_card
+        )
+     	values 
+     	(
+     		sys_guid(),
+			#{creator},
+			sysdate,
+			'1',
+			#{orderId},
+			#{chiefComplaint},
+			#{applyHospitalName},
+			#{applyDepartmentName},
+			#{applyDoctorName},
+			decode(#{isNeedAssist},'Y','Y','N'),
+			#{reserveType},
+			#{reserveHospitalName},
+			#{reserveDepartmentName},
+			#{reserveDoctorName},
+			#{insuranceCard},
+	        #{hospitalCard}
+		)
+	</insert>
+	
+	<insert id="insertGeneOrder" parameterType="GeneOrder">
+		insert into xzh_order_gene 
+		(
+			id,
+        	creator,
+        	create_date,
+	        active_flag,
+	        order_id,
+            address
+        )
+     	values 
+     	(
+     		sys_guid(),
+			#{creator},
+			sysdate,
+			'1',
+			#{orderId},
+            #{address}
+       )
+	</insert>
+	
+	<update id="comfirmReceiveGeneBox" parameterType="String">
+		update xzh_order_gene
+		   set cust_receive_flag = 'Y',
+               cust_receive_date = sysdate
+         where order_id = #{orderId}
+           and cust_receive_flag is null
+	</update>
+	
+	<update id="comfirmSendGeneBox" parameterType="String">
+		update xzh_order_gene
+		   set cust_send_flag = 'Y',
+               cust_send_date = sysdate
+         where order_id = #{orderId}
+           and cust_send_flag is null
+	</update>
+	
+</mapper>

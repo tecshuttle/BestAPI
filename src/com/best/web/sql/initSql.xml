@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="initSql">
+	
+	<select id="findCodeList" parameterType="String" resultType="com.best.web.model.init.Code">
+		select code,code_name_zh_cn codeName
+		 from cp_code a where active_flag = '1' and code_type = #{codeType}
+		 order by seq
+	</select>
+	
+	<select id="findProvinceList" resultType="com.best.web.model.init.Province">
+		select a.id provinceId,
+		       a.region_name provinceName,
+		       a.region_code regionCode
+		  from bd_region a
+		 where a.active_flag = '1'
+		   and a.parent_id = '1'
+		  order by a.region_order
+	</select>
+	
+	<select id="findCityList" resultType="com.best.web.model.init.City">
+		select a.id cityId,
+		       a.parent_id provinceId,
+		       a.region_name cityName,
+		       a.region_code regionCode
+		  from bd_region a
+		 where a.active_flag = '1'
+		   and a.parent_id = #{provinceId}
+		 order by a.region_order
+	</select>
+	
+	<select id="findAreaList" resultType="com.best.web.model.init.Area">
+		select b.parent_id provinceId,
+		       a.parent_id cityId,
+		       a.id areaId,
+		       a.region_name areaName,
+		       a.region_code
+		  from bd_region a,bd_region b
+		 where a.active_flag = '1'
+		   and b.id = a.parent_id
+		   and b.id = #{cityId}
+		 order by a.region_order
+	</select>
+	
+</mapper>
