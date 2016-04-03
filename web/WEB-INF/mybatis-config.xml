@@ -13,6 +13,7 @@
         <typeAlias type="com.best.web.model.cust.Cust" alias="Cust"/>
         <typeAlias type="com.best.web.model.cust.CustBaseInfo" alias="CustBaseInfo"/>
         <typeAlias type="com.best.web.model.cust.Family" alias="Family"/>
+        <typeAlias type="com.best.web.model.admin.User" alias="User"/>
         <typeAlias type="com.best.web.model.cust.FamilyBaseInfo" alias="FamilyBaseInfo"/>
 
         <typeAlias type="com.best.web.model.cust.CardParam" alias="CardParam"/>
@@ -40,5 +41,6 @@
         <mapper resource="com/best/web/sql/initSql.xml"/>
         <mapper resource="com/best/web/sql/custSql.xml"/>
         <mapper resource="com/best/web/sql/orderSql.xml"/>
+        <mapper resource="com/best/web/sql/userSql.xml"/>
     </mappers>
 </configuration>
