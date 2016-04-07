@@ -14,23 +14,23 @@ public class UserDaoImpl implements UserDao {
     private SqlSession sqlSession;
 
     //家庭成员
-    public List<User> findFamilyList() {
-        return sqlSession.selectList("userSql.findFamilyList");
+    public List<User> findUserList() {
+        return sqlSession.selectList("userSql.findUserList");
     }
 
-    public User findFamilyById(String id) {
-        return sqlSession.selectOne("userSql.findFamilyById", id);
+    public User findUserById(String id) {
+        return sqlSession.selectOne("userSql.findUserById", id);
     }
 
-    public void insertFamily(User model) {
-        sqlSession.insert("userSql.insertFamily", model);
+    public void insertUser(User model) {
+        sqlSession.insert("userSql.insertUser", model);
     }
 
-    public void updateFamily(User model) {
-        sqlSession.update("userSql.updateFamily", model);
+    public void updateUser(User model) {
+        sqlSession.update("userSql.updateUser", model);
     }
 
-    public void deleteFamily(User model) {
-        sqlSession.update("userSql.deleteFamily", model);
+    public void deleteUser(User model) {
+        sqlSession.update("userSql.deleteUser", model);
     }
 }

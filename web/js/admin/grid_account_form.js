@@ -1,6 +1,7 @@
 Ext.ns('Tomtalk.grid');
 
-Ext.define('Tomtalk.grid.FormUI', {extend: 'Ext.form.Panel',
+Ext.define('Tomtalk.grid.FormUI', {
+    extend: 'Ext.form.Panel',
     constructor: function (config) {
         var me = this;
         config = Ext.apply({
@@ -20,6 +21,7 @@ Ext.define('Tomtalk.grid.FormUI', {extend: 'Ext.form.Panel',
         me.items = [
             {
                 xtype: 'hiddenfield',
+                id: this.id + '_rec_id',
                 name: 'id',
                 value: 0
             },
@@ -59,7 +61,8 @@ Ext.define('Tomtalk.grid.FormUI', {extend: 'Ext.form.Panel',
     }
 });
 
-Ext.define('Tomtalk.grid.FormAction', {extend: 'Tomtalk.grid.FormUI',
+Ext.define('Tomtalk.grid.FormAction', {
+    extend: 'Tomtalk.grid.FormUI',
     constructor: function (config) {
         Tomtalk.grid.FormAction.superclass.constructor.call(this, config);
     },
@@ -68,6 +71,7 @@ Ext.define('Tomtalk.grid.FormAction', {extend: 'Tomtalk.grid.FormUI',
         Tomtalk.grid.FormAction.superclass.initComponent.call(this);
 
         Ext.apply(this.COMPONENTS, {
+            recId: Ext.getCmp(this.id + '_rec_id'),
             saveBtn: Ext.getCmp(this.id + '_save'),
             returnBtn: Ext.getCmp(this.id + '_return')
         });
@@ -94,13 +98,21 @@ Ext.define('Tomtalk.grid.FormAction', {extend: 'Tomtalk.grid.FormUI',
     _save: function () {
         var me = this;
         var form = me;
+        var $c = this.COMPONENTS;
+        var recId = $c.recId.getValue();
+        
+        console.log('result');
 
         if (form.isValid()) {
             form.getForm().submit({
-                url: '/' + me.up().module + '/save',//后台处理的页面
+                url: '/admin/' + (recId == 0 ? 'insertUser' : 'updateUser'),   //后台处理的页面
                 submitEmptyText: false,
                 success: function (fp, o) {
                     var result = Ext.decode(o.response.responseText);
+
+                    console.log('result');
+                    console.log(o.response.responseText);
+                    console.log(result);
 
                     if (result.success) {
                         me._return();

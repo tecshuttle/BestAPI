@@ -4,6 +4,7 @@ import com.best.util.BasicUtil;
 import com.best.web.dao.UserDao;
 import com.best.web.model.admin.*;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.Resource;
 import java.util.List;
 
@@ -13,26 +14,26 @@ public class UserService {
     private UserDao UserDao;
 
     //家庭成员
-    public List<User> findFamilyList() {
-        return UserDao.findFamilyList();
+    public List<User> findUserList() {
+        return UserDao.findUserList();
     }
 
-    public User findFamilyById(String id) {
-        return UserDao.findFamilyById(id);
+    public User findUserById(String id) {
+        return UserDao.findUserById(id);
     }
 
-    public void insertFamily(User model) {
+    public void insertUser(User model) {
         model.setId(BasicUtil.generateId());
-        UserDao.insertFamily(model);
+        UserDao.insertUser(model);
     }
 
-    public void updateFamily(User model) {
+    public void updateUser(User model) {
 
-        UserDao.updateFamily(model);
+        UserDao.updateUser(model);
     }
 
-    public void deleteFamily(User model) {
+    public void deleteUser(User model) {
 
-        UserDao.deleteFamily(model);
+        UserDao.deleteUser(model);
     }
 }

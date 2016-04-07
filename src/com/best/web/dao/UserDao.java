@@ -6,13 +6,13 @@ import java.util.List;
 
 public interface UserDao {
     //家庭成员
-    public List<User> findFamilyList();
+    public List<User> findUserList();
 
-    public User findFamilyById(String id);
+    public User findUserById(String id);
 
-    public void insertFamily(User model);
+    public void insertUser(User model);
 
-    public void updateFamily(User model);
+    public void updateUser(User model);
 
-    public void deleteFamily(User model);
+    public void deleteUser(User model);
 }

@@ -5,26 +5,11 @@
 
     <!-- 家庭成员 -->
 
-    <select id="findFamilyList" resultType="User">
-		select * from USERS
+    <select id="findUserList" resultType="User">
+		select * from XZH_USERS
 	</select>
 
-    <select id="findFamilyBaseInfoList" parameterType="String" resultType="FamilyBaseInfo">
-		select id,name,familyType
-		 from  (select a.id ,a.cust_name name,'SELF' familyType,create_date
-		          from v_bd_cust a
-		         where id = #{id}
-		         union all
-				 select id,name,'FAMILY' familyType,create_date
-		          from xzh_cust_family
-		         where cust_id = #{id}
-		           and active_flag = '1'
-			   )
-		 order by create_date
-		
-	</select>
-
-    <select id="findFamilyById" parameterType="String" resultType="Family">
+    <select id="findUserById" parameterType="String" resultType="User">
 		select id,cust_id id,name, name, password,
    			   cret_type cretType, cret_no cretNo, insurance_type insuranceType, 
    			   insurance_no insuranceNo, mobile, marriage
@@ -32,44 +17,22 @@
 		 where id = #{id} and active_flag = '1'
 	</select>
 
-    <insert id="insertFamily" parameterType="Family">
-		insert into xzh_cust_family 
-		(
-			id, creator, create_date,active_flag,
-		   	cust_id, name, name,
-		   	password, cret_type, cret_no,
-		   	insurance_type, insurance_no, mobile, 
-		   	marriage
-		) 
+    <insert id="insertUser" parameterType="User">
+		insert into xzh_users
+		( id, name, password )
 		values 
-		( 
-			#{id}, null, sysdate,'1',
-		   	#{id}, #{name}, #{name},
-		   	to_date(#{password},'yyyy/MM/dd'), #{cretType}, #{cretNo},
-		   	#{insuranceType}, #{insuranceNo}, #{mobile}, 
-		   	#{marriage}
-		)
+		( sys_guid(), #{name}, #{password} )
 	</insert>
 
-    <update id="updateFamily" parameterType="Family">
-		update xzh_cust_family
-		   set id = #{id},
-		       modifier = null,
-		       modify_date = sysdate,
-		       name = #{name},
-		       name = #{name},
-		       password = to_date(#{password},'yyyy/MM/dd'),
-		       cret_type = #{cretType},
-		       cret_no = #{cretNo},
-		       insurance_type = #{insuranceType},
-		       insurance_no = #{insuranceNo},
-		       mobile = #{mobile},
-		       marriage = #{marriage}
+    <update id="updateUser" parameterType="User">
+		update xzh_users
+		   set name = #{name},
+		       password = #{password}
 		 where id = #{id}
 	</update>
 
-    <update id="deleteFamily">
-		update xzh_cust_family
+    <update id="deleteUse">
+		update xzh_Users
 		   set modifier = null,
 		       modify_date = sysdate,
 		       active_flag = '0'

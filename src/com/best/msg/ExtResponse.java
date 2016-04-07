@@ -1,15 +1,15 @@
 package com.best.msg;
 
-public class GenResponse<T> extends BaseResponse {
-    protected T response;
+public class ExtResponse<T>  {
+    protected String result = "";
     protected String success = "true";
 
-    public T getResponse() {
-        return (T) this.response;
+    public String getResult() {
+        return this.result;
     }
 
-    public void setResponse(T response) {
-        this.response = response;
+    public void setResult(String result) {
+        this.result = result;
     }
 
     public String getSuccess() {
