@@ -232,7 +232,7 @@ Ext.onReady(function () {
         boxMinWidth: 1130,
         listeners: {
             afterrender: function () {//如果有默认首页就打开设置的页面
-                mainPanel.createNewTab('/admin/articles', Math.random(), '文章管理');
+                mainPanel.createNewTab('/card/type', Math.random(), '卡类型');
             }
         }
     });
@@ -316,12 +316,12 @@ Ext.onReady(function () {
      */
     (function () {
         var v3_topmenu = {
-            user: {cls: 'user-center', name: '内容管理'},
-            job: {cls: 'job-manage', name: '日志'},
+            user: {cls: 'user-center', name: '卡管理'},
+            admin: {cls: 'admin-entrance', name: '服务管理'},
+            job: {cls: 'job-manage', name: '供应商'},
+            set: {cls: 'set', name: '系统设置'},
             data: {cls: 'data', name: '订单管理'},
-            admin: {cls: 'admin-entrance', name: '微信设置'},
-            step: {cls: 'step-component', name: '步骤'},
-            set: {cls: 'set', name: '系统设置'}
+            step: {cls: 'step-component', name: '步骤'}
         };
 
         var mainMenu = [];

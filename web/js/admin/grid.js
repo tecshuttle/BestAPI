@@ -70,7 +70,7 @@ Tomtalk.IdcUI = Ext.extend(Ext.Panel, {
             fields: me.fields,
             proxy: {
                 type: 'ajax',
-                url: '/admin/getList',
+                url: '/user/getList',
                 extraParams: {
                     module: me.module
                 },

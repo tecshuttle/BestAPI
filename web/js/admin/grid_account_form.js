@@ -105,7 +105,7 @@ Ext.define('Tomtalk.grid.FormAction', {
 
         if (form.isValid()) {
             form.getForm().submit({
-                url: '/admin/' + (recId == 0 ? 'insertUser' : 'updateUser'),   //后台处理的页面
+                url: '/user/' + (recId == 0 ? 'insertUser' : 'updateUser'),   //后台处理的页面
                 submitEmptyText: false,
                 success: function (fp, o) {
                     var result = Ext.decode(o.response.responseText);

@@ -2,61 +2,56 @@ var Docs = {};
 Docs.Menu = [
     {
         id: 'user',
-        text: '内容管理',
+        text: '卡管理',
         isMutilLevel: false,
         children: [
             {
-                href: "/admin/gallery",
-                text: "图库",
+                href: "/card/type",
+                text: "卡类型",
                 leaf: true
             },
             {
-                href: "/admin/articles",
-                text: "文章管理",
+                href: "/card/list",
+                text: "卡列表",
                 leaf: true
             },
             {
-                href: "/admin/tags",
-                text: "服务主题",
-                leaf: true
-            },
-            {
-                href: "/admin/equipments",
-                text: "产品管理",
+                href: "/card/suit",
+                text: "卡套餐",
                 leaf: true
             }
         ]
     },
     {
         id: 'admin',
-        text: '微信设置',
+        text: '服务管理',
         isMutilLevel: false,
         children: [
             {
-                href: "/admin/weixin",
-                text: "微信设置",
-                leaf: true
-            },
-            {
-                href: "/admin/weixin_auto_reply",
-                text: "自动消息回复",
-                leaf: true
-            },
-            {
-                href: "/admin/weixin_menu",
-                text: "自定义菜单",
+                href: "/service",
+                text: "服务管理",
                 leaf: true
             }
         ]
     },
     {
         id: 'job',
-        text: '日志',
+        text: '供应商',
         isMutilLevel: false,
         children: [
             {
-                href: "/admin/func_log",
-                text: "API调用",
+                href: "/supplier/list",
+                text: "供应商",
+                leaf: true
+            },
+            {
+                href: "/supplier/store",
+                text: "门店",
+                leaf: true
+            },
+            {
+                href: "/supplier/service",
+                text: "服务",
                 leaf: true
             }
         ]
@@ -67,17 +62,12 @@ Docs.Menu = [
         isMutilLevel: false,
         children: [
             {
-                href: "/admin/settings",
+                href: "/settings",
                 text: "全站设置",
                 leaf: true
             },
             {
-                href: "/admin/scroll_img",
-                text: "滚动图",
-                leaf: true
-            },
-            {
-                href: "/admin/accounts",
+                href: "/user",
                 text: "管理员帐号",
                 leaf: true
             }
