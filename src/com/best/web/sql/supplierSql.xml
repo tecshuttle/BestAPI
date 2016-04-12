@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="supplierSql">
+
+
+    <!-- 家庭成员 -->
+
+    <select id="findSupplierList" resultType="Supplier">
+		select * from XZH_supplier
+	</select>
+
+    <insert id="insertSupplier" parameterType="Supplier">
+		insert into xzh_supplier
+		( id, supplier_name, supplier_code )
+		values 
+		( sys_guid(), #{supplier_name}, #{supplier_code} )
+	</insert>
+
+    <update id="updateSupplier" parameterType="Supplier">
+		update xzh_supplier
+		set supplier_name = #{supplier_name},
+		    supplier_code = #{supplier_code}
+		where id = #{id}
+	</update>
+
+    <update id="deleteSupplier">
+		update xzh_Users
+		   set modifier = null,
+		       modify_date = sysdate,
+		       active_flag = '0'
+		 where id = #{id}
+	</update>
+</mapper>

@@ -20,15 +20,15 @@ public class CardService {
 
     public void insertCardType(CardType model) {
         model.setId(BasicUtil.generateId());
-        CardDao.insertCartType(model);
+        CardDao.insertCardType(model);
     }
 
     public void updateCardType(CardType model) {
-        CardDao.updateCartType(model);
+        CardDao.updateCardType(model);
     }
 
     public void deleteCardType(CardType model) {
-        CardDao.deleteCartType(model);
+        CardDao.deleteCardType(model);
     }
 }
 

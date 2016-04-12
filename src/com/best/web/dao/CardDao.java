@@ -8,7 +8,7 @@ import java.util.List;
 public interface CardDao {
     //卡类型
     public List<CardType> findCardTypeList();
-    public void insertCartType(CardType model);
-    public void updateCartType(CardType model);
-    public void deleteCartType(CardType model);
+    public void insertCardType(CardType model);
+    public void updateCardType(CardType model);
+    public void deleteCardType(CardType model);
 }

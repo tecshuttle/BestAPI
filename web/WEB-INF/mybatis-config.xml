@@ -36,6 +36,7 @@
         <typeAlias type="com.best.web.model.admin.User" alias="User"/>
 
         <typeAlias type="com.best.web.model.admin.CardType" alias="CardType"/>
+        <typeAlias type="com.best.web.model.admin.Supplier" alias="Supplier"/>
     </typeAliases>
     <mappers>
         <mapper resource="com/best/web/sql/initSql.xml"/>
@@ -43,5 +44,6 @@
         <mapper resource="com/best/web/sql/orderSql.xml"/>
         <mapper resource="com/best/web/sql/userSql.xml"/>
         <mapper resource="com/best/web/sql/cardSql.xml"/>
+        <mapper resource="com/best/web/sql/supplierSql.xml"/>
     </mappers>
 </configuration>

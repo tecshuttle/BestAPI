@@ -27,25 +27,17 @@ Ext.define('Tomtalk.grid.FormUI', {
             },
             {
                 xtype: 'textfield',
-                fieldLabel: '分类代号',
+                fieldLabel: '供应商代号',
                 anchor: '50%',
-                name: 'card_code',
+                name: 'supplier_code',
                 allowBlank: false,
                 emptyText: '请输入…'
             },
             {
                 xtype: 'textfield',
-                fieldLabel: '分类名称',
+                fieldLabel: '供应商名称',
                 anchor: '50%',
-                name: 'card_name',
-                allowBlank: false,
-                emptyText: '请输入…'
-            },
-            {
-                xtype: 'textfield',
-                fieldLabel: '价格',
-                anchor: '50%',
-                name: 'price',
+                name: 'supplier_name',
                 allowBlank: false,
                 emptyText: '请输入…'
             },
@@ -112,7 +104,7 @@ Ext.define('Tomtalk.grid.FormAction', {
 
         if (form.isValid()) {
             form.getForm().submit({
-                url: '/card/' + (recId == 0 ? 'insertType' : 'updateType'),   //后台处理的页面
+                url: '/supplier/' + (recId == 0 ? 'insertSupplier' : 'updateSupplier'),   //后台处理的页面
                 submitEmptyText: false,
                 success: function (fp, o) {
                     var result = Ext.decode(o.response.responseText);

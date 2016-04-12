@@ -19,17 +19,17 @@ public class CardDaoImpl implements CardDao {
     }
 
 
-    public void insertCartType(CardType model) {
+    public void insertCardType(CardType model) {
         sqlSession.insert("cardSql.insertCardType", model);
     }
 
 
-    public void updateCartType(CardType model) {
+    public void updateCardType(CardType model) {
         sqlSession.insert("cardSql.updateCardType", model);
     }
 
 
-    public void deleteCartType(CardType model) {
+    public void deleteCardType(CardType model) {
         sqlSession.insert("cardSql.deleteCardType", model);
     }
 }
