@@ -13,9 +13,7 @@
         <typeAlias type="com.best.web.model.cust.Cust" alias="Cust"/>
         <typeAlias type="com.best.web.model.cust.CustBaseInfo" alias="CustBaseInfo"/>
         <typeAlias type="com.best.web.model.cust.Family" alias="Family"/>
-        <typeAlias type="com.best.web.model.admin.User" alias="User"/>
         <typeAlias type="com.best.web.model.cust.FamilyBaseInfo" alias="FamilyBaseInfo"/>
-
         <typeAlias type="com.best.web.model.cust.CardParam" alias="CardParam"/>
         <typeAlias type="com.best.web.model.cust.Card" alias="Card"/>
         <typeAlias type="com.best.web.model.cust.CardPackage" alias="CardPackage"/>
@@ -26,7 +24,6 @@
 
         <typeAlias type="com.best.web.model.order.OrderParam" alias="OrderParam"/>
         <typeAlias type="com.best.web.model.order.CardNo" alias="CardNo"/>
-
         <typeAlias type="com.best.web.model.order.ServiceOrderQuantity" alias="ServiceOrderQuantity"/>
         <typeAlias type="com.best.web.model.order.ServiceInfo" alias="ServiceInfo"/>
         <typeAlias type="com.best.web.model.order.SupplierInfo" alias="SupplierInfo"/>
@@ -36,11 +33,15 @@
         <typeAlias type="com.best.web.model.order.DoctorOrder" alias="DoctorOrder"/>
         <typeAlias type="com.best.web.model.order.GeneOrder" alias="GeneOrder"/>
 
+        <typeAlias type="com.best.web.model.admin.User" alias="User"/>
+
+        <typeAlias type="com.best.web.model.admin.CardType" alias="CardType"/>
     </typeAliases>
     <mappers>
         <mapper resource="com/best/web/sql/initSql.xml"/>
         <mapper resource="com/best/web/sql/custSql.xml"/>
         <mapper resource="com/best/web/sql/orderSql.xml"/>
         <mapper resource="com/best/web/sql/userSql.xml"/>
+        <mapper resource="com/best/web/sql/cardSql.xml"/>
     </mappers>
 </configuration>
