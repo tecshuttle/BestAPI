@@ -1,6 +1,7 @@
 package com.best.web.controller;
 
 
+import com.best.msg.ExtListResponse;
 import com.best.msg.ExtResponse;
 import com.best.msg.GenResponse;
 import com.best.msg.ListResponse;
@@ -73,9 +74,9 @@ public class CardController {
 
 
     @RequestMapping(value = "getCardNoList", method = RequestMethod.GET)
-    public void getCardNoList(HttpServletRequest request, HttpServletResponse response, String username, String password, String start_date, String end_date) throws Exception {
-        ListResponse<CardNo> listResponse = new ListResponse<CardNo>();
-        listResponse.setResponse(service.findCardNoList());
+    public void getCardNoList(HttpServletRequest request, HttpServletResponse response, int start, int limit) throws Exception {
+        ExtListResponse<CardNo> listResponse = new ExtListResponse<CardNo>();
+        listResponse.setResponse(service.findCardNoList(), start, limit);
         AjaxUtil.sendJSON(response, listResponse);
     }
 

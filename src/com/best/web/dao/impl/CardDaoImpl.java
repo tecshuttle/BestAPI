@@ -3,6 +3,7 @@ package com.best.web.dao.impl;
 import com.best.web.dao.CardDao;
 import com.best.web.model.admin.CardType;
 import com.best.web.model.order.CardNo;
+import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 

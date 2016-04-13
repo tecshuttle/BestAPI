@@ -124,12 +124,12 @@ Tomtalk.IdcUI = Ext.extend(Ext.Panel, {
             });
         } else {
             /*linkcolumn.push({
-                glyph: '删除',
-                handler: function (grid, rowIndex, colIndex) {
-                    var rec = grid.getStore().getAt(rowIndex);
-                    me._delete(rec.get('id'));
-                }
-            });*/
+             glyph: '删除',
+             handler: function (grid, rowIndex, colIndex) {
+             var rec = grid.getStore().getAt(rowIndex);
+             me._delete(rec.get('id'));
+             }
+             });*/
         }
 
         me.columns.push({
@@ -162,6 +162,7 @@ Tomtalk.IdcUI = Ext.extend(Ext.Panel, {
             bbar: {
                 xtype: 'pagingtoolbar',
                 store: store,
+                inputItemWidth: 50,
                 displayInfo: true,
                 beforePageText: '页',
                 afterPageText: '/ {0}',
