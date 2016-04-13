@@ -2,17 +2,17 @@ var Docs = {};
 Docs.Menu = [
     {
         id: 'user',
-        text: '卡管理',
+        text: '健康卡',
         isMutilLevel: false,
         children: [
             {
                 href: "/card/type",
-                text: "卡类型",
+                text: "卡管理",
                 leaf: true
             },
             {
-                href: "/card/list",
-                text: "卡列表",
+                href: "/card/no",
+                text: "卡号管理",
                 leaf: true
             },
             {
@@ -41,17 +41,17 @@ Docs.Menu = [
         children: [
             {
                 href: "/supplier/list",
-                text: "供应商",
+                text: "供应商管理",
                 leaf: true
             },
             {
                 href: "/supplier/store",
-                text: "门店",
+                text: "门店管理",
                 leaf: true
             },
             {
                 href: "/supplier/service",
-                text: "服务",
+                text: "产品管理",
                 leaf: true
             }
         ]

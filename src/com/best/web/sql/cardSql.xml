@@ -31,4 +31,33 @@
 		       active_flag = '0'
 		 where id = #{id}
 	</update>
+
+
+    <!-- 卡号管理 -->
+    <select id="findCardNoList" resultType="CardNo">
+		select * from xzh_card_no
+	</select>
+
+    <insert id="insertCardNo" parameterType="CardNo">
+		insert into xzh_card_no
+		( id, card_name, card_code, price )
+		values
+		( sys_guid(), #{card_name}, #{card_code}, #{price} )
+	</insert>
+
+    <update id="updateCardNo" parameterType="CardNo">
+		update xzh_card_no
+		set card_name = #{card_name},
+		card_code = #{card_code},
+		price = #{price}
+		where id = #{id}
+	</update>
+
+    <update id="deleteCardNo">
+		update xzh_Users
+		set modifier = null,
+		modify_date = sysdate,
+		active_flag = '0'
+		where id = #{id}
+	</update>
 </mapper>

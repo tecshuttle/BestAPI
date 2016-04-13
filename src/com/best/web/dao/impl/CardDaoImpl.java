@@ -1,7 +1,8 @@
 package com.best.web.dao.impl;
 
 import com.best.web.dao.CardDao;
-import com.best.web.model.admin.*;
+import com.best.web.model.admin.CardType;
+import com.best.web.model.order.CardNo;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
@@ -31,6 +32,24 @@ public class CardDaoImpl implements CardDao {
 
     public void deleteCardType(CardType model) {
         sqlSession.insert("cardSql.deleteCardType", model);
+    }
+
+
+    //卡号管理
+    public List<CardNo> findCardNoList() {
+        return sqlSession.selectList("cardSql.findCardNoList");
+    }
+
+    public void insertCardNo(CardNo model) {
+        sqlSession.selectList("cardSql.insertCardNo");
+    }
+
+    public void updateCardNo(CardNo model) {
+        sqlSession.selectList("cardSql.updateCardNo");
+    }
+
+    public void deleteCardNo(CardNo model) {
+        sqlSession.selectList("cardSql.deleteCardNo");
     }
 }
 
