@@ -4,6 +4,7 @@ import com.best.util.BasicUtil;
 import com.best.web.dao.SupplierDao;
 import com.best.web.model.admin.Supplier;
 import com.best.web.model.admin.SupplierOrg;
+import com.best.web.model.admin.SupplierProduct;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -49,6 +50,25 @@ public class SupplierService {
 
     public void deleteSupplierOrg(SupplierOrg model) {
         SupplierDao.deleteSupplierOrg(model);
+    }
+
+
+    //供应商产品管理
+    public List<SupplierProduct> findSupplierServiceList() {
+        return SupplierDao.findSupplierServiceList();
+    }
+
+    public void insertSupplierService(SupplierProduct model) {
+        model.setId(BasicUtil.generateId());
+        SupplierDao.insertSupplierService(model);
+    }
+
+    public void updateSupplierService(SupplierProduct model) {
+        SupplierDao.updateSupplierService(model);
+    }
+
+    public void deleteSupplierService(SupplierProduct model) {
+        SupplierDao.deleteSupplierService(model);
     }
 }
 

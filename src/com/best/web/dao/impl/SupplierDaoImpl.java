@@ -3,6 +3,7 @@ package com.best.web.dao.impl;
 import com.best.web.dao.SupplierDao;
 import com.best.web.model.admin.Supplier;
 import com.best.web.model.admin.SupplierOrg;
+import com.best.web.model.admin.SupplierProduct;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
@@ -53,6 +54,27 @@ public class SupplierDaoImpl implements SupplierDao {
 
     public void deleteSupplierOrg(SupplierOrg model) {
         sqlSession.insert("supplierSql.deleteSupplierOrg", model);
+    }
+
+
+    //供应商产品管理
+    public List<SupplierProduct> findSupplierServiceList() {
+        return sqlSession.selectList("supplierSql.findSupplierServiceList");
+    }
+
+
+    public void insertSupplierService(SupplierProduct model) {
+        sqlSession.insert("supplierSql.insertSupplierService", model);
+    }
+
+
+    public void updateSupplierService(SupplierProduct model) {
+        sqlSession.insert("supplierSql.updateSupplierService", model);
+    }
+
+
+    public void deleteSupplierService(SupplierProduct model) {
+        sqlSession.insert("supplierSql.deleteSupplierService", model);
     }
 }
 

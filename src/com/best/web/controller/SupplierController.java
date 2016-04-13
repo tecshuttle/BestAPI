@@ -8,6 +8,7 @@ import com.best.msg.ExtListResponse;
 import com.best.util.AjaxUtil;
 import com.best.web.model.admin.Supplier;
 import com.best.web.model.admin.SupplierOrg;
+import com.best.web.model.admin.SupplierProduct;
 import com.best.web.service.SupplierService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -107,6 +108,30 @@ public class SupplierController {
         ModelAndView model = new ModelAndView();
         model.setViewName("supplier_service");
         return model;
+    }
+
+    @RequestMapping(value = "getSupplierServiceList", method = RequestMethod.GET)
+    public void getSupplierServiceList(HttpServletRequest request, HttpServletResponse response, int start, int limit) throws Exception {
+        ExtListResponse<SupplierProduct> listResponse = new ExtListResponse<SupplierProduct>();
+        listResponse.setResponse(service.findSupplierServiceList(), start, limit);
+        AjaxUtil.sendJSON(response, listResponse);
+    }
+
+
+    @RequestMapping(value = "updateSupplierService", method = RequestMethod.POST)
+    public void updateSupplierService(HttpServletRequest request, HttpServletResponse response, SupplierProduct cardType, BindingResult result) throws Exception {
+        ExtResponse<String> genResponse = new ExtResponse<String>();
+        service.updateSupplierService(cardType);
+        AjaxUtil.sendJSON(response, genResponse);
+    }
+
+
+    @RequestMapping(value = "insertSupplierService", method = RequestMethod.POST)
+    public void insertSupplierService(HttpServletRequest request, HttpServletResponse response, SupplierProduct cardType, BindingResult result) throws Exception {
+        GenResponse<String> genResponse = new GenResponse<String>();
+        service.insertSupplierService(cardType);
+        genResponse.setResponse(cardType.getId());
+        AjaxUtil.sendJSON(response, genResponse);
     }
 }
 

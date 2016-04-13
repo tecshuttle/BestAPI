@@ -2,6 +2,7 @@ package com.best.web.dao;
 
 import com.best.web.model.admin.Supplier;
 import com.best.web.model.admin.SupplierOrg;
+import com.best.web.model.admin.SupplierProduct;
 
 import java.util.List;
 
@@ -25,6 +26,16 @@ public interface SupplierDao {
     public void updateSupplierOrg(SupplierOrg model);
 
     public void deleteSupplierOrg(SupplierOrg model);
+
+
+    //供应商产品管理
+    public List<SupplierProduct> findSupplierServiceList();
+
+    public void insertSupplierService(SupplierProduct model);
+
+    public void updateSupplierService(SupplierProduct model);
+
+    public void deleteSupplierService(SupplierProduct model);
 }
 
 //end file
