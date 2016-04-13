@@ -4,18 +4,19 @@ Ext.onReady(function () {
         {
             header: "ID", dataIndex: 'id', hidden: true
         },
+        {header: '供应商ID', dataIndex: 'supplier_id'},
+        {header: '产品名称', dataIndex: 'service_name', width: 200},
+        {header: '产品类型', dataIndex: 'service_type'},
         {
-            header: "供应商代号", dataIndex: 'supplier_code'
+            header: "市场价格", dataIndex: 'market_price'
         },
         {
-            header: "供应商名称", dataIndex: 'supplier_name'
+            header: "采购价格", dataIndex: 'cost_price'
         },
         {
             header: "创建人", dataIndex: 'creator'
         },
-        {
-            header: "创建时间", dataIndex: 'create_date'
-        }
+        { header: "创建时间", dataIndex: 'create_date', width: 110}
     ];
 
 

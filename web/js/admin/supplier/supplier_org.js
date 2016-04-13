@@ -5,10 +5,16 @@ Ext.onReady(function () {
             header: "ID", dataIndex: 'id', hidden: true
         },
         {
-            header: "供应商代号", dataIndex: 'supplier_code'
+            header: "供应商ID", dataIndex: 'supplier_id'
         },
         {
-            header: "供应商名称", dataIndex: 'supplier_name'
+            header: "门店名称", dataIndex: 'org_name'
+        },
+        {
+            header: "激活状态", dataIndex: 'active_flag'
+        },
+        {
+            header: "所在地", dataIndex: 'province_id'
         },
         {
             header: "创建人", dataIndex: 'creator'
