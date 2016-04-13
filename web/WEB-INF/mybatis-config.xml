@@ -7,7 +7,9 @@
         <!-- 	<setting name="logImpl" value="STDOUT_LOGGING"/> -->
         <setting name="logImpl" value="SLF4J"/>
     </settings>
+
     <typeAliases>
+        <!-- 产品管理API -->
         <typeAlias type="com.best.web.model.essence.CustInfo" alias="CustInfo"/>
 
         <typeAlias type="com.best.web.model.cust.Cust" alias="Cust"/>
@@ -33,11 +35,15 @@
         <typeAlias type="com.best.web.model.order.DoctorOrder" alias="DoctorOrder"/>
         <typeAlias type="com.best.web.model.order.GeneOrder" alias="GeneOrder"/>
 
+
+        <!-- 产品管理后台 -->
         <typeAlias type="com.best.web.model.admin.User" alias="User"/>
 
         <typeAlias type="com.best.web.model.admin.CardType" alias="CardType"/>
         <typeAlias type="com.best.web.model.admin.Supplier" alias="Supplier"/>
+        <typeAlias type="com.best.web.model.admin.SupplierOrg" alias="SupplierOrg"/>
     </typeAliases>
+
     <mappers>
         <mapper resource="com/best/web/sql/initSql.xml"/>
         <mapper resource="com/best/web/sql/custSql.xml"/>

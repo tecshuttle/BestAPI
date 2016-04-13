@@ -45,7 +45,7 @@ Docs.Menu = [
                 leaf: true
             },
             {
-                href: "/supplier/store",
+                href: "/supplier/org",
                 text: "门店管理",
                 leaf: true
             },

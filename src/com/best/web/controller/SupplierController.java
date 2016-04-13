@@ -4,8 +4,10 @@ package com.best.web.controller;
 import com.best.msg.ExtResponse;
 import com.best.msg.GenResponse;
 import com.best.msg.ListResponse;
+import com.best.msg.ExtListResponse;
 import com.best.util.AjaxUtil;
 import com.best.web.model.admin.Supplier;
+import com.best.web.model.admin.SupplierOrg;
 import com.best.web.service.SupplierService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -59,13 +61,47 @@ public class SupplierController {
         AjaxUtil.sendJSON(response, genResponse);
     }
 
-    @RequestMapping(value = "store", method = RequestMethod.GET)
-    public ModelAndView storePage() {
+
+    /**
+     * 供应商门店管理
+     * 前面是页面方法，后面是ajax接口
+     */
+    @RequestMapping(value = "org", method = RequestMethod.GET)
+    public ModelAndView orgPage() {
         ModelAndView model = new ModelAndView();
-        model.setViewName("supplier_store");
+        model.setViewName("supplier_org");
         return model;
     }
 
+    @RequestMapping(value = "getSupplierOrgList", method = RequestMethod.GET)
+    public void getSupplierOrgList(HttpServletRequest request, HttpServletResponse response, int start, int limit) throws Exception {
+        ExtListResponse<SupplierOrg> listResponse = new ExtListResponse<SupplierOrg>();
+        listResponse.setResponse(service.findSupplierOrgList(), start, limit);
+        AjaxUtil.sendJSON(response, listResponse);
+    }
+
+
+    @RequestMapping(value = "updateSupplierOrg", method = RequestMethod.POST)
+    public void updateSupplierOrg(HttpServletRequest request, HttpServletResponse response, SupplierOrg cardType, BindingResult result) throws Exception {
+        ExtResponse<String> genResponse = new ExtResponse<String>();
+        service.updateSupplierOrg(cardType);
+        AjaxUtil.sendJSON(response, genResponse);
+    }
+
+
+    @RequestMapping(value = "insertSupplierOrg", method = RequestMethod.POST)
+    public void insertSupplierOrg(HttpServletRequest request, HttpServletResponse response, SupplierOrg cardType, BindingResult result) throws Exception {
+        GenResponse<String> genResponse = new GenResponse<String>();
+        service.insertSupplierOrg(cardType);
+        genResponse.setResponse(cardType.getId());
+        AjaxUtil.sendJSON(response, genResponse);
+    }
+
+
+    /**
+     * 供应商产品管理
+     * 前面是页面方法，后面是ajax接口
+     */
     @RequestMapping(value = "service", method = RequestMethod.GET)
     public ModelAndView servicePage() {
         ModelAndView model = new ModelAndView();
@@ -73,3 +109,5 @@ public class SupplierController {
         return model;
     }
 }
+
+//end file
