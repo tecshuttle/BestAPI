@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="productSql">
+
+    <!-- 供应商管理 -->
+    <select id="findProdServiceList" resultType="ProdService">
+		select * from xzh_service
+	</select>
+
+    <insert id="insertProdService" parameterType="ProdService">
+		insert into xzh_service
+		( id, supplier_name, supplier_code )
+		values 
+		( sys_guid(), #{supplier_name}, #{supplier_code} )
+	</insert>
+
+    <update id="updateProdService" parameterType="ProdService">
+		update xzh_service
+		set supplier_name = #{supplier_name},
+		    supplier_code = #{supplier_code}
+		where id = #{id}
+	</update>
+
+    <update id="deleteProdService">
+		update xzh_service
+		   set modifier = null,
+		       modify_date = sysdate,
+		       active_flag = '0'
+		 where id = #{id}
+	</update>
+</mapper>

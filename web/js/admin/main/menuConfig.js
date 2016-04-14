@@ -24,7 +24,7 @@ Docs.Menu = [
     },
     {
         id: 'admin',
-        text: '服务管理',
+        text: '产品',
         isMutilLevel: false,
         children: [
             {

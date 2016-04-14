@@ -43,6 +43,7 @@
         <typeAlias type="com.best.web.model.admin.Supplier" alias="Supplier"/>
         <typeAlias type="com.best.web.model.admin.SupplierOrg" alias="SupplierOrg"/>
         <typeAlias type="com.best.web.model.admin.SupplierProduct" alias="SupplierService"/>
+        <typeAlias type="com.best.web.model.admin.ProdService" alias="ProdService"/>
     </typeAliases>
 
     <mappers>
@@ -52,5 +53,6 @@
         <mapper resource="com/best/web/sql/userSql.xml"/>
         <mapper resource="com/best/web/sql/cardSql.xml"/>
         <mapper resource="com/best/web/sql/supplierSql.xml"/>
+        <mapper resource="com/best/web/sql/productSql.xml"/>
     </mappers>
 </configuration>

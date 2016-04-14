@@ -317,7 +317,7 @@ Ext.onReady(function () {
     (function () {
         var v3_topmenu = {
             user: {cls: 'user-center', name: '健康卡'},
-            admin: {cls: 'admin-entrance', name: '服务管理'},
+            admin: {cls: 'admin-entrance', name: '产品'},
             job: {cls: 'job-manage', name: '供应商'},
             set: {cls: 'set', name: '系统设置'},
             data: {cls: 'data', name: '订单管理'},
