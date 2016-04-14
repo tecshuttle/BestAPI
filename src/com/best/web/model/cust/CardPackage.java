@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public class CardPackage {
+	private String id;
 	private String cardId;
 	private String packageId;
 	private String packageName;
@@ -17,7 +18,13 @@ public class CardPackage {
 	private String useRule;
 	
 	private List<PackageService> serviceList;
-	
+
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
 	public String getCardId() {
 		return cardId;
 	}

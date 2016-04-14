@@ -7,6 +7,7 @@ import com.best.msg.GenResponse;
 import com.best.msg.ListResponse;
 import com.best.util.AjaxUtil;
 import com.best.web.model.admin.CardType;
+import com.best.web.model.cust.CardPackage;
 import com.best.web.model.order.CardNo;
 import com.best.web.service.CardService;
 import org.springframework.stereotype.Controller;
@@ -98,14 +99,40 @@ public class CardController {
     }
 
 
-    //卡套餐
-    @RequestMapping(value = "suit", method = RequestMethod.GET)
+    /**
+     * 卡套餐
+     * 前面是页面方法，后面是ajax接口
+     */
+    @RequestMapping(value = "package", method = RequestMethod.GET)
     public ModelAndView suitPage() {
         ModelAndView model = new ModelAndView();
-        model.setViewName("card_suit");
+        model.setViewName("card_package");
         return model;
     }
 
+    @RequestMapping(value = "getPackageList", method = RequestMethod.GET)
+    public void getPackageList(HttpServletRequest request, HttpServletResponse response, int start, int limit) throws Exception {
+        ExtListResponse<CardPackage> listResponse = new ExtListResponse<CardPackage>();
+        listResponse.setResponse(service.findCardPackageList(), start, limit);
+        AjaxUtil.sendJSON(response, listResponse);
+    }
+
+
+    @RequestMapping(value = "updatePackage", method = RequestMethod.POST)
+    public void updatePackage(HttpServletRequest request, HttpServletResponse response, CardPackage cardType, BindingResult result) throws Exception {
+        ExtResponse<String> genResponse = new ExtResponse<String>();
+        service.updateCardPackage(cardType);
+        AjaxUtil.sendJSON(response, genResponse);
+    }
+
+
+    @RequestMapping(value = "insertPackage", method = RequestMethod.POST)
+    public void insertPackage(HttpServletRequest request, HttpServletResponse response, CardPackage cardType, BindingResult result) throws Exception {
+        GenResponse<String> genResponse = new GenResponse<String>();
+        service.insertCardPackage(cardType);
+        genResponse.setResponse(cardType.getId());
+        AjaxUtil.sendJSON(response, genResponse);
+    }
 }
 
 //end file

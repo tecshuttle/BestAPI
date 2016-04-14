@@ -3,6 +3,7 @@ package com.best.web.dao.impl;
 import com.best.web.dao.CardDao;
 import com.best.web.model.admin.CardType;
 import com.best.web.model.order.CardNo;
+import com.best.web.model.cust.CardPackage;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
@@ -51,6 +52,24 @@ public class CardDaoImpl implements CardDao {
 
     public void deleteCardNo(CardNo model) {
         sqlSession.selectList("cardSql.deleteCardNo");
+    }
+
+
+    //卡套餐管理
+    public List<CardPackage> findCardPackageList() {
+        return sqlSession.selectList("cardSql.findCardPackageList");
+    }
+
+    public void insertCardPackage(CardPackage model) {
+        sqlSession.selectList("cardSql.insertCardPackage");
+    }
+
+    public void updateCardPackage(CardPackage model) {
+        sqlSession.selectList("cardSql.updateCardPackage");
+    }
+
+    public void deleteCardPackage(CardPackage model) {
+        sqlSession.selectList("cardSql.deleteCardPackage");
     }
 }
 

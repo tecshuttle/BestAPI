@@ -60,4 +60,33 @@
 		active_flag = '0'
 		where id = #{id}
 	</update>
+
+
+	<!-- 卡套餐管理 -->
+    <select id="findCardPackageList" resultType="CardPackage">
+		select * from xzh_card_package
+	</select>
+
+    <insert id="insertCardPackage" parameterType="CardPackage">
+		insert into xzh_card_package
+		( id, card_name, card_code, price )
+		values
+		( sys_guid(), #{card_name}, #{card_code}, #{price} )
+	</insert>
+
+    <update id="updateCardPackage" parameterType="CardPackage">
+		update xzh_card_package
+		set card_name = #{card_name},
+		card_code = #{card_code},
+		price = #{price}
+		where id = #{id}
+	</update>
+
+    <update id="deleteCardPackage">
+		update xzh_card_package
+		set modifier = null,
+		modify_date = sysdate,
+		active_flag = '0'
+		where id = #{id}
+	</update>
 </mapper>

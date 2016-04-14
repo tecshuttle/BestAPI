@@ -16,7 +16,7 @@ Docs.Menu = [
                 leaf: true
             },
             {
-                href: "/card/suit",
+                href: "/card/package",
                 text: "卡套餐",
                 leaf: true
             }
