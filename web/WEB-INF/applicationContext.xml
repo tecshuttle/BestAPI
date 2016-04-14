@@ -16,44 +16,22 @@
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
 
-    <!-- tomcat:-->
-    <!--<bean id="dataSource"
-          class="org.springframework.jndi.JndiObjectFactoryBean">
-        <property name="jndiName">
-            <value>java:comp/env/jdbc/BestApiDS</value>
-        </property>
-    </bean>
-    -->
 
-    <!--
+    <!-- 数据库配置 -->
+    <context:property-placeholder location="/WEB-INF/config.properties"/>
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://localhost:3306/tomtalk" />
-        <property name="username" value="root" />
-        <property name="password" value="123" />
+        <property name="driverClassName" value="${db.driverClassName}"/>
+        <property name="url" value="${db.url}"/>
+        <property name="username" value="${db.username}"/>
+        <property name="password" value="${db.password}"/>
     </bean>
-    -->
 
-    <!--
-    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-        <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
-        <property name="url" value="jdbc:oracle:thin:@192.168.199.231:1521:orcl"/>
-        <property name="username" value="scott"/>
-        <property name="password" value="123"/>
-    </bean>
-    -->
-
-    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-        <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
-        <property name="url" value="jdbc:oracle:thin:@192.168.0.58:1521:orcl"/>
-        <property name="username" value="xzh"/>
-        <property name="password" value="xzh"/>
-    </bean>
 
     <!-- 事务配置 -->
     <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource"/>
     </bean>
+
     <!-- 事务通知 -->
     <tx:advice id="txAdvice" transaction-manager="txManager">
         <tx:attributes>
@@ -67,6 +45,7 @@
             <tx:method name="*" propagation="REQUIRED"/>
         </tx:attributes>
     </tx:advice>
+
     <aop:config>
         <aop:pointcut id="servicesPointcut" expression="execution(* *..*Service.*(..))"/>
         <aop:advisor advice-ref="txAdvice" pointcut-ref="servicesPointcut"/>
@@ -82,6 +61,4 @@
     </bean>
 
     <bean id="springFactory" class="com.best.util.SpringFactory"></bean>
-
-
 </beans>
