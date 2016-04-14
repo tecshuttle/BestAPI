@@ -21,7 +21,7 @@ Ext.onReady(function () {
 
     new Ext.Viewport({
         renderTo: Ext.getBody(),
-        layout: 'fit',
+        autoScroll: 'y',
         style: 'background-color: white;',
         items: [
             new Tomtalk.Idc({
