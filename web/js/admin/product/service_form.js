@@ -25,30 +25,17 @@ Ext.define('Tomtalk.grid.FormUI', {
                 name: 'id',
                 value: 0
             },
-            {
-                xtype: 'textfield',
-                fieldLabel: '分类代号',
-                anchor: '50%',
-                name: 'card_code',
-                allowBlank: false,
-                emptyText: '请输入…'
-            },
-            {
-                xtype: 'textfield',
-                fieldLabel: '分类名称',
-                anchor: '50%',
-                name: 'card_name',
-                allowBlank: false,
-                emptyText: '请输入…'
-            },
-            {
-                xtype: 'textfield',
-                fieldLabel: '价格',
-                anchor: '50%',
-                name: 'price',
-                allowBlank: false,
-                emptyText: '请输入…'
-            },
+            { xtype: 'textfield', fieldLabel: '激活标记', name: 'active_flag', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
+            { xtype: 'textfield', fieldLabel: '服务名称', name: 'service_name', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
+            { xtype: 'textfield', fieldLabel: '服务代码', name: 'service_code', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
+            { xtype: 'textfield', fieldLabel: '服务类型', name: 'service_type', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
+            { xtype: 'textfield', fieldLabel: '关联类型', name: 'rel_type', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
+            { xtype: 'textfield', fieldLabel: '状态', name: 'status', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
+            { xtype: 'textfield', fieldLabel: 'LOGO', name: 'logo_img', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
+            { xtype: 'textfield', fieldLabel: '适用性别', name: 'sex_select', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
+            { xtype: 'textfield', fieldLabel: '价格', name: 'price', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
+            { xtype: 'textfield', fieldLabel: '覆盖城市', name: 'city_select', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
+            { xtype: 'textfield', fieldLabel: '服务简介', name: 'intro', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
             {
                 xtype: 'button',
                 text: '保存',

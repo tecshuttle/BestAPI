@@ -9,15 +9,28 @@
 
     <insert id="insertProdService" parameterType="ProdService">
 		insert into xzh_service
-		( id, supplier_name, supplier_code )
+		( id, active_flag, service_name, service_code, service_type, rel_type, status, logo_img,
+		  sex_select, price, city_select, intro
+        )
 		values 
-		( sys_guid(), #{supplier_name}, #{supplier_code} )
+		( sys_guid(), #{active_flag}, #{service_name}, #{service_code}, #{service_type}, #{rel_type},
+		  #{status}, #{logo_img}, #{sex_select}, #{price}, #{city_select}, #{intro}
+		)
 	</insert>
 
     <update id="updateProdService" parameterType="ProdService">
 		update xzh_service
-		set supplier_name = #{supplier_name},
-		    supplier_code = #{supplier_code}
+		set active_flag = #{active_flag},
+		    service_name = #{service_name},
+		    service_code = #{service_code},
+		    service_type = #{service_type},
+		    rel_type = #{rel_type},
+		    status = #{status},
+		    logo_img = #{logo_img},
+		    sex_select = #{sex_select},
+		    price = #{price},
+		    city_select = #{city_select},
+		    intro = #{intro}
 		where id = #{id}
 	</update>
 
