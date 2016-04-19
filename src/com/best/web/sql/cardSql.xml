@@ -11,15 +11,39 @@
 
     <insert id="insertCardType" parameterType="CardType">
 		insert into xzh_card
-		( id, card_name, card_code, price )
+		( id, card_name, card_code, active_flag, card_type, status, company_id, intro, logo_img, use_rule,
+		  package_total, select_count, allow_change_count, card_no_length, card_code_length, card_no_prefix,
+		  card_no_sn_length, valid_date_type, valid_date_value, company_abbr, city_select, price
+		 )
 		values 
-		( sys_guid(), #{card_name}, #{card_code}, #{price} )
+		( sys_guid(), #{card_name}, #{card_code}, #{active_flag}, #{card_type}, #{status}, #{company_id}, #{intro},
+          #{logo_img}, #{use_rule}, #{package_total}, #{select_count}, #{allow_change_count}, #{card_no_length},
+          #{card_code_length}, #{card_no_prefix}, #{card_no_sn_length}, #{valid_date_type}, #{valid_date_value},
+          #{company_abbr}, #{city_select}, #{price} )
 	</insert>
 
     <update id="updateCardType" parameterType="CardType">
 		update xzh_card
 		   set card_name = #{card_name},
 		       card_code = #{card_code},
+		       active_flag = #{active_flag},
+		       card_type = #{card_type},
+		       status = #{status},
+		       company_id = #{company_id},
+		       intro = #{intro},
+		       logo_img = #{logo_img},
+		       use_rule = #{use_rule},
+		       package_total = #{package_total},
+		       select_count = #{select_count},
+		       allow_change_count = #{allow_change_count},
+		       card_no_length = #{card_no_length},
+		       card_code_length = #{card_code_length},
+		       card_no_prefix = #{card_no_prefix},
+		       card_no_sn_length = #{card_no_sn_length},
+		       valid_date_type = #{valid_date_type},
+		       valid_date_value = #{valid_date_value},
+		       company_abbr = #{company_abbr},
+		       city_select = #{city_select},
 		       price = #{price}
 		 where id = #{id}
 	</update>
