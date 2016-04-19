@@ -9,15 +9,28 @@
 
     <insert id="insertSupplier" parameterType="Supplier">
 		insert into xzh_supplier
-		( id, supplier_name, supplier_code )
+		( id, active_flag, supplier_name, supplier_abbr, supplier_code, status, intro, contact,
+		  contact_mobile, contact_phone, contact_mail, contact_fax
+        )
 		values 
-		( sys_guid(), #{supplier_name}, #{supplier_code} )
+		( sys_guid(), #{active_flag}, #{supplier_name}, #{supplier_abbr}, #{supplier_code}, #{status},
+		  #{intro}, #{contact}, #{contact_mobile}, #{contact_phone}, #{contact_mail}, #{contact_fax}
+		)
 	</insert>
 
     <update id="updateSupplier" parameterType="Supplier">
 		update xzh_supplier
-		set supplier_name = #{supplier_name},
-		    supplier_code = #{supplier_code}
+		set active_flag = #{active_flag},
+		    supplier_name = #{supplier_name},
+		    supplier_abbr = #{supplier_abbr},
+		    supplier_code = #{supplier_code},
+		    status = #{status},
+		    intro = #{intro},
+		    contact = #{contact},
+		    contact_mobile = #{contact_mobile},
+		    contact_phone = #{contact_phone},
+		    contact_mail = #{contact_mail},
+		    contact_fax = #{contact_fax}
 		where id = #{id}
 	</update>
 

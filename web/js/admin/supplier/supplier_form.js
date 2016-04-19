@@ -25,22 +25,17 @@ Ext.define('Tomtalk.grid.FormUI', {
                 name: 'id',
                 value: 0
             },
-            {
-                xtype: 'textfield',
-                fieldLabel: '供应商代号',
-                anchor: '50%',
-                name: 'supplier_code',
-                allowBlank: false,
-                emptyText: '请输入…'
-            },
-            {
-                xtype: 'textfield',
-                fieldLabel: '供应商名称',
-                anchor: '50%',
-                name: 'supplier_name',
-                allowBlank: false,
-                emptyText: '请输入…'
-            },
+            { xtype: 'textfield', fieldLabel: '激活标记', name: 'active_flag', anchor: '50%',  allowBlank: false, emptyText: '请输入…'},
+            { xtype: 'textfield', fieldLabel: '供应商名称', name: 'supplier_name', anchor: '50%',  allowBlank: false, emptyText: '请输入…'},
+            { xtype: 'textfield', fieldLabel: '供应商简称', name: 'supplier_abbr', anchor: '50%',  allowBlank: false, emptyText: '请输入…'},
+            { xtype: 'textfield', fieldLabel: '供应商代码', name: 'supplier_code', anchor: '50%',  allowBlank: false, emptyText: '请输入…'},
+            { xtype: 'textfield', fieldLabel: '状态', name: 'status', anchor: '50%',  allowBlank: false, emptyText: '请输入…'},
+            { xtype: 'textfield', fieldLabel: '介绍', name: 'intro', anchor: '50%',  allowBlank: false, emptyText: '请输入…'},
+            { xtype: 'textfield', fieldLabel: '联络人', name: 'contact', anchor: '50%',  allowBlank: false, emptyText: '请输入…'},
+            { xtype: 'textfield', fieldLabel: '联络人手机', name: 'contact_mobile', anchor: '50%',  allowBlank: false, emptyText: '请输入…'},
+            { xtype: 'textfield', fieldLabel: '联络人电话', name: 'contact_phone', anchor: '50%',  allowBlank: false, emptyText: '请输入…'},
+            { xtype: 'textfield', fieldLabel: '联络人邮箱', name: 'contact_mail', anchor: '50%',  allowBlank: false, emptyText: '请输入…'},
+            { xtype: 'textfield', fieldLabel: '联络人传真', name: 'contact_fax', anchor: '50%',  allowBlank: false, emptyText: '请输入…'},
             {
                 xtype: 'button',
                 text: '保存',
