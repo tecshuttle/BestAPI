@@ -23,12 +23,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-@RequestMapping("/admin")
 public class AdminController {
     @Resource
     private UserService service;
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView adminPage() {
         ModelAndView model = new ModelAndView();
         model.addObject("title", "Spring Security Hello World");
@@ -38,4 +37,6 @@ public class AdminController {
         return model;
     }
 }
+
+//end file
 
