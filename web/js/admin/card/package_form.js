@@ -25,30 +25,14 @@ Ext.define('Tomtalk.grid.FormUI', {
                 name: 'id',
                 value: 0
             },
-            {
-                xtype: 'textfield',
-                fieldLabel: '分类代号',
-                anchor: '50%',
-                name: 'card_code',
-                allowBlank: false,
-                emptyText: '请输入…'
-            },
-            {
-                xtype: 'textfield',
-                fieldLabel: '分类名称',
-                anchor: '50%',
-                name: 'card_name',
-                allowBlank: false,
-                emptyText: '请输入…'
-            },
-            {
-                xtype: 'textfield',
-                fieldLabel: '价格',
-                anchor: '50%',
-                name: 'price',
-                allowBlank: false,
-                emptyText: '请输入…'
-            },
+            { xtype: 'textfield', fieldLabel: '激活标记', name: 'active_flag', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
+            { xtype: 'textfield', fieldLabel: '健康卡ID', name: 'card_id', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
+            { xtype: 'textfield', fieldLabel: '名字', name: 'package_name', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
+            { xtype: 'textfield', fieldLabel: '套餐号', name: 'package_code', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
+            { xtype: 'textfield', fieldLabel: '性别要求', name: 'sex_select', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
+            { xtype: 'textfield', fieldLabel: '服务总数', name: 'dtl_count', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
+            { xtype: 'textfield', fieldLabel: '说明', name: 'intro', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
+            { xtype: 'textfield', fieldLabel: '价格', name: 'price', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
             {
                 xtype: 'button',
                 text: '保存',

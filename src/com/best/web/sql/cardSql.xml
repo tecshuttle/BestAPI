@@ -106,16 +106,23 @@
 
     <insert id="insertCardPackage" parameterType="CardPackage">
 		insert into xzh_card_package
-		( id, card_name, card_code, price )
+		( id, active_flag, card_id, package_name, package_code, sex_select, dtl_count, intro, price )
 		values
-		( sys_guid(), #{card_name}, #{card_code}, #{price} )
+		( sys_guid(), #{active_flag}, #{card_id}, #{package_name}, #{package_code}, #{sex_select},
+          #{dtl_count}, #{intro}, #{price}
+        )
 	</insert>
 
     <update id="updateCardPackage" parameterType="CardPackage">
 		update xzh_card_package
-		set card_name = #{card_name},
-		card_code = #{card_code},
-		price = #{price}
+		set active_flag = #{active_flag},
+		    card_id = #{card_id},
+		    package_name = #{package_name},
+		    package_code = #{package_code},
+		    sex_select = #{sex_select},
+		    dtl_count = #{dtl_count},
+		    intro = #{intro},
+		    price = #{price}
 		where id = #{id}
 	</update>
 
