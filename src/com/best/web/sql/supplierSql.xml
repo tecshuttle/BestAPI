@@ -50,15 +50,39 @@
 
 	<insert id="insertSupplierOrg" parameterType="SupplierOrg">
 		insert into xzh_supplier_org
-		( id, supplier_name, supplier_code )
+		( id, active_flag, supplier_id, org_name, province_id, city_id, area_id, address, contact_phone,
+		  traffic_guide, has_physical, has_tooth_care, has_gene, review_score, business_hours,
+		  weekday_start, weekday_end, reserve_time_start, reserve_time_end, intro
+        )
 		values
-		( sys_guid(), #{supplier_name}, #{supplier_code} )
+		( sys_guid(),  #{active_flag}, #{supplier_id}, #{org_name}, #{province_id}, #{city_id}, #{area_id},
+		  #{address}, #{contact_phone}, #{traffic_guide}, #{has_physical}, #{has_tooth_care}, #{has_gene},
+		  #{review_score}, #{business_hours}, #{weekday_start}, #{weekday_end}, #{reserve_time_start},
+		  #{reserve_time_end}, #{intro}
+		)
 	</insert>
 
 	<update id="updateSupplierOrg" parameterType="SupplierOrg">
 		update xzh_supplier_org
-		set supplier_name = #{supplier_name},
-		supplier_code = #{supplier_code}
+		set active_flag = #{active_flag},
+		    supplier_id = #{supplier_id},
+		    org_name = #{org_name},
+		    province_id = #{province_id},
+		    city_id = #{city_id},
+		    area_id = #{area_id},
+		    address = #{address},
+		    contact_phone = #{contact_phone},
+		    traffic_guide = #{traffic_guide},
+		    has_physical = #{has_physical},
+		    has_tooth_care = #{has_tooth_care},
+		    has_gene = #{has_gene},
+		    review_score = #{review_score},
+		    business_hours = #{business_hours},
+		    weekday_start = #{weekday_start},
+		    weekday_end = #{weekday_end},
+		    reserve_time_start = #{reserve_time_start},
+		    reserve_time_end = #{reserve_time_end},
+		    intro = #{intro}
 		where id = #{id}
 	</update>
 
