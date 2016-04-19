@@ -64,16 +64,29 @@
 
     <insert id="insertCardNo" parameterType="CardNo">
 		insert into xzh_card_no
-		( id, card_name, card_code, price )
+		( id, active_flag, card_no, card_code, card_no_type, open_date, close_date, status,
+		  verify_count, rel_order_id, dept_id, memo
+        )
 		values
-		( sys_guid(), #{card_name}, #{card_code}, #{price} )
+		( sys_guid(),  #{active_flag}, #{card_no}, #{card_code}, #{card_no_type},
+		  to_date(#{open_date},'yyyy/mm/dd HH24:MI:SS'), to_date(#{close_date},'yyyy/mm/dd HH24:MI:SS'),
+		  #{status}, #{verify_count}, #{rel_order_id}, #{dept_id}, #{memo}
+		)
 	</insert>
 
     <update id="updateCardNo" parameterType="CardNo">
 		update xzh_card_no
-		set card_name = #{card_name},
-		card_code = #{card_code},
-		price = #{price}
+		set active_flag = #{active_flag},
+		    card_no = #{card_no},
+		    card_code = #{card_code},
+		    card_no_type = #{card_no_type},
+		    open_date = to_date(#{open_date},'yyyy/mm/dd HH24:MI:SS'),
+		    close_date = to_date(#{close_date},'yyyy/mm/dd HH24:MI:SS'),
+		    status = #{status},
+		    verify_count = #{verify_count},
+		    rel_order_id = #{rel_order_id},
+		    dept_id = #{dept_id},
+		    memo = #{memo}
 		where id = #{id}
 	</update>
 

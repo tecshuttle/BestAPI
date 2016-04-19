@@ -43,15 +43,15 @@ public class CardDaoImpl implements CardDao {
     }
 
     public void insertCardNo(CardNo model) {
-        sqlSession.selectList("cardSql.insertCardNo");
+        sqlSession.insert("cardSql.insertCardNo", model);
     }
 
     public void updateCardNo(CardNo model) {
-        sqlSession.selectList("cardSql.updateCardNo");
+        sqlSession.insert("cardSql.updateCardNo", model);
     }
 
     public void deleteCardNo(CardNo model) {
-        sqlSession.selectList("cardSql.deleteCardNo");
+        sqlSession.insert("cardSql.deleteCardNo", model);
     }
 
 
@@ -61,15 +61,15 @@ public class CardDaoImpl implements CardDao {
     }
 
     public void insertCardPackage(CardPackage model) {
-        sqlSession.selectList("cardSql.insertCardPackage");
+        sqlSession.insert("cardSql.insertCardPackage", model);
     }
 
     public void updateCardPackage(CardPackage model) {
-        sqlSession.selectList("cardSql.updateCardPackage");
+        sqlSession.insert("cardSql.updateCardPackage", model);
     }
 
     public void deleteCardPackage(CardPackage model) {
-        sqlSession.selectList("cardSql.deleteCardPackage");
+        sqlSession.insert("cardSql.deleteCardPackage", model);
     }
 }
 

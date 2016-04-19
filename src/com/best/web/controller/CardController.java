@@ -82,7 +82,7 @@ public class CardController {
     }
 
 
-    @RequestMapping(value = "updateCardNo", method = RequestMethod.POST)
+    @RequestMapping(value = "/updateCardNo", method = RequestMethod.POST)
     public void updateCardNo(HttpServletRequest request, HttpServletResponse response, CardNo cardType, BindingResult result) throws Exception {
         ExtResponse<String> genResponse = new ExtResponse<String>();
         service.updateCardNo(cardType);
@@ -90,7 +90,7 @@ public class CardController {
     }
 
 
-    @RequestMapping(value = "insertCardNo", method = RequestMethod.POST)
+    @RequestMapping(value = "/insertCardNo", method = RequestMethod.POST)
     public void insertCardNo(HttpServletRequest request, HttpServletResponse response, CardNo cardType, BindingResult result) throws Exception {
         GenResponse<String> genResponse = new GenResponse<String>();
         service.insertCardNo(cardType);
