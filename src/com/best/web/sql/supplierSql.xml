@@ -100,15 +100,37 @@
 
 	<insert id="insertSupplierService" parameterType="SupplierService">
 		insert into xzh_supplier_service
-		( id, supplier_name, supplier_code )
+		( id, active_flag, supplier_id, service_code, service_name, service_type, status, market_price,
+		  cost_price, is_use_verify_code, logo_img, sex_select, city_select, business_hours,
+		  reserve_period_start, reserve_period_end, intro, memo
+        )
 		values
-		( sys_guid(), #{supplier_name}, #{supplier_code} )
+		( sys_guid(),  #{active_flag}, #{supplier_id}, #{service_code}, #{service_name}, #{service_type},
+          #{status}, #{market_price}, #{cost_price}, #{is_use_verify_code}, #{logo_img}, #{sex_select},
+          #{city_select}, #{business_hours}, #{reserve_period_start}, #{reserve_period_start}, #{intro},
+          #{memo}
+        )
 	</insert>
 
 	<update id="updateSupplierService" parameterType="SupplierService">
 		update xzh_supplier_service
-		set supplier_name = #{supplier_name},
-		supplier_code = #{supplier_code}
+		set active_flag = #{active_flag},
+		    supplier_id = #{supplier_id},
+		    service_code = #{service_code},
+		    service_name = #{service_name},
+		    service_type = #{service_type},
+		    status = #{status},
+		    market_price = #{market_price},
+		    cost_price = #{cost_price},
+		    is_use_verify_code = #{is_use_verify_code},
+		    logo_img = #{logo_img},
+		    sex_select = #{sex_select},
+		    city_select = #{city_select},
+		    business_hours = #{business_hours},
+		    reserve_period_start = #{reserve_period_start},
+		    reserve_period_end = #{reserve_period_start},
+		    intro = #{intro},
+		    memo = #{memo}
 		where id = #{id}
 	</update>
 
