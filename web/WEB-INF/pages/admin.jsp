@@ -41,7 +41,7 @@
             <ul>
                 <li><b class="user-role" id="lblAppNames">Good luck：admin</b></li>
                 <li><s class="sepe-hr"></s></li>
-                <li><a target='_self' href="/admin/logout" id="lnkLogout" class="layout" title="退出"></a></li>
+                <li><a target='_self' href="/j_spring_security_logout" id="lnkLogout" class="layout" title="退出"></a></li>
             </ul>
         </div>
     </div>

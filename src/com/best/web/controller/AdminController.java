@@ -36,6 +36,14 @@ public class AdminController {
 
         return model;
     }
+
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public ModelAndView loginPage() {
+        ModelAndView model = new ModelAndView();
+        model.setViewName("login");
+
+        return model;
+    }
 }
 
 //end file
