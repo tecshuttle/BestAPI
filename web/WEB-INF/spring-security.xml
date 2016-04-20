@@ -8,8 +8,8 @@
 
     <!-- 除了登入页面外，其它页面全要权限。 -->
     <http pattern="/login" security="none"/>
-    <http pattern="/**/*.css" security="none" />
-    <http pattern="/**/*.js" security="none" />
+    <http pattern="/**/*.css" security="none"/>
+    <http pattern="/**/*.js" security="none"/>
 
     <http auto-config="true">
         <intercept-url pattern="/**" access="ROLE_USER"/>
@@ -20,9 +20,10 @@
 
     <authentication-manager>
         <authentication-provider>
-            <user-service>
-                <user name="mkyong" password="123456" authorities="ROLE_USER"/>
-            </user-service>
+            <jdbc-user-service data-source-ref="dataSource"
+                               users-by-username-query="SELECT NAME as USERNAME, PASSWORD, 1 FROM XZH_USERS WHERE NAME=?"
+                               authorities-by-username-query="SELECT NAME as USERNAME, 'ROLE_USER' FROM XZH_USERS WHERE NAME=?"
+            />
         </authentication-provider>
     </authentication-manager>
 

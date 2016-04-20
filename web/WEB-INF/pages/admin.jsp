@@ -4,7 +4,7 @@
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=9"/>
     <meta http-equiv=Content-Type content="text/html;charset=utf-8">
-    <title>admin</title>
+    <title>选最好 - 产品管理后台</title>
 
 
     <link rel="stylesheet" type="text/css" href="/js/extjs4/resources/css/ext-all.css"/>
