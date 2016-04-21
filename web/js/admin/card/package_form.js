@@ -19,33 +19,28 @@ Ext.define('Tomtalk.grid.FormUI', {
         var me = this;
 
         me.items = [
+            {xtype: 'hiddenfield', id: this.id + '_rec_id', name: 'id', value: 0},
             {
-                xtype: 'hiddenfield',
-                id: this.id + '_rec_id',
-                name: 'id',
-                value: 0
-            },
-            { xtype: 'textfield', fieldLabel: '激活标记', name: 'active_flag', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
-            { xtype: 'textfield', fieldLabel: '健康卡ID', name: 'card_id', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
-            { xtype: 'textfield', fieldLabel: '名字', name: 'package_name', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
-            { xtype: 'textfield', fieldLabel: '套餐号', name: 'package_code', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
-            { xtype: 'textfield', fieldLabel: '性别要求', name: 'sex_select', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
-            { xtype: 'textfield', fieldLabel: '服务总数', name: 'dtl_count', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
-            { xtype: 'textfield', fieldLabel: '说明', name: 'intro', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
-            { xtype: 'textfield', fieldLabel: '价格', name: 'price', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
-            {
-                xtype: 'button',
-                text: '保存',
-                id: this.id + '_save',
-                width: 100
+                xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
+                items: [
+                    {xtype: 'textfield', fieldLabel: '名字', name: 'package_name', margin: 0, allowBlank: false, emptyText: '请输入…'},
+                    {xtype: 'textfield', fieldLabel: '健康卡ID', name: 'card_id', allowBlank: false, emptyText: '请输入…'},
+                    {xtype: 'textfield', fieldLabel: '激活标记', name: 'active_flag', allowBlank: false, emptyText: '请输入…'},
+                    {xtype: 'textfield', fieldLabel: '套餐号', name: 'package_code', allowBlank: false, emptyText: '请输入…'}
+                ]
             },
             {
-                xtype: 'button',
-                text: '返回',
-                id: this.id + '_return',
-                style: 'margin-left: 50px;',
-                width: 100
-            }
+                xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
+                items: [
+                    {xtype: 'textfield', fieldLabel: '性别要求', name: 'sex_select', margin: 0, allowBlank: false, emptyText: '请输入…'},
+                    {xtype: 'numberfield', fieldLabel: '服务总数', name: 'dtl_count', minValue: 0, allowBlank: false, emptyText: '请输入…'},
+                    {xtype: 'numberfield', fieldLabel: '价格', name: 'price', minValue: 0, emptyText: '请输入…'},
+                    {xtype: 'displayfield'}
+                ]
+            },
+            {xtype: 'textarea', fieldLabel: '说明', name: 'intro', anchor: '100%', allowBlank: false, emptyText: '请输入…'},
+            {xtype: 'button', text: '保存', id: this.id + '_save', width: 100},
+            {xtype: 'button', text: '返回', id: this.id + '_return', style: 'margin-left: 50px;', width: 100}
         ];
 
         Tomtalk.grid.FormUI.superclass.initComponent.call(me);

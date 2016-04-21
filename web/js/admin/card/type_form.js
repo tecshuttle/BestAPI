@@ -38,7 +38,7 @@ Ext.define('Tomtalk.grid.FormUI', {
         me.items = [
             {xtype: 'hiddenfield', id: this.id + '_rec_id', name: 'id', value: 0},
             {
-                xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10',},
+                xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
                 items: [
                     {xtype: 'textfield', fieldLabel: '分类名称', name: 'card_name', margin: '0 0 0 0', allowBlank: false, emptyText: '请输入…'},
                     {xtype: 'textfield', fieldLabel: '分类代号', name: 'card_code', allowBlank: false, emptyText: '请输入…'},
@@ -49,7 +49,7 @@ Ext.define('Tomtalk.grid.FormUI', {
                     {xtype: 'textfield', fieldLabel: 'LOGO', name: 'logo_img', emptyText: '请输入…'}
                 ]
             }, {
-                xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10',},
+                xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
                 items: [
                     {
                         xtype: 'fieldcontainer', fieldLabel: '状态', defaultType: 'radiofield', layout: 'hbox', flex: 1, margin: '0 0 0 0',

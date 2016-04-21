@@ -19,44 +19,55 @@ Ext.define('Tomtalk.grid.FormUI', {
         var me = this;
 
         me.items = [
+            {xtype: 'hiddenfield', id: this.id + '_rec_id', name: 'id', value: 0},
             {
-                xtype: 'hiddenfield',
-                id: this.id + '_rec_id',
-                name: 'id',
-                value: 0
-            },
-            { xtype: 'textfield', fieldLabel: '激活标记', name: 'active_flag', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
-            { xtype: 'textfield', fieldLabel: '供应商ID', name: 'supplier_id', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
-            { xtype: 'textfield', fieldLabel: '门店名字', name: 'org_name', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
-            { xtype: 'textfield', fieldLabel: '省', name: 'province_id', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
-            { xtype: 'textfield', fieldLabel: '市', name: 'city_id', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
-            { xtype: 'textfield', fieldLabel: '区', name: 'area_id', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
-            { xtype: 'textfield', fieldLabel: '地址', name: 'address', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
-            { xtype: 'textfield', fieldLabel: '联系电话', name: 'contact_phone', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
-            { xtype: 'textfield', fieldLabel: '交通指引', name: 'traffic_guide', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
-            { xtype: 'textfield', fieldLabel: '是否有体检', name: 'has_physical', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
-            { xtype: 'textfield', fieldLabel: '是否有洁牙', name: 'has_tooth_care', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
-            { xtype: 'textfield', fieldLabel: '是否基因', name: 'has_gene', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
-            { xtype: 'textfield', fieldLabel: '评分', name: 'review_score', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
-            { xtype: 'textfield', fieldLabel: '营业时间', name: 'business_hours', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
-            { xtype: 'textfield', fieldLabel: '周开始', name: 'weekday_start', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
-            { xtype: 'textfield', fieldLabel: '周结束', name: 'weekday_end', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
-            { xtype: 'textfield', fieldLabel: '预约开始', name: 'reserve_time_start', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
-            { xtype: 'textfield', fieldLabel: '预约结束', name: 'reserve_time_end', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
-            { xtype: 'textfield', fieldLabel: '简介', name: 'intro', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
-            {
-                xtype: 'button',
-                text: '保存',
-                id: this.id + '_save',
-                width: 100
+                xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
+                items: [
+                    {xtype: 'textfield', fieldLabel: '门店名字', name: 'org_name', margin: 0, allowBlank: false, emptyText: '请输入…'},
+                    {xtype: 'textfield', fieldLabel: '供应商ID', name: 'supplier_id', allowBlank: false, emptyText: '请输入…'},
+                    {xtype: 'textfield', fieldLabel: '激活标记', name: 'active_flag', allowBlank: false, emptyText: '请输入…'},
+                    {xtype: 'textfield', fieldLabel: '联系电话', name: 'contact_phone', emptyText: '请输入…'}
+                ]
             },
             {
-                xtype: 'button',
-                text: '返回',
-                id: this.id + '_return',
-                style: 'margin-left: 50px;',
-                width: 100
-            }
+                xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
+                items: [
+                    {xtype: 'textfield', fieldLabel: '是否有体检', name: 'has_physical', margin: 0, emptyText: '请输入…'},
+                    {xtype: 'textfield', fieldLabel: '是否有洁牙', name: 'has_tooth_care', emptyText: '请输入…'},
+                    {xtype: 'textfield', fieldLabel: '是否基因', name: 'has_gene', emptyText: '请输入…'},
+                    {xtype: 'displayfield'}
+                ]
+            },
+            {
+                xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
+                items: [
+                    {xtype: 'textfield', fieldLabel: '评分', name: 'review_score', margin: 0, emptyText: '请输入…'},
+                    {xtype: 'textfield', fieldLabel: '营业时间', name: 'business_hours', emptyText: '请输入…'},
+                    {xtype: 'displayfield'},
+                    {xtype: 'displayfield'}
+                ]
+            }, {
+                xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
+                items: [
+                    {xtype: 'textfield', fieldLabel: '周结束', name: 'weekday_end', margin: 0, emptyText: '请输入…'},
+                    {xtype: 'textfield', fieldLabel: '周开始', name: 'weekday_start', emptyText: '请输入…'},
+                    {xtype: 'textfield', fieldLabel: '预约开始', name: 'reserve_time_start', emptyText: '请输入…'},
+                    {xtype: 'textfield', fieldLabel: '预约结束', name: 'reserve_time_end', emptyText: '请输入…'}
+                ]
+            },
+            {
+                xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
+                items: [
+                    {xtype: 'textfield', fieldLabel: '省', name: 'province_id', margin: 0, allowBlank: false, emptyText: '请输入…'},
+                    {xtype: 'textfield', fieldLabel: '市', name: 'city_id', allowBlank: false, emptyText: '请输入…'},
+                    {xtype: 'textfield', fieldLabel: '区', name: 'area_id', allowBlank: false, emptyText: '请输入…'},
+                    {xtype: 'textfield', fieldLabel: '地址', name: 'address', allowBlank: false, emptyText: '请输入…'}
+                ]
+            },
+            {xtype: 'textarea', fieldLabel: '交通指引', name: 'traffic_guide', anchor: '100%', emptyText: '请输入…'},
+            {xtype: 'textarea', fieldLabel: '简介', name: 'intro', anchor: '100%', emptyText: '请输入…'},
+            {xtype: 'button', text: '保存', id: this.id + '_save', width: 100},
+            {xtype: 'button', text: '返回', id: this.id + '_return', style: 'margin-left: 50px;', width: 100}
         ];
 
         Tomtalk.grid.FormUI.superclass.initComponent.call(me);

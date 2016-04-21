@@ -25,30 +25,34 @@ Ext.define('Tomtalk.grid.FormUI', {
                 name: 'id',
                 value: 0
             },
-            { xtype: 'textfield', fieldLabel: '激活标记', name: 'active_flag', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
-            { xtype: 'textfield', fieldLabel: '卡号', name: 'card_no', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
-            { xtype: 'textfield', fieldLabel: '卡密', name: 'card_code', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
-            { xtype: 'textfield', fieldLabel: '卡类型', name: 'card_no_type', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
-            { xtype: 'textfield', fieldLabel: '有效使用期起', name: 'open_date', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
-            { xtype: 'textfield', fieldLabel: '有效使用期止', name: 'close_date', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
-            { xtype: 'textfield', fieldLabel: '状态', name: 'status', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
-            { xtype: 'textfield', fieldLabel: '验证次数', name: 'verify_count', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
-            { xtype: 'textfield', fieldLabel: '关联订单号', name: 'rel_order_id', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
-            { xtype: 'textfield', fieldLabel: '归属机构', name: 'dept_id', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
-            { xtype: 'textfield', fieldLabel: '备注', name: 'memo', anchor: '50%', allowBlank: false, emptyText: '请输入…'},
             {
-                xtype: 'button',
-                text: '保存',
-                id: this.id + '_save',
-                width: 100
+                xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
+                items: [
+                    {xtype: 'textfield', fieldLabel: '卡号', name: 'card_no', margin: 0, allowBlank: false, emptyText: '请输入…'},
+                    {xtype: 'textfield', fieldLabel: '卡密', name: 'card_code', allowBlank: false, emptyText: '请输入…'},
+                    {xtype: 'textfield', fieldLabel: '卡类型', name: 'card_no_type', allowBlank: false, emptyText: '请输入…'},
+                    {xtype: 'textfield', fieldLabel: '归属机构', name: 'dept_id', allowBlank: false, emptyText: '请输入…'}
+                ]
+            }, {
+                xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
+                items: [
+                    {xtype: 'textfield', fieldLabel: '状态', name: 'status', margin: 0, allowBlank: false, emptyText: '请输入…'},
+                    {xtype: 'textfield', fieldLabel: '激活标记', name: 'active_flag', allowBlank: false, emptyText: '请输入…'},
+                    {xtype: 'textfield', fieldLabel: '有效使用期起', name: 'open_date', emptyText: '请输入…'},
+                    {xtype: 'textfield', fieldLabel: '有效使用期止', name: 'close_date', emptyText: '请输入…'}
+                ]
+            }, {
+                xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
+                items: [
+                    {xtype: 'textfield', fieldLabel: '验证次数', name: 'verify_count', margin: 0, emptyText: '请输入…'},
+                    {xtype: 'textfield', fieldLabel: '关联订单号', name: 'rel_order_id', emptyText: '请输入…'},
+                    {xtype: 'displayfield', hideLabel: true},
+                    {xtype: 'displayfield', hideLabel: true}
+                ]
             },
-            {
-                xtype: 'button',
-                text: '返回',
-                id: this.id + '_return',
-                style: 'margin-left: 50px;',
-                width: 100
-            }
+            {xtype: 'textarea', fieldLabel: '备注', name: 'memo', anchor: '100%', emptyText: '请输入…'},
+            {xtype: 'button', text: '保存', id: this.id + '_save', width: 100},
+            {xtype: 'button', text: '返回', id: this.id + '_return', style: 'margin-left: 50px;', width: 100}
         ];
 
         Tomtalk.grid.FormUI.superclass.initComponent.call(me);

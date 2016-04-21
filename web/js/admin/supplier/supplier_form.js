@@ -19,36 +19,35 @@ Ext.define('Tomtalk.grid.FormUI', {
         var me = this;
 
         me.items = [
+            {xtype: 'hiddenfield', id: this.id + '_rec_id', name: 'id', value: 0},
             {
-                xtype: 'hiddenfield',
-                id: this.id + '_rec_id',
-                name: 'id',
-                value: 0
+                xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
+                items: [
+                    {xtype: 'textfield', fieldLabel: '供应商名称', name: 'supplier_name', margin: 0, allowBlank: false, emptyText: '请输入…'},
+                    {xtype: 'textfield', fieldLabel: '供应商简称', name: 'supplier_abbr', allowBlank: false, emptyText: '请输入…'},
+                    {xtype: 'textfield', fieldLabel: '供应商代码', name: 'supplier_code', allowBlank: false, emptyText: '请输入…'},
+                    {xtype: 'displayfield'}
+                ]
+            }, {
+                xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
+                items: [
+                    {xtype: 'textfield', fieldLabel: '激活标记', name: 'active_flag', margin: 0, allowBlank: false, emptyText: '请输入…'},
+                    {xtype: 'textfield', fieldLabel: '状态', name: 'status', allowBlank: false, emptyText: '请输入…'},
+                    {xtype: 'textfield', fieldLabel: '联络人', name: 'contact', allowBlank: false, emptyText: '请输入…'},
+                    {xtype: 'displayfield'}
+                ]
+            }, {
+                xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
+                items: [
+                    {xtype: 'textfield', fieldLabel: '联络人手机', name: 'contact_mobile', margin: 0, allowBlank: false, emptyText: '请输入…'},
+                    {xtype: 'textfield', fieldLabel: '联络人电话', name: 'contact_phone', allowBlank: false, emptyText: '请输入…'},
+                    {xtype: 'textfield', fieldLabel: '联络人邮箱', name: 'contact_mail', allowBlank: false, emptyText: '请输入…'},
+                    {xtype: 'textfield', fieldLabel: '联络人传真', name: 'contact_fax', allowBlank: false, emptyText: '请输入…'}
+                ]
             },
-            { xtype: 'textfield', fieldLabel: '激活标记', name: 'active_flag', anchor: '50%',  allowBlank: false, emptyText: '请输入…'},
-            { xtype: 'textfield', fieldLabel: '供应商名称', name: 'supplier_name', anchor: '50%',  allowBlank: false, emptyText: '请输入…'},
-            { xtype: 'textfield', fieldLabel: '供应商简称', name: 'supplier_abbr', anchor: '50%',  allowBlank: false, emptyText: '请输入…'},
-            { xtype: 'textfield', fieldLabel: '供应商代码', name: 'supplier_code', anchor: '50%',  allowBlank: false, emptyText: '请输入…'},
-            { xtype: 'textfield', fieldLabel: '状态', name: 'status', anchor: '50%',  allowBlank: false, emptyText: '请输入…'},
-            { xtype: 'textfield', fieldLabel: '介绍', name: 'intro', anchor: '50%',  allowBlank: false, emptyText: '请输入…'},
-            { xtype: 'textfield', fieldLabel: '联络人', name: 'contact', anchor: '50%',  allowBlank: false, emptyText: '请输入…'},
-            { xtype: 'textfield', fieldLabel: '联络人手机', name: 'contact_mobile', anchor: '50%',  allowBlank: false, emptyText: '请输入…'},
-            { xtype: 'textfield', fieldLabel: '联络人电话', name: 'contact_phone', anchor: '50%',  allowBlank: false, emptyText: '请输入…'},
-            { xtype: 'textfield', fieldLabel: '联络人邮箱', name: 'contact_mail', anchor: '50%',  allowBlank: false, emptyText: '请输入…'},
-            { xtype: 'textfield', fieldLabel: '联络人传真', name: 'contact_fax', anchor: '50%',  allowBlank: false, emptyText: '请输入…'},
-            {
-                xtype: 'button',
-                text: '保存',
-                id: this.id + '_save',
-                width: 100
-            },
-            {
-                xtype: 'button',
-                text: '返回',
-                id: this.id + '_return',
-                style: 'margin-left: 50px;',
-                width: 100
-            }
+            {xtype: 'textarea', fieldLabel: '介绍', name: 'intro', anchor: '100%', allowBlank: false, emptyText: '请输入…'},
+            {xtype: 'button', text: '保存', id: this.id + '_save', width: 100},
+            {xtype: 'button', text: '返回', id: this.id + '_return', style: 'margin-left: 50px;', width: 100}
         ];
 
         Tomtalk.grid.FormUI.superclass.initComponent.call(me);
