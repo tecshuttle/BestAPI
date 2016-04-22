@@ -64,4 +64,13 @@ var yesCheckStore = Ext.create('Ext.data.Store', {
     ]
 });
 
+var serviceTypeStore = Ext.create('Ext.data.Store', {
+    fields: ['service_type', 'name'],
+    data: [
+        {service_type: 'PHYSICAL', name: '体检'},
+        {service_type: 'TEETH', name: '护牙'},
+        {service_type: 'GENE', name: '基因'}
+    ]
+});
+
 //end file
