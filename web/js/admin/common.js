@@ -55,4 +55,13 @@ var supplierStatusStore = Ext.create('Ext.data.Store', {
     ]
 });
 
+//使用场景：是否有体验  是否有洁牙  是否基因检测
+var yesCheckStore = Ext.create('Ext.data.Store', {
+    fields: ['has_x', 'name'],
+    data: [
+        {has_x: null, name: '无'},
+        {has_x: 'Y', name: '有'}
+    ]
+});
+
 //end file

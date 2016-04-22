@@ -25,23 +25,35 @@ Ext.define('Tomtalk.grid.FormUI', {
                 items: [
                     {xtype: 'textfield', fieldLabel: '门店名字', name: 'org_name', margin: 0, allowBlank: false, emptyText: '请输入…'},
                     {xtype: 'textfield', fieldLabel: '供应商ID', name: 'supplier_id', allowBlank: false, emptyText: '请输入…'},
-                    {xtype: 'textfield', fieldLabel: '激活标记', name: 'active_flag', allowBlank: false, emptyText: '请输入…'},
+                    {
+                        xtype: 'combo', fieldLabel: '激活标记', store: activeFlagStore, displayField: 'name',
+                        valueField: 'active_flag', name: 'active_flag', queryMode: 'local'
+                    },
                     {xtype: 'textfield', fieldLabel: '联系电话', name: 'contact_phone', emptyText: '请输入…'}
                 ]
             },
             {
                 xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
                 items: [
-                    {xtype: 'textfield', fieldLabel: '是否有体检', name: 'has_physical', margin: 0, emptyText: '请输入…'},
-                    {xtype: 'textfield', fieldLabel: '是否有洁牙', name: 'has_tooth_care', emptyText: '请输入…'},
-                    {xtype: 'textfield', fieldLabel: '是否基因', name: 'has_gene', emptyText: '请输入…'},
+                    {
+                        xtype: 'combo', fieldLabel: '是否有体检', store: yesCheckStore, displayField: 'name', margin: 0,
+                        valueField: 'has_x', name: 'has_physical', queryMode: 'local'
+                    },
+                    {
+                        xtype: 'combo', fieldLabel: '是否有洁牙', store: yesCheckStore, displayField: 'name',
+                        valueField: 'has_x', name: 'has_tooth_care', queryMode: 'local'
+                    },
+                    {
+                        xtype: 'combo', fieldLabel: '是否有基因', store: yesCheckStore, displayField: 'name',
+                        valueField: 'has_x', name: 'has_gene', queryMode: 'local'
+                    },
                     {xtype: 'displayfield'}
                 ]
             },
             {
                 xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
                 items: [
-                    {xtype: 'textfield', fieldLabel: '评分', name: 'review_score', margin: 0, emptyText: '请输入…'},
+                    {xtype: 'numberfield', fieldLabel: '评分', name: 'review_score', minValue: 0, margin: 0, emptyText: '请输入…'},
                     {xtype: 'textfield', fieldLabel: '营业时间', name: 'business_hours', emptyText: '请输入…'},
                     {xtype: 'displayfield'},
                     {xtype: 'displayfield'}
