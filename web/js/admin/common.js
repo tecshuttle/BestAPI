@@ -73,4 +73,33 @@ var serviceTypeStore = Ext.create('Ext.data.Store', {
     ]
 });
 
+var productServiceTypeStore = Ext.create('Ext.data.Store', {
+    fields: ['service_type', 'name'],
+    data: [
+        {service_type: 'OUTSOURCE', name: '外部资源'},
+        {service_type: 'MSG_PUSH', name: '资讯推送'},
+        {service_type: 'LECTURE', name: '健康讲座'}
+    ]
+});
+
+var productRelTypeStore = Ext.create('Ext.data.Store', {
+    fields: ['rel_type', 'name'],
+    data: [
+        {rel_type: 'MAN', name: '男科'},
+        {rel_type: 'HEALTH_CARE', name: '护理'},
+        {rel_type: 'MOUTH', name: '口腔'},
+        {rel_type: 'PHYSICAL', name: '体检'},
+        {rel_type: 'WOMAN', name: '妇科'},
+        {rel_type: 'HEALTH', name: '保健'},
+        {rel_type: 'NUTRI', name: '营养'},
+        {rel_type: 'SALES', name: '销售'},
+        {rel_type: 'CHRONIC_ILLNESS', name: '慢性病'},
+        {rel_type: 'MSG', name: '消息'},
+        {rel_type: 'GENE', name: '基因'},
+        {rel_type: 'TEETH', name: '齿科'},
+        {rel_type: 'DOCTOR_ACCOMPANY', name: '名医会诊'},
+        {rel_type: 'DOCTOR_RESERVE', name: '名医预约'}
+    ]
+});
+
 //end file

@@ -25,21 +25,36 @@ Ext.define('Tomtalk.grid.FormUI', {
                 items: [
                     {xtype: 'textfield', fieldLabel: '服务名称', name: 'service_name', margin: 0, allowBlank: false, emptyText: '请输入…'},
                     {xtype: 'textfield', fieldLabel: '服务代码', name: 'service_code', emptyText: '请输入…'},
-                    {xtype: 'textfield', fieldLabel: '服务类型', name: 'service_type', allowBlank: false, emptyText: '请输入…'},
-                    {xtype: 'textfield', fieldLabel: '关联类型', name: 'rel_type', allowBlank: false, emptyText: '请输入…'}
+                    {
+                        xtype: 'combo', fieldLabel: '服务类型', store: productServiceTypeStore, displayField: 'name',
+                        valueField: 'service_type', name: 'service_type', queryMode: 'local'
+                    },
+                    {
+                        xtype: 'combo', fieldLabel: '关联类型', store: productRelTypeStore, displayField: 'name',
+                        valueField: 'rel_type', name: 'rel_type', queryMode: 'local'
+                    }
                 ]
             }, {
                 xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
                 items: [
-                    {xtype: 'textfield', fieldLabel: '激活标记', name: 'active_flag', margin: 0, allowBlank: false, emptyText: '请输入…'},
-                    {xtype: 'textfield', fieldLabel: '状态', name: 'status', allowBlank: false, emptyText: '请输入…'},
+                    {
+                        xtype: 'combo', fieldLabel: '激活标记', store: activeFlagStore, displayField: 'name', margin: 0,
+                        valueField: 'active_flag', name: 'active_flag', queryMode: 'local'
+                    },
+                    {
+                        xtype: 'combo', fieldLabel: '状态', store: statusStore, displayField: 'name',
+                        valueField: 'status', name: 'status', queryMode: 'local'
+                    },
                     {xtype: 'textfield', fieldLabel: 'LOGO', name: 'logo_img', emptyText: '请输入…'},
                     {xtype: 'numberfield', fieldLabel: '价格', name: 'price', minValue: 0, emptyText: '请输入…'}
                 ]
             }, {
                 xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
                 items: [
-                    {xtype: 'textfield', fieldLabel: '适用性别', name: 'sex_select', margin: 0, allowBlank: false, emptyText: '请输入…'},
+                    {
+                        xtype: 'combo', fieldLabel: '性别要求', store: sexSelectStore, displayField: 'name', margin: 0,
+                        valueField: 'sex_select', name: 'sex_select', queryMode: 'local'
+                    },
                     {xtype: 'textfield', fieldLabel: '覆盖城市', name: 'city_select', emptyText: '请输入…'},
                     {xtype: 'displayfield'},
                     {xtype: 'displayfield'}
