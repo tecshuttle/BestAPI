@@ -5,7 +5,7 @@
 
     <!-- 卡类型 -->
     <select id="findCardTypeList" resultType="CardType">
-		select * from XZH_CARD
+		select card.*, company.company_name from XZH_CARD card left join pf_company2 company on card.company_id = company.id
 	</select>
 
 

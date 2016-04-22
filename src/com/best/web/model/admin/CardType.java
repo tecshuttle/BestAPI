@@ -13,6 +13,7 @@ public class CardType {
     private String card_type;
     private String status;
     private String company_id;
+    private String company_name;
     private String intro;
     private String logo_img;
     private String use_rule;
@@ -119,6 +120,14 @@ public class CardType {
 
     public void setCompany_id(String value) {
         this.company_id = value;
+    }
+
+    public String getCompany_name() {
+        return company_name;
+    }
+
+    public void setCompany_name(String value) {
+        this.company_name = value;
     }
 
     public String getIntro() {

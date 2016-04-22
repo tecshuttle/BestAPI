@@ -17,6 +17,36 @@ var validDateTypeStore = Ext.create('Ext.data.Store', {
     ]
 });
 
+var statusStore = Ext.create('Ext.data.Store', {
+    fields: ['validDateType', 'name'],
+    data: [
+        {status: 0, name: "禁用"},
+        {status: 1, name: "启用"}
+    ]
+});
+
+var activeFlagStore = Ext.create('Ext.data.Store', {
+    fields: ['active_flag', 'name'],
+    data: [
+        {active_flag: 0, name: "未激活"},
+        {active_flag: 1, name: "已激活"}
+    ]
+});
+
+var companyStore = Ext.create('Ext.data.Store', {
+    fields: ['id', 'company_name'],
+    autoLoad: true,
+    proxy: {
+        type: 'ajax',
+        url: '/company/getList',
+        reader: {
+            root: 'response',
+            //totalProperty: 'total',
+            type: 'json'
+        }
+    }
+});
+
 Ext.define('Tomtalk.grid.FormUI', {
     extend: 'Ext.form.Panel',
     constructor: function (config) {
@@ -52,25 +82,22 @@ Ext.define('Tomtalk.grid.FormUI', {
                 xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
                 items: [
                     {
-                        xtype: 'fieldcontainer', fieldLabel: '状态', defaultType: 'radiofield', layout: 'hbox', flex: 1, margin: '0 0 0 0',
-                        items: [
-                            {boxLabel: '启用', name: 'status', margin: '0 20 0 0', inputValue: '1'},
-                            {boxLabel: '禁用', name: 'status', inputValue: '0'}
-                        ]
+                        xtype: 'combo', fieldLabel: '状态', store: statusStore, displayField: 'name', margin: '0 0 0 0',
+                        valueField: 'status', name: 'status', queryMode: 'local'
                     },
                     {xtype: 'numberfield', fieldLabel: '价格', name: 'price', padding: 0, minValue: 0, allowBlank: false, emptyText: '请输入…'},
-                    {xtype: 'textfield', fieldLabel: '发卡机构ID', name: 'company_id', allowBlank: false, emptyText: '请输入…'},
-                    {xtype: 'textfield', fieldLabel: '发卡机构名称', name: 'company_abbr', emptyText: '请输入…'}
+                    {
+                        xtype: 'combo', fieldLabel: '发卡机构', store: companyStore, displayField: 'company_name',
+                        valueField: 'id', name: 'company_id', queryMode: 'local', flex: 1
+                    },
+                    {xtype: 'textfield', fieldLabel: '发卡机构别名', name: 'company_abbr', emptyText: '请输入…'}
                 ]
             }, {
                 xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, padding: '0 0 0 10'},
                 items: [
                     {
-                        xtype: 'fieldcontainer', fieldLabel: '是否激活', defaultType: 'radiofield', layout: 'hbox', flex: 1, margin: '0 0 0 0',
-                        items: [
-                            {boxLabel: '激活', name: 'active_flag', margin: '0 20 0 0', inputValue: 1},
-                            {boxLabel: '未激活', name: 'active_flag', inputValue: 0}
-                        ]
+                        xtype: 'combo', fieldLabel: '激活标记', store: activeFlagStore, displayField: 'name', margin: '0 0 0 0',
+                        valueField: 'active_flag', name: 'active_flag', queryMode: 'local'
                     },
                     {xtype: 'numberfield', fieldLabel: '套餐总数', name: 'package_total', minValue: 0, allowBlank: false, emptyText: '请输入…'},
                     {xtype: 'numberfield', fieldLabel: '可选套餐数', name: 'select_count', minValue: 0, allowBlank: false, emptyText: '请输入…'},
@@ -89,20 +116,22 @@ Ext.define('Tomtalk.grid.FormUI', {
                 items: [
                     {
                         xtype: 'fieldcontainer', layout: 'hbox', flex: 0.98, defaults: {padding: '0 0 0 0'},
+                        fieldLabel: '有效期',
                         items: [
                             {
                                 xtype: 'numberfield',
-                                fieldLabel: '有效期',
+                                hideLabel: true,
+                                fieldLabel: '有效期值',
                                 name: 'valid_date_value',
                                 minValue: 0,
-                                flex: 0.7,
+                                flex: 1,
                                 padding: '0 10 0 0',
                                 allowBlank: false,
                                 emptyText: '请输入…'
                             },
                             {
                                 xtype: 'combo', hideLabel: true, fieldLabel: '有效期单位', store: validDateTypeStore, displayField: 'name',
-                                valueField: 'validDateType', name: 'valid_date_type', queryMode: 'local', flex: 0.3
+                                valueField: 'validDateType', name: 'valid_date_type', queryMode: 'local', flex: 1
                             }
                         ]
                     },
