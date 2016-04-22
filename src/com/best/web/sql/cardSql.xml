@@ -59,7 +59,7 @@
 
     <!-- 卡号管理 -->
     <select id="findCardNoList" resultType="CardNo">
-		select * from xzh_card_no
+		select no.*, company.company_name from xzh_card_no no left join pf_company2 company on no.dept_id = company.id
 	</select>
 
     <insert id="insertCardNo" parameterType="CardNo">

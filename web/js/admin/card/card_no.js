@@ -2,16 +2,36 @@ Ext.onReady(function () {
     var fields = ['id', 'name', 'password'];
     var columns = [
         {header: "ID", dataIndex: 'id', hidden: true},
+        {header: "发卡机构", dataIndex: 'company_name'},
         {header: "卡号", dataIndex: 'card_no'},
         {header: "卡密", dataIndex: 'card_code'},
-        {header: "卡类型", dataIndex: 'card_no_type'},
-        {header: "激活状态", dataIndex: 'active_flag'},
-        {header: "归属公司", dataIndex: 'dept_id', width: 220},
-        {header: "创建人", dataIndex: 'creator'},
-        {header: "验证次数", dataIndex: 'verfiy_count'},
-        {header: "使用状态", dataIndex: 'status'}
+        {
+            header: "卡类型", dataIndex: 'card_no_type',
+            renderer: function (v, b, rec) {
+                if (v == 'REAL') {
+                    return '实体卡';
+                } else if (v == 'VIRTUAL') {
+                    return '虚拟卡';
+                } else {
+                    return v;
+                }
+            }
+        },
+        {
+            header: '激活标记', dataIndex: 'active_flag',
+            renderer: function (v, b, rec) {
+                if (v == 0) {
+                    return '未激活';
+                } else if (v == 1) {
+                    return '已激活';
+                } else {
+                    return v;
+                }
+            }
+        },
+        {header: "验证次数", dataIndex: 'verify_count'},
+        {header: "创建人", dataIndex: 'creator'}
     ];
-
 
     new Ext.Viewport({
         renderTo: Ext.getBody(),

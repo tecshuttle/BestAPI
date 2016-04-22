@@ -20,6 +20,7 @@ public class CardNo {
     private String verify_count;
     private String rel_order_id;
     private String dept_id;
+    private String company_name;
     private String memo;
     private String cardNo;  //接口用
     private String cardCode; //接口用
@@ -159,6 +160,10 @@ public class CardNo {
     public void setDept_id(String value) {
         this.dept_id = value;
     }
+
+    public String getCompany_name() { return company_name; }
+
+    public void setCompany_name(String value) { this.company_name = value; }
 
     public String getMemo() {
         return memo;

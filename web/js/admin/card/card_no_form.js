@@ -30,16 +30,28 @@ Ext.define('Tomtalk.grid.FormUI', {
                 items: [
                     {xtype: 'textfield', fieldLabel: '卡号', name: 'card_no', margin: 0, allowBlank: false, emptyText: '请输入…'},
                     {xtype: 'textfield', fieldLabel: '卡密', name: 'card_code', allowBlank: false, emptyText: '请输入…'},
-                    {xtype: 'textfield', fieldLabel: '卡类型', name: 'card_no_type', allowBlank: false, emptyText: '请输入…'},
-                    {xtype: 'textfield', fieldLabel: '归属机构', name: 'dept_id', allowBlank: false, emptyText: '请输入…'}
+                    {
+                        xtype: 'combo', fieldLabel: '卡类型', store: cardTypeStore, displayField: 'name',
+                        valueField: 'cardType', name: 'card_no_type', queryMode: 'local', flex: 1
+                    },
+                    {
+                        xtype: 'combo', fieldLabel: '发卡机构', store: companyStore, displayField: 'company_name',
+                        valueField: 'id', name: 'dept_id', queryMode: 'local', flex: 1
+                    }
                 ]
             }, {
                 xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
                 items: [
-                    {xtype: 'textfield', fieldLabel: '状态', name: 'status', margin: 0, allowBlank: false, emptyText: '请输入…'},
-                    {xtype: 'textfield', fieldLabel: '激活标记', name: 'active_flag', allowBlank: false, emptyText: '请输入…'},
-                    {xtype: 'textfield', fieldLabel: '有效使用期起', name: 'open_date', emptyText: '请输入…'},
-                    {xtype: 'textfield', fieldLabel: '有效使用期止', name: 'close_date', emptyText: '请输入…'}
+                    {
+                        xtype: 'combo', fieldLabel: '状态', store: statusStore, displayField: 'name', margin: '0 0 0 0',
+                        valueField: 'status', name: 'status', queryMode: 'local'
+                    },
+                    {
+                        xtype: 'combo', fieldLabel: '激活标记', store: activeFlagStore, displayField: 'name',
+                        valueField: 'active_flag', name: 'active_flag', queryMode: 'local'
+                    },
+                    {xtype: 'datefield', fieldLabel: '有效使用期起', name: 'open_date', format: 'Y/m/d', emptyText: '请输入…'},
+                    {xtype: 'datefield', fieldLabel: '有效使用期止', name: 'close_date', format: 'Y/m/d', emptyText: '请输入…'}
                 ]
             }, {
                 xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
