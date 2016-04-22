@@ -45,4 +45,14 @@ var sexSelectStore = Ext.create('Ext.data.Store', {
     ]
 });
 
+var supplierStatusStore = Ext.create('Ext.data.Store', {
+    fields: ['status', 'name'],
+    data: [
+        {status: 'INIT', name: '储备'},
+        {status: 'IN_SERVICE', name: '使用'},
+        {status: 'STOP_SERVICE', name: '停用'},
+        {status: 'OUT', name: '淘汰'}
+    ]
+});
+
 //end file
