@@ -36,4 +36,13 @@ var companyStore = Ext.create('Ext.data.Store', {
     }
 });
 
+var sexSelectStore = Ext.create('Ext.data.Store', {
+    fields: ['sex_select', 'name'],
+    data: [
+        {sex_select: 'ALL', name: "全部"},
+        {sex_select: 'M', name: "男"},
+        {sex_select: 'F', name: "女"}
+    ]
+});
+
 //end file

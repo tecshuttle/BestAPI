@@ -124,18 +124,18 @@ Tomtalk.IdcUI = Ext.extend(Ext.Panel, {
             });
         } else {
             /*linkcolumn.push({
-                glyph: '删除',
-                handler: function (grid, rowIndex, colIndex) {
-                    var rec = grid.getStore().getAt(rowIndex);
-                    me._delete(rec.get('id'));
-                }
-            });*/
+             glyph: '删除',
+             handler: function (grid, rowIndex, colIndex) {
+             var rec = grid.getStore().getAt(rowIndex);
+             me._delete(rec.get('id'));
+             }
+             });*/
         }
 
         me.columns.push({
             header: "操作",
             dataIndex: 'id',
-            align: 'left',
+            align: 'center',
             xtype: 'actioncolumn',
             name: 'opertation',
             items: linkcolumn
