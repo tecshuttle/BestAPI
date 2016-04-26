@@ -4,7 +4,9 @@ import com.best.util.BasicUtil;
 import com.best.web.dao.ProductDao;
 import com.best.web.model.admin.ProdService;
 
+import com.best.web.model.admin.ProdServiceMap;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.Resource;
 import java.util.List;
 
@@ -29,6 +31,25 @@ public class ProductService {
 
     public void deleteProdService(ProdService model) {
         ProductDao.deleteProdService(model);
+    }
+
+    public ProdService getCountServiceMap(String id) {
+        return ProductDao.getCountServiceMap(id);
+    }
+
+
+    //产品管理 - 服务产品映射关系
+    public List<ProdServiceMap> findProdServiceMapList(String xzh_service_id) {
+        return ProductDao.findProdServiceMapList(xzh_service_id);
+    }
+
+    public void insertProdServiceMap(ProdServiceMap model) {
+        model.setId(BasicUtil.generateId());
+        ProductDao.insertProdServiceMap(model);
+    }
+
+    public void updateProdServiceMap(ProdServiceMap model) {
+        ProductDao.updateProdServiceMap(model);
     }
 }
 

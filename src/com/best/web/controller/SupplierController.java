@@ -118,6 +118,14 @@ public class SupplierController {
     }
 
 
+    @RequestMapping(value = "getServiceListBySupplier", method = RequestMethod.GET)
+    public void getServiceListBySupplier(HttpServletRequest request, HttpServletResponse response, String supplier_id, int start, int limit) throws Exception {
+        ExtListResponse<SupplierProduct> listResponse = new ExtListResponse<SupplierProduct>();
+        listResponse.setResponse(service.findServiceListBySupplier(supplier_id), start, 9999);
+        AjaxUtil.sendJSON(response, listResponse);
+    }
+
+
     @RequestMapping(value = "updateSupplierService", method = RequestMethod.POST)
     public void updateSupplierService(HttpServletRequest request, HttpServletResponse response, SupplierProduct cardType, BindingResult result) throws Exception {
         ExtResponse<String> genResponse = new ExtResponse<String>();

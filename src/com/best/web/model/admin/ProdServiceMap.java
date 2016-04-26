@@ -4,7 +4,7 @@ package com.best.web.model.admin;
 /**
  * XXX: 为避免取名冲突,取名为ProdService. 表示产品管理下的服务类产品.
  */
-public class ProdService {
+public class ProdServiceMap {
 
     private String id;
     private String creator;
@@ -12,18 +12,16 @@ public class ProdService {
     private String modifier;
     private String modify_date;
     private String active_flag;
-    private String service_name;
-    private String service_code;
+    private String xzh_service_id;
+    private String supplier_service_id;
     private String service_type;
-    private String rel_type;
     private String status;
-    private String logo_img;
-    private String sex_select;
-    private String city_select;
-    private String price;
-    private String intro;
-    private String count_service_map; //所属产品数
-
+    private String seq;
+    private String supplier_id; //关联supplier
+    private String supplier_service_name; //关联supplier
+    private String supplier_name;//关联supplier_service
+    private String market_price;//关联supplier_service
+    private String cost_price;//关联supplier_service
 
     public String getId() {
         return id;
@@ -73,20 +71,20 @@ public class ProdService {
         this.active_flag = value;
     }
 
-    public String getService_name() {
-        return service_name;
+    public String getXzh_service_id() {
+        return xzh_service_id;
     }
 
-    public void setService_name(String value) {
-        this.service_name = value;
+    public void setXzh_service_id(String value) {
+        this.xzh_service_id = value;
     }
 
-    public String getService_code() {
-        return service_code;
+    public String getSupplier_service_id() {
+        return supplier_service_id;
     }
 
-    public void setService_code(String value) {
-        this.service_code = value;
+    public void setSupplier_service_id(String value) {
+        this.supplier_service_id = value;
     }
 
     public String getService_type() {
@@ -97,14 +95,6 @@ public class ProdService {
         this.service_type = value;
     }
 
-    public String getRel_type() {
-        return rel_type;
-    }
-
-    public void setRel_type(String value) {
-        this.rel_type = value;
-    }
-
     public String getStatus() {
         return status;
     }
@@ -113,49 +103,49 @@ public class ProdService {
         this.status = value;
     }
 
-    public String getLogo_img() {
-        return logo_img;
+    public String getSeq() {
+        return seq;
     }
 
-    public void setLogo_img(String value) {
-        this.logo_img = value;
+    public void setSeq(String value) {
+        this.seq = value;
     }
 
-    public String getSex_select() {
-        return sex_select;
+    public String getSupplier_id() { return supplier_id; }
+
+    public void setSupplier_id(String value) { this.supplier_id = value; }
+
+    public String getSupplier_service_name() {
+        return supplier_service_name;
     }
 
-    public void setSex_select(String value) {
-        this.sex_select = value;
+    public void setSupplier_service_name(String value) {
+        this.supplier_service_name = value;
     }
 
-    public String getCity_select() {
-        return city_select;
+    public String getSupplier_name() {
+        return supplier_name;
     }
 
-    public void setCity_select(String value) {
-        this.city_select = value;
+    public void setSupplier_name(String value) {
+        this.supplier_name = value;
     }
 
-    public String getPrice() {
-        return price;
+    public String getMarket_price() {
+        return market_price;
     }
 
-    public void setPrice(String price) {
-        this.price = price;
+    public void setMarket_price(String value) {
+        this.market_price = value;
     }
 
-    public String getIntro() {
-        return intro;
+    public String getCost_price() {
+        return cost_price;
     }
 
-    public void setIntro(String value) {
-        this.intro = value;
+    public void setCost_price(String value) {
+        this.cost_price = value;
     }
-
-    public String getCount_service_map() { return count_service_map; }
-
-    public void setCount_service_map(String value) { this.count_service_map = value; }
 }
 
 //end file

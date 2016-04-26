@@ -44,6 +44,7 @@
         <typeAlias type="com.best.web.model.admin.SupplierOrg" alias="SupplierOrg"/>
         <typeAlias type="com.best.web.model.admin.SupplierProduct" alias="SupplierService"/>
         <typeAlias type="com.best.web.model.admin.ProdService" alias="ProdService"/>
+        <typeAlias type="com.best.web.model.admin.ProdServiceMap" alias="ProdServiceMap"/>
         <typeAlias type="com.best.web.model.admin.Company" alias="Company"/>
     </typeAliases>
 

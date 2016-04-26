@@ -58,6 +58,10 @@ public class SupplierService {
         return SupplierDao.findSupplierServiceList();
     }
 
+    public List<SupplierProduct> findServiceListBySupplier(String supplier_id) {
+        return SupplierDao.findServiceListBySupplier(supplier_id);
+    }
+
     public void insertSupplierService(SupplierProduct model) {
         model.setId(BasicUtil.generateId());
         SupplierDao.insertSupplierService(model);

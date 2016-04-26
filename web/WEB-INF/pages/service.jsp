@@ -39,6 +39,7 @@
 <script src="/js/admin/common.js"></script>
 <script src="/js/admin/product/service_grid.js"></script>
 <script src="/js/admin/product/service_form.js"></script>
+<script src="/js/admin/product/service_map_grid.js"></script>
+<script src="/js/admin/product/service_map_form.js"></script>
 <script src="/js/admin/product/service.js"></script>
-
 </html>

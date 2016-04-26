@@ -31,6 +31,8 @@ public interface SupplierDao {
     //供应商产品管理
     public List<SupplierProduct> findSupplierServiceList();
 
+    public List<SupplierProduct> findServiceListBySupplier(String supplier_id);
+
     public void insertSupplierService(SupplierProduct model);
 
     public void updateSupplierService(SupplierProduct model);

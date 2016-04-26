@@ -7,6 +7,8 @@
 		select * from XZH_supplier
 	</select>
 
+
+
     <insert id="insertSupplier" parameterType="Supplier">
 		insert into xzh_supplier
 		( id, active_flag, supplier_name, supplier_abbr, supplier_code, status, intro, contact,
@@ -93,9 +95,13 @@
 	</update>
 
 
-	<!-- 供应商门店管理 -->
+	<!-- 供应商服务管理 -->
 	<select id="findSupplierServiceList" resultType="SupplierService">
 		select * from xzh_supplier_service
+	</select>
+
+	<select id="findServiceListBySupplier" parameterType="String" resultType="SupplierService">
+		select * from xzh_supplier_service where supplier_id = #{supplier_id}
 	</select>
 
 	<insert id="insertSupplierService" parameterType="SupplierService">

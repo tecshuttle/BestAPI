@@ -17,46 +17,21 @@ Tomtalk.IdcUI = Ext.extend(Ext.Panel, {
     initComponent: function () {
         var me = this;
         me.items = [
-            me._grid()
+            me._grid(),
+            Ext.create('Best.product.serviceInfo', {
+                id: me.id + '_form',
+                hidden: true
+            }),
+            Ext.create('Best.product.serviceListGrid', {
+                id: me.id + '_service_list_grid',
+                parent: me,
+                hidden: true
+            }),
+            Ext.create('Best.product.serviceListForm', {
+                id: me.id + '_service_list_form',
+                hidden: true
+            })
         ];
-
-        if (me.module == 'site_settings') {
-            me.items.push(
-                Ext.create('Tomtalk.grid.Form', {
-                    id: me.id + '_form',
-                    hidden: true
-                })
-            );
-        }
-
-        if (me.module == 'tag') {
-            me.items.push(
-                Ext.create('Tomtalk.grid.Form', {
-                    id: me.id + '_form',
-                    module: me.module,
-                    hidden: true
-                })
-            );
-        }
-
-        if (me.module == 'scroll_img') {
-            me.items.push(
-                Ext.create('Tomtalk.grid.Form', {
-                    id: me.id + '_form',
-                    module: me.module,
-                    hidden: true
-                })
-            );
-        }
-
-        if (me.module == 'admins') {
-            me.items.push(
-                Ext.create('Tomtalk.grid.AccountForm', {
-                    id: me.id + '_form',
-                    hidden: true
-                })
-            );
-        }
 
         Tomtalk.IdcUI.superclass.initComponent.call(me);
     },
@@ -84,53 +59,21 @@ Tomtalk.IdcUI = Ext.extend(Ext.Panel, {
 
         var linkcolumn = [];
 
-        if (me.module == 'admins') {
-            linkcolumn.push({
-                glyph: '编辑',
-                handler: function (grid, rowIndex, colIndex) {
-                    var rec = grid.getStore().getAt(rowIndex);
-                    me._edit(rec);
-                }
-            });
-        }
+        linkcolumn.push({
+            glyph: '编辑',
+            handler: function (grid, rowIndex, colIndex) {
+                var rec = grid.getStore().getAt(rowIndex);
+                me._edit(rec);
+            }
+        });
 
-        if (me.module == 'tag') {
-            linkcolumn.push({
-                glyph: '编辑',
-                handler: function (grid, rowIndex, colIndex) {
-                    var rec = grid.getStore().getAt(rowIndex);
-                    me._edit(rec);
-                }
-            });
-        }
-
-        if (me.module == 'scroll_img') {
-            linkcolumn.push({
-                glyph: '编辑',
-                handler: function (grid, rowIndex, colIndex) {
-                    var rec = grid.getStore().getAt(rowIndex);
-                    me._edit(rec);
-                }
-            });
-        }
-
-        if (me.module == 'site_settings') {
-            linkcolumn.push({
-                glyph: '编辑',
-                handler: function (grid, rowIndex, colIndex) {
-                    var rec = grid.getStore().getAt(rowIndex);
-                    me._edit(rec);
-                }
-            });
-        } else {
-            /*linkcolumn.push({
-             glyph: '删除',
-             handler: function (grid, rowIndex, colIndex) {
-             var rec = grid.getStore().getAt(rowIndex);
-             me._delete(rec.get('id'));
-             }
-             });*/
-        }
+        linkcolumn.push({
+            glyph: '服务',
+            handler: function (grid, rowIndex, colIndex) {
+                var rec = grid.getStore().getAt(rowIndex);
+                me._service_list(rec);
+            }
+        });
 
         me.columns.push({
             header: "操作",
@@ -195,6 +138,11 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
             returnBtn: Ext.getCmp(this.id + '_return'),
             grid: Ext.getCmp(this.id + '_grid'),
             form: Ext.getCmp(this.id + '_form'),
+
+            //所属产品列表
+            serviceListGrid: Ext.getCmp(this.id + '_service_list_grid'),
+            serviceListForm: Ext.getCmp(this.id + '_service_list_form'),
+
             queryForm: Ext.getCmp(this.id + '_query'),
             id: Ext.getCmp(this.id + '_id'),
             name: Ext.getCmp(this.id + '_name'),
@@ -217,22 +165,6 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
         var $c = this.COMPONENTS;
     },
 
-    _delete: function (id) {
-        var me = this;
-
-        Ext.Ajax.request({
-            url: '/admin/gridDelete',
-            params: {
-                module: me.module,
-                id: id
-            },
-            success: function (res) {
-                var result = Ext.decode(res.responseText);
-                me.COMPONENTS.grid.getStore().reload();
-            }
-        });
-    },
-
     _add: function () {
         var $c = this.COMPONENTS;
 
@@ -249,8 +181,6 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
                 this.KE = $("#kendoeditor-inputEl").kendoEditor(ke_config);
             }
         }
-
-
     },
 
     _edit: function (rec) {
@@ -259,25 +189,25 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
         $c.grid.hide();
         $c.form.getForm().setValues(rec.data);
         $c.form.show();
+    },
 
-        if (this.module === 'site_settings') {
-            var KE = this.KE;
+    _service_list: function (rec) {
+        var $c = this.COMPONENTS;
 
-            if (KE) {
-                KE.data("kendoEditor").value(rec.data.value);
-            } else {
-                this.KE = $("#kendoeditor-inputEl").kendoEditor(ke_config);
-            }
-        }
+        $c.grid.hide();
+        $c.serviceListGrid.loadList(rec.data);
+        $c.serviceListGrid.show();
     },
 
     _returnFrom: function () {
         var $c = this.COMPONENTS;
-
         $c.form.hide();
-
         $c.grid.show();
         $c.grid.getStore().reload();
+    },
+
+    _return: function () {
+        this.COMPONENTS.grid.show();
     }
 });
 

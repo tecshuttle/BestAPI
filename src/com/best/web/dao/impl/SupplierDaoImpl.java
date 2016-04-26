@@ -62,6 +62,9 @@ public class SupplierDaoImpl implements SupplierDao {
         return sqlSession.selectList("supplierSql.findSupplierServiceList");
     }
 
+    public List<SupplierProduct> findServiceListBySupplier(String supplier_id) {
+        return sqlSession.selectList("supplierSql.findServiceListBySupplier", supplier_id);
+    }
 
     public void insertSupplierService(SupplierProduct model) {
         sqlSession.insert("supplierSql.insertSupplierService", model);

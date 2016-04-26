@@ -2,9 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="productSql">
 
-    <!-- 供应商管理 -->
+    <!-- 产品管理 - 服务 -->
     <select id="findProdServiceList" resultType="ProdService">
 		select * from xzh_service
+	</select>
+
+    <select id="getCountServiceMap" parameterType="String" resultType="ProdService">
+		select count(*) as count_service_map from xzh_service_mapping where xzh_service_id = #{id}
 	</select>
 
     <insert id="insertProdService" parameterType="ProdService">
@@ -40,5 +44,31 @@
 		       modify_date = sysdate,
 		       active_flag = '0'
 		 where id = #{id}
+	</update>
+
+
+    <!-- 产品管理 - 服务产品映射关系 -->
+    <select id="findProdServiceMapList" parameterType="String" resultType="ProdServiceMap">
+		select map.*, service.service_name as supplier_service_name, supplier.supplier_name, service.market_price, service.cost_price, supplier.id as supplier_id
+		from xzh_service_mapping map
+		left join xzh_supplier_service service on map.supplier_service_id = service.id
+		left join xzh_supplier supplier on service.supplier_id = supplier.id
+		where xzh_service_id = #{xzh_service_id}
+	</select>
+
+    <insert id="insertProdServiceMap" parameterType="ProdServiceMap">
+		insert into xzh_service_mapping
+		( id, active_flag, status, seq, supplier_service_id, xzh_service_id )
+		values
+		( sys_guid(), #{active_flag},#{status},#{seq},#{supplier_service_id}, #{xzh_service_id} )
+	</insert>
+
+    <update id="updateProdServiceMap" parameterType="ProdServiceMap">
+		update xzh_service_mapping
+		set active_flag = #{active_flag},
+		    status = #{status},
+		    seq = #{seq},
+		    supplier_service_id = #{supplier_service_id}
+		where id = #{id}
 	</update>
 </mapper>

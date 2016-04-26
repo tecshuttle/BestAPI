@@ -1,6 +1,6 @@
-Ext.ns('Tomtalk.grid');
+Ext.ns('Best.product');
 
-Ext.define('Tomtalk.grid.FormUI', {
+Ext.define('Best.product.FormUI', {
     extend: 'Ext.form.Panel',
     constructor: function (config) {
         var me = this;
@@ -12,7 +12,7 @@ Ext.define('Tomtalk.grid.FormUI', {
 
         me.COMPONENTS = {};
 
-        Tomtalk.grid.FormUI.superclass.constructor.call(me, config);
+        Best.product.FormUI.superclass.constructor.call(me, config);
     },
 
     initComponent: function () {
@@ -65,18 +65,18 @@ Ext.define('Tomtalk.grid.FormUI', {
             {xtype: 'button', text: '返回', id: this.id + '_return', style: 'margin-left: 50px;', width: 100}
         ];
 
-        Tomtalk.grid.FormUI.superclass.initComponent.call(me);
+        Best.product.FormUI.superclass.initComponent.call(me);
     }
 });
 
-Ext.define('Tomtalk.grid.FormAction', {
-    extend: 'Tomtalk.grid.FormUI',
+Ext.define('Best.product.FormAction', {
+    extend: 'Best.product.FormUI',
     constructor: function (config) {
-        Tomtalk.grid.FormAction.superclass.constructor.call(this, config);
+        Best.product.FormAction.superclass.constructor.call(this, config);
     },
 
     initComponent: function () {
-        Tomtalk.grid.FormAction.superclass.initComponent.call(this);
+        Best.product.FormAction.superclass.initComponent.call(this);
 
         Ext.apply(this.COMPONENTS, {
             recId: Ext.getCmp(this.id + '_rec_id'),
@@ -89,7 +89,7 @@ Ext.define('Tomtalk.grid.FormAction', {
         var me = this;
         var $c = this.COMPONENTS;
 
-        Tomtalk.grid.FormAction.superclass.initEvents.call(me);
+        Best.product.FormAction.superclass.initEvents.call(me);
 
         $c.saveBtn.on('click', me._save, me);
         $c.returnBtn.on('click', me._return, me);
@@ -141,6 +141,6 @@ Ext.define('Tomtalk.grid.FormAction', {
     }
 });
 
-Tomtalk.grid.AccountForm = Tomtalk.grid.FormAction;
+Best.product.serviceInfo = Best.product.FormAction;
 
 //end file
