@@ -90,6 +90,35 @@ Ext.onReady(function () {
                 var out = Ext.util.Format.number(val, '0.00');
                 return '￥' + out;
             }
+        }, {
+            header: "操作",
+            dataIndex: 'service_type',
+            align: 'center',
+            xtype: 'actioncolumn',
+            name: 'opertation',
+            items: [{
+                glyph: '编辑',
+                handler: function (grid, rowIndex, colIndex) {
+                    var rec = grid.getStore().getAt(rowIndex);
+                    grid.grid.up()._edit(rec);
+                }
+            }, {
+                glyph: '服务',
+                getClass: function (v) {
+                    if (v == 'OUTSOURCE') {
+                        return '';
+                    } else {
+                        return this.disabledCls;
+                    }
+                },
+                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                    return 'aa';
+                },
+                handler: function (grid, rowIndex, colIndex) {
+                    var rec = grid.getStore().getAt(rowIndex);
+                    grid.grid.up()._service_list(rec);
+                }
+            }]
         }
     ];
 

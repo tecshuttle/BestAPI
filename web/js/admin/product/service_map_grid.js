@@ -50,7 +50,28 @@ Best.product.serviceListGridUI = Ext.extend(Ext.grid.GridPanel, {
             {header: "ID", dataIndex: 'id', hidden: true},
             {header: '供应商', dataIndex: 'supplier_name'},
             {header: '服务名称', dataIndex: 'supplier_service_name'},
-            {header: '业务状态', dataIndex: 'status'},
+            {
+                header: "激活状态", dataIndex: 'active_flag', align: 'center',
+                renderer: function (v, b, rec) {
+                    if (v == 0) {
+                        return '未激活';
+                    } else if (v == 1) {
+                        return '已激活';
+                    } else {
+                        return v;
+                    }
+                }
+            },
+            {
+                header: '业务状态', dataIndex: 'status', align: 'center',
+                renderer: function (v, b, rec) {
+                    if (v == 'IN_SERVICE') {
+                        return '使用中';
+                    } else {
+                        return v;
+                    }
+                }
+            },
             {
                 header: '市场价格', dataIndex: 'market_price', align: 'right',
                 renderer: function (val) {

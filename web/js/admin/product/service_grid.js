@@ -57,33 +57,6 @@ Tomtalk.IdcUI = Ext.extend(Ext.Panel, {
             }
         });
 
-        var linkcolumn = [];
-
-        linkcolumn.push({
-            glyph: '编辑',
-            handler: function (grid, rowIndex, colIndex) {
-                var rec = grid.getStore().getAt(rowIndex);
-                me._edit(rec);
-            }
-        });
-
-        linkcolumn.push({
-            glyph: '服务',
-            handler: function (grid, rowIndex, colIndex) {
-                var rec = grid.getStore().getAt(rowIndex);
-                me._service_list(rec);
-            }
-        });
-
-        me.columns.push({
-            header: "操作",
-            dataIndex: 'id',
-            align: 'center',
-            xtype: 'actioncolumn',
-            name: 'opertation',
-            items: linkcolumn
-        });
-
         var grid = new Ext.grid.GridPanel({
             id: this.id + '_grid',
             title: '我被授权的作业',

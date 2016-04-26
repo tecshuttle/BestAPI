@@ -8,7 +8,8 @@
 	</select>
 
     <select id="getCountServiceMap" parameterType="String" resultType="ProdService">
-		select count(*) as count_service_map from xzh_service_mapping where xzh_service_id = #{id}
+		select count(*) as count_service_map from xzh_service_mapping
+		where xzh_service_id = #{id} and active_flag = 1 and status = 'IN_SERVICE'
 	</select>
 
     <insert id="insertProdService" parameterType="ProdService">
