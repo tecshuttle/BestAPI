@@ -104,6 +104,10 @@
 		select * from xzh_card_package
 	</select>
 
+	<select id="findCardPackageListByCardId" parameterType="String" resultType="CardPackage">
+		select * from xzh_card_package where card_id = #{card_id} order by seq ASC
+	</select>
+
     <insert id="insertCardPackage" parameterType="CardPackage">
 		insert into xzh_card_package
 		( id, active_flag, card_id, package_name, package_code, sex_select, dtl_count, intro, price )

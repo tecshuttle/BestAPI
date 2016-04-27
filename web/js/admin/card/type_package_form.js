@@ -1,6 +1,43 @@
-Ext.ns('Tomtalk.grid');
+Ext.ns('Best.product');
 
-Ext.define('Tomtalk.grid.FormUI', {
+var supplierStore = Ext.create('Ext.data.Store', {
+    fields: ['id', 'supplier_name'],
+    autoLoad: true,
+    proxy: {
+        type: 'ajax',
+        url: '/supplier/getSupplierList',
+        reader: {
+            //totalProperty: 'total',
+            root: 'response',
+            type: 'json'
+        }
+    }
+});
+
+var supplierServiceStore = Ext.create('Ext.data.Store', {
+    fields: ['id', 'service_name'],
+    //autoLoad: true,
+    proxy: {
+        type: 'ajax',
+        url: '/supplier/getServiceListBySupplier',
+        reader: {
+            //totalProperty: 'total',
+            root: 'response',
+            type: 'json'
+        }
+    }
+});
+
+//使用场景：是否有体验  是否有洁牙  是否基因检测
+var serviceMapStatusStore = Ext.create('Ext.data.Store', {
+    fields: ['status', 'name'],
+    data: [
+        {status: null, name: '未使用'},
+        {status: 'IN_SERVICE', name: '使用中'}
+    ]
+});
+
+Ext.define('Best.product.packageFormUI', {
     extend: 'Ext.form.Panel',
     constructor: function (config) {
         var me = this;
@@ -12,7 +49,7 @@ Ext.define('Tomtalk.grid.FormUI', {
 
         me.COMPONENTS = {};
 
-        Tomtalk.grid.FormUI.superclass.constructor.call(me, config);
+        Best.product.packageFormUI.superclass.constructor.call(me, config);
     },
 
     initComponent: function () {
@@ -49,20 +86,22 @@ Ext.define('Tomtalk.grid.FormUI', {
             {xtype: 'button', text: '返回', id: this.id + '_return', style: 'margin-left: 50px;', width: 100}
         ];
 
-        Tomtalk.grid.FormUI.superclass.initComponent.call(me);
+        Best.product.packageFormUI.superclass.initComponent.call(me);
     }
 });
 
-Ext.define('Tomtalk.grid.FormAction', {
-    extend: 'Tomtalk.grid.FormUI',
+Ext.define('Best.product.packageFormAction', {
+    extend: 'Best.product.packageFormUI',
     constructor: function (config) {
-        Tomtalk.grid.FormAction.superclass.constructor.call(this, config);
+        Best.product.packageFormAction.superclass.constructor.call(this, config);
     },
 
     initComponent: function () {
-        Tomtalk.grid.FormAction.superclass.initComponent.call(this);
+        Best.product.packageFormAction.superclass.initComponent.call(this);
 
         Ext.apply(this.COMPONENTS, {
+            supplierCombo: Ext.getCmp(this.id + '_supplier_combo'),
+            supplierServiceCombo: Ext.getCmp(this.id + '_supplier_service_combo'),
             recId: Ext.getCmp(this.id + '_rec_id'),
             saveBtn: Ext.getCmp(this.id + '_save'),
             returnBtn: Ext.getCmp(this.id + '_return')
@@ -73,17 +112,34 @@ Ext.define('Tomtalk.grid.FormAction', {
         var me = this;
         var $c = this.COMPONENTS;
 
-        Tomtalk.grid.FormAction.superclass.initEvents.call(me);
+        Best.product.packageFormAction.superclass.initEvents.call(me);
+
+        //$c.supplierCombo.on('change', me._onChangeSupplierCombo, me);
 
         $c.saveBtn.on('click', me._save, me);
         $c.returnBtn.on('click', me._return, me);
     },
 
+    _onChangeSupplierCombo: function (combo, supplier_id, oldValue, eOpts) {
+        var serviceCombo = this.COMPONENTS.supplierServiceCombo;
+
+        var store = serviceCombo.getStore();
+        var proxy = store.getProxy();
+
+        Ext.apply(proxy.extraParams, {
+            supplier_id: supplier_id
+        });
+
+        store.load();
+    },
+
     _return: function () {
         this.getForm().reset();
 
+        this.hide();
+
         if (this.up()) {
-            this.up()._returnFrom();
+            this.up().COMPONENTS.packageGrid.show();
         }
     },
 
@@ -92,8 +148,7 @@ Ext.define('Tomtalk.grid.FormAction', {
         var form = me;
         var $c = this.COMPONENTS;
         var recId = $c.recId.getValue();
-
-        console.log('result');
+        packageGrid = this.up().COMPONENTS.packageGrid;
 
         if (form.isValid()) {
             form.getForm().submit({
@@ -104,9 +159,9 @@ Ext.define('Tomtalk.grid.FormAction', {
 
                     if (result.success) {
                         me._return();
+                        packageGrid.getStore().load();
                     } else {
                         alert('See error info by console.');
-                        console.log(result);
                     }
                 }
             });
@@ -125,6 +180,6 @@ Ext.define('Tomtalk.grid.FormAction', {
     }
 });
 
-Tomtalk.grid.AccountForm = Tomtalk.grid.FormAction;
+Best.product.packageForm = Best.product.packageFormAction;
 
 //end file

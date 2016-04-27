@@ -118,6 +118,14 @@ public class CardController {
     }
 
 
+    @RequestMapping(value = "getPackageListByCardId", method = RequestMethod.GET)
+    public void getPackageListByCardId(HttpServletRequest request, HttpServletResponse response, String card_id, int start, int limit) throws Exception {
+        ExtListResponse<CardPackage> listResponse = new ExtListResponse<CardPackage>();
+        listResponse.setResponse(service.findCardPackageListByCardId(card_id), start, limit);
+        AjaxUtil.sendJSON(response, listResponse);
+    }
+
+
     @RequestMapping(value = "updatePackage", method = RequestMethod.POST)
     public void updatePackage(HttpServletRequest request, HttpServletResponse response, CardPackage cardType, BindingResult result) throws Exception {
         ExtResponse<String> genResponse = new ExtResponse<String>();

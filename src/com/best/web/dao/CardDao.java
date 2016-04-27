@@ -31,6 +31,8 @@ public interface CardDao {
     //卡套餐管理
     public List<CardPackage> findCardPackageList();
 
+    public List<CardPackage> findCardPackageListByCardId(String card_id);
+
     public void insertCardPackage(CardPackage model);
 
     public void updateCardPackage(CardPackage model);

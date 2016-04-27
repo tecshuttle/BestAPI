@@ -1,4 +1,4 @@
-<%@page session="true"%>
+<%@page session="true" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 
 
@@ -39,6 +39,8 @@
 <script src="/js/admin/common.js"></script>
 <script src="/js/admin/card/type_grid.js"></script>
 <script src="/js/admin/card/type_form.js"></script>
+<script src="/js/admin/card/type_package_grid.js"></script>
+<script src="/js/admin/card/type_package_form.js"></script>
 <script src="/js/admin/card/type.js"></script>
 
 </html>

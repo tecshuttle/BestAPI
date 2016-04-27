@@ -57,6 +57,10 @@ public class CardService {
         return CardDao.findCardPackageList();
     }
 
+    public List<CardPackage> findCardPackageListByCardId(String card_id) {
+        return CardDao.findCardPackageListByCardId(card_id);
+    }
+
     public void insertCardPackage(CardPackage model) {
         model.setId(BasicUtil.generateId());
         CardDao.insertCardPackage(model);

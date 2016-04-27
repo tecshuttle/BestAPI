@@ -17,46 +17,22 @@ Tomtalk.IdcUI = Ext.extend(Ext.Panel, {
     initComponent: function () {
         var me = this;
         me.items = [
-            me._grid()
+            me._grid(),
+            Ext.create('Tomtalk.grid.AccountForm', {
+                id: me.id + '_form',
+                hidden: true
+            }),
+            Ext.create('Best.product.packageGrid', {
+                id: me.id + '_package_grid',
+                parent: me,
+                hidden: true
+            }),
+            Ext.create('Best.product.packageForm', {
+                id: me.id + '_package_form',
+                parent: me,
+                hidden: true
+            })
         ];
-
-        if (me.module == 'site_settings') {
-            me.items.push(
-                Ext.create('Tomtalk.grid.Form', {
-                    id: me.id + '_form',
-                    hidden: true
-                })
-            );
-        }
-
-        if (me.module == 'tag') {
-            me.items.push(
-                Ext.create('Tomtalk.grid.Form', {
-                    id: me.id + '_form',
-                    module: me.module,
-                    hidden: true
-                })
-            );
-        }
-
-        if (me.module == 'scroll_img') {
-            me.items.push(
-                Ext.create('Tomtalk.grid.Form', {
-                    id: me.id + '_form',
-                    module: me.module,
-                    hidden: true
-                })
-            );
-        }
-
-        if (me.module == 'admins') {
-            me.items.push(
-                Ext.create('Tomtalk.grid.AccountForm', {
-                    id: me.id + '_form',
-                    hidden: true
-                })
-            );
-        }
 
         Tomtalk.IdcUI.superclass.initComponent.call(me);
     },
@@ -82,55 +58,22 @@ Tomtalk.IdcUI = Ext.extend(Ext.Panel, {
             }
         });
 
-        var linkcolumn = [];
-
-        if (me.module == 'admins') {
-            linkcolumn.push({
+        var linkcolumn = [
+            {
                 glyph: '编辑',
                 handler: function (grid, rowIndex, colIndex) {
                     var rec = grid.getStore().getAt(rowIndex);
                     me._edit(rec);
                 }
-            });
-        }
-
-        if (me.module == 'tag') {
-            linkcolumn.push({
-                glyph: '编辑',
+            },
+            {
+                glyph: '套餐',
                 handler: function (grid, rowIndex, colIndex) {
                     var rec = grid.getStore().getAt(rowIndex);
-                    me._edit(rec);
+                    me._package_edit(rec);
                 }
-            });
-        }
-
-        if (me.module == 'scroll_img') {
-            linkcolumn.push({
-                glyph: '编辑',
-                handler: function (grid, rowIndex, colIndex) {
-                    var rec = grid.getStore().getAt(rowIndex);
-                    me._edit(rec);
-                }
-            });
-        }
-
-        if (me.module == 'site_settings') {
-            linkcolumn.push({
-                glyph: '编辑',
-                handler: function (grid, rowIndex, colIndex) {
-                    var rec = grid.getStore().getAt(rowIndex);
-                    me._edit(rec);
-                }
-            });
-        } else {
-            /*linkcolumn.push({
-                glyph: '删除',
-                handler: function (grid, rowIndex, colIndex) {
-                    var rec = grid.getStore().getAt(rowIndex);
-                    me._delete(rec.get('id'));
-                }
-            });*/
-        }
+            }
+        ];
 
         me.columns.push({
             header: "操作",
@@ -194,6 +137,12 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
             returnBtn: Ext.getCmp(this.id + '_return'),
             grid: Ext.getCmp(this.id + '_grid'),
             form: Ext.getCmp(this.id + '_form'),
+
+            //套餐管理
+            packageGrid: Ext.getCmp(this.id + '_package_grid'),
+            packageForm: Ext.getCmp(this.id + '_package_form'),
+
+
             queryForm: Ext.getCmp(this.id + '_query'),
             id: Ext.getCmp(this.id + '_id'),
             name: Ext.getCmp(this.id + '_name'),
@@ -238,18 +187,6 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
         $c.grid.hide();
         $c.form.getForm().reset();
         $c.form.show();
-
-        if (this.module === 'site_settings') {
-            var KE = this.KE;
-
-            if (KE) {
-                KE.data("kendoEditor").value('');
-            } else {
-                this.KE = $("#kendoeditor-inputEl").kendoEditor(ke_config);
-            }
-        }
-
-
     },
 
     _edit: function (rec) {
@@ -258,16 +195,14 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
         $c.grid.hide();
         $c.form.getForm().setValues(rec.data);
         $c.form.show();
+    },
 
-        if (this.module === 'site_settings') {
-            var KE = this.KE;
+    _package_edit: function (rec) {
+        var $c = this.COMPONENTS;
 
-            if (KE) {
-                KE.data("kendoEditor").value(rec.data.value);
-            } else {
-                this.KE = $("#kendoeditor-inputEl").kendoEditor(ke_config);
-            }
-        }
+        $c.grid.hide();
+        $c.packageGrid.loadList(rec.data);
+        $c.packageGrid.show();
     },
 
     _returnFrom: function () {
@@ -277,6 +212,10 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
 
         $c.grid.show();
         $c.grid.getStore().reload();
+    },
+
+    _return: function () {
+        this.COMPONENTS.grid.show();
     }
 });
 

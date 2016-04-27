@@ -2,10 +2,11 @@ Ext.onReady(function () {
     var fields = ['id', 'name', 'password'];
     var columns = [
         {header: "ID", dataIndex: 'id', hidden: true},
+        {header: '发卡机构', dataIndex: 'company_name'},
         {header: "卡名称", dataIndex: 'card_name'},
         {header: "卡代号", dataIndex: 'card_code'},
         {
-            header: "卡类型", dataIndex: 'card_type',
+            header: "卡类型", dataIndex: 'card_type', align: 'center',
             renderer: function (v, b, rec) {
                 if (v == 'REAL') {
                     return '实体卡';
@@ -16,9 +17,8 @@ Ext.onReady(function () {
                 }
             }
         },
-        {header: '发卡机构', dataIndex: 'company_name'},
         {
-            header: '有效期', dataIndex: 'valid_date_value',
+            header: '有效期', dataIndex: 'valid_date_value', align: 'center',
             renderer: function (v, b, rec) {
                 var row = rec.data
                 var valid_type = row.valid_date_type;
@@ -34,7 +34,7 @@ Ext.onReady(function () {
             }
         },
         {
-            header: '激活标记', dataIndex: 'active_flag',
+            header: '激活标记', dataIndex: 'active_flag', align: 'center',
             renderer: function (v, b, rec) {
                 if (v == 0) {
                     return '未激活';
@@ -45,14 +45,14 @@ Ext.onReady(function () {
                 }
             }
         },
-        {header: '套餐总数', dataIndex: 'package_total', align: 'right'},
         {
             header: "价格", dataIndex: 'price', align: 'right',
             renderer: function (val) {
                 var out = Ext.util.Format.number(val, '0.00');
                 return '￥' + out;
             }
-        }
+        },
+        {header: '套餐总数', dataIndex: 'package_total', align: 'right'}
     ];
 
     new Ext.Viewport({
@@ -61,7 +61,6 @@ Ext.onReady(function () {
         style: 'background-color: white;',
         items: [
             new Tomtalk.Idc({
-                module: 'admins',
                 fields: fields,
                 columns: columns
             })

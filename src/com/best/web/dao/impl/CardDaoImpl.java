@@ -60,6 +60,10 @@ public class CardDaoImpl implements CardDao {
         return sqlSession.selectList("cardSql.findCardPackageList");
     }
 
+    public List<CardPackage> findCardPackageListByCardId(String card_id) {
+        return sqlSession.selectList("cardSql.findCardPackageListByCardId", card_id);
+    }
+
     public void insertCardPackage(CardPackage model) {
         sqlSession.insert("cardSql.insertCardPackage", model);
     }
