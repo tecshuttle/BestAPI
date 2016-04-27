@@ -101,7 +101,7 @@
 
 	<!-- 卡套餐管理 -->
     <select id="findCardPackageList" resultType="CardPackage">
-		select * from xzh_card_package
+		select package.*, card.card_name from xzh_card_package package left join xzh_card card on package.card_id = card.id
 	</select>
 
 	<select id="findCardPackageListByCardId" parameterType="String" resultType="CardPackage">

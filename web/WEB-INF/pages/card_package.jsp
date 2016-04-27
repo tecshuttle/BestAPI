@@ -39,6 +39,8 @@
 <script src="/js/admin/common.js"></script>
 <script src="/js/admin/card/package_grid.js"></script>
 <script src="/js/admin/card/package_form.js"></script>
+<script src="/js/admin/card/package_service_grid.js"></script>
+<script src="/js/admin/card/package_service_form.js"></script>
 <script src="/js/admin/card/package.js"></script>
 
 </html>

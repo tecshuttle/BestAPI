@@ -30,6 +30,7 @@ public class CardPackage {
     private BigDecimal price;
     private String intro;
     private String useRule;
+    private String card_name; //关联xzh_card
 
     private List<PackageService> serviceList;
 
@@ -129,7 +130,9 @@ public class CardPackage {
         this.city_select = value;
     }
 
-    public String getDtl_count() { return dtl_count; }
+    public String getDtl_count() {
+        return dtl_count;
+    }
 
     public void setDtl_count(String value) {
         this.dtl_count = value;
@@ -237,6 +240,14 @@ public class CardPackage {
 
     public void setUseRule(String useRule) {
         this.useRule = useRule;
+    }
+
+    public String getCard_name() {
+        return card_name;
+    }
+
+    public void setCard_name(String value) {
+        this.card_name = value;
     }
 
     public List<PackageService> getServiceList() {
