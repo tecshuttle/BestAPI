@@ -1,19 +1,5 @@
 Ext.ns('Best.product');
 
-var supplierStore = Ext.create('Ext.data.Store', {
-    fields: ['id', 'supplier_name'],
-    autoLoad: true,
-    proxy: {
-        type: 'ajax',
-        url: '/supplier/getSupplierList',
-        reader: {
-            //totalProperty: 'total',
-            root: 'response',
-            type: 'json'
-        }
-    }
-});
-
 var supplierServiceStore = Ext.create('Ext.data.Store', {
     fields: ['id', 'service_name'],
     //autoLoad: true,

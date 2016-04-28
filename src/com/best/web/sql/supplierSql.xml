@@ -47,7 +47,7 @@
 
 	<!-- 供应商门店管理 -->
 	<select id="findSupplierOrgList" resultType="SupplierOrg">
-		select * from xzh_supplier_org
+		select org.*, supplier.supplier_name from xzh_supplier_org org left join xzh_supplier supplier on org.supplier_id = supplier.id
 	</select>
 
 	<insert id="insertSupplierOrg" parameterType="SupplierOrg">
@@ -97,7 +97,7 @@
 
 	<!-- 供应商服务管理 -->
 	<select id="findSupplierServiceList" resultType="SupplierService">
-		select * from xzh_supplier_service
+		select service.*, supplier.supplier_name from xzh_supplier_service service left join xzh_supplier supplier on service.supplier_id = supplier.id
 	</select>
 
 	<select id="findServiceListBySupplier" parameterType="String" resultType="SupplierService">

@@ -62,6 +62,7 @@ Tomtalk.IdcUI = Ext.extend(Ext.Panel, {
             header: "操作",
             dataIndex: 'id',
             align: 'center',
+            width: 130,
             xtype: 'actioncolumn',
             name: 'opertation',
             items: [{

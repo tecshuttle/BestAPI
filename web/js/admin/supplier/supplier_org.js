@@ -2,10 +2,10 @@ Ext.onReady(function () {
     var fields = ['id', 'name', 'password'];
     var columns = [
         {header: "ID", dataIndex: 'id', hidden: true},
-        {header: "供应商ID", dataIndex: 'supplier_id'},
-        {header: "门店名称", dataIndex: 'org_name'},
+        {header: "供应商", dataIndex: 'supplier_name', flex: 1},
+        {header: "门店名称", dataIndex: 'org_name', flex: 2},
         {
-            header: "激活状态", dataIndex: 'active_flag', align: 'center',
+            header: "激活状态", dataIndex: 'active_flag', align: 'center', width: 80,
             renderer: function (v, b, rec) {
                 if (v == 0) {
                     return '未激活';
@@ -17,7 +17,7 @@ Ext.onReady(function () {
             }
         },
         {
-            header: '是否有体检', dataIndex: 'has_physical', align: 'center',
+            header: '是否体检', dataIndex: 'has_physical', align: 'center', width: 80,
             renderer: function (v, b, rec) {
                 if (v == 'Y') {
                     return '有';
@@ -27,7 +27,7 @@ Ext.onReady(function () {
             }
         },
         {
-            header: '是否有洁牙', dataIndex: 'hat_tooth_care', align: 'center',
+            header: '是否洁牙', dataIndex: 'has_tooth_care', align: 'center', width: 80,
             renderer: function (v, b, rec) {
                 if (v == 'Y') {
                     return '有';
@@ -37,7 +37,7 @@ Ext.onReady(function () {
             }
         },
         {
-            header: '是否基因', dataIndex: 'has_gene', align: 'center',
+            header: '是否基因', dataIndex: 'has_gene', align: 'center', width: 80,
             renderer: function (v, b, rec) {
                 if (v == 'Y') {
                     return '有';
@@ -53,9 +53,14 @@ Ext.onReady(function () {
                 return data.province_id + data.city_id;
             }
         },
-        {header: '联系电话', dataIndex: 'contact_phone'},
-        {header: '评分', dataIndex: 'review_score'},
-        {header: "创建时间", dataIndex: 'create_date'}
+        {header: '联系电话', dataIndex: 'contact_phone', flex: 2},
+        {header: '评分', dataIndex: 'review_score', align: 'right', width: 70},
+        {
+            header: "创建时间", dataIndex: 'create_date',
+            renderer: function (v) {
+                return v.substr(0, 10);
+            }
+        }
     ];
 
 

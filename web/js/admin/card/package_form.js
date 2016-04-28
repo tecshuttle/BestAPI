@@ -29,7 +29,7 @@ Ext.define('Tomtalk.grid.FormUI', {
                         xtype: 'combo', fieldLabel: '激活标记', store: activeFlagStore, displayField: 'name',
                         valueField: 'active_flag', name: 'active_flag', queryMode: 'local'
                     },
-                    {xtype: 'textfield', fieldLabel: '套餐号', name: 'package_code', emptyText: '请输入…'}
+                    {xtype: 'numberfield', fieldLabel: '排列顺序', name: 'seq', minValue: 0, emptyText: '请输入…'}
                 ]
             },
             {

@@ -12,7 +12,7 @@ public class SupplierProduct {
     private String modify_date;
     private String active_flag;
     private String supplier_id;
-    private String supplier_name; //用表连接取值
+    private String supplier_name; //关联xzh_supplier
     private String service_code;
     private String service_name;
     private String service_type;

@@ -22,20 +22,6 @@ var activeFlagStore = Ext.create('Ext.data.Store', {
     ]
 });
 
-var companyStore = Ext.create('Ext.data.Store', {
-    fields: ['id', 'company_name'],
-    autoLoad: true,
-    proxy: {
-        type: 'ajax',
-        url: '/company/getList',
-        reader: {
-            root: 'response',
-            //totalProperty: 'total',
-            type: 'json'
-        }
-    }
-});
-
 var sexSelectStore = Ext.create('Ext.data.Store', {
     fields: ['sex_select', 'name'],
     data: [
@@ -100,6 +86,30 @@ var productRelTypeStore = Ext.create('Ext.data.Store', {
         {rel_type: 'DOCTOR_ACCOMPANY', name: '名医会诊'},
         {rel_type: 'DOCTOR_RESERVE', name: '名医预约'}
     ]
+});
+
+var companyStore = Ext.create('Ext.data.Store', {
+    fields: ['id', 'company_name'],
+    proxy: {
+        type: 'ajax',
+        url: '/company/getList',
+        reader: {
+            root: 'response',
+            type: 'json'
+        }
+    }
+});
+
+var supplierStore = Ext.create('Ext.data.Store', {
+    fields: ['id', 'supplier_name'],
+    proxy: {
+        type: 'ajax',
+        url: '/supplier/getSupplierList',
+        reader: {
+            root: 'response',
+            type: 'json'
+        }
+    }
 });
 
 //end file

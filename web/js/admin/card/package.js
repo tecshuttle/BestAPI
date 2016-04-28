@@ -2,10 +2,10 @@ Ext.onReady(function () {
     var fields = ['id', 'name', 'password'];
     var columns = [
         {header: "ID", dataIndex: 'id', hidden: true},
-        {header: "卡名", dataIndex: 'card_name'},
-        {header: "名称", dataIndex: 'package_name'},
+        {header: "卡名", dataIndex: 'card_name', flex: 1},
+        {header: "套餐名称", dataIndex: 'package_name', flex: 2},
         {
-            header: '激活状态', dataIndex: 'active_flag', align: 'center',
+            header: '激活状态', dataIndex: 'active_flag', align: 'center', width: 80,
             renderer: function (v, b, rec) {
                 if (v == 0) {
                     return '未激活';
@@ -17,7 +17,7 @@ Ext.onReady(function () {
             }
         },
         {
-            header: "性别要求", dataIndex: 'sex_select', align: 'center',
+            header: "性别要求", dataIndex: 'sex_select', align: 'center', width: 80,
             renderer: function (v, b, rec) {
                 if (v == 'ALL') {
                     return '全部';
@@ -30,7 +30,7 @@ Ext.onReady(function () {
                 }
             }
         },
-        {header: '服务总数', dataIndex: 'dtl_count', align: 'right'},
+        {header: '服务总数', dataIndex: 'dtl_count', align: 'right', width: 100},
         {
             header: "价格", dataIndex: 'price', align: 'right',
             renderer: function (val) {

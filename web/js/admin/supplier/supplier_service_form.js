@@ -24,8 +24,11 @@ Ext.define('Tomtalk.grid.FormUI', {
                 xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
                 items: [
                     {xtype: 'textfield', fieldLabel: '服务名称 ', name: 'service_name', margin: 0, allowBlank: false, emptyText: '请输入…'},
-                    {xtype: 'textfield', fieldLabel: '服务代码', name: 'service_code', allowBlank: false, emptyText: '请输入…'},
-                    {xtype: 'textfield', fieldLabel: '供应商ID', name: 'supplier_id', allowBlank: false, emptyText: '请输入…'},
+                    {
+                        xtype: 'combo', fieldLabel: '供应商', id: this.id + '_supplier_combo', store: supplierStore,
+                        displayField: 'supplier_name', valueField: 'id', name: 'supplier_id', queryMode: 'local'
+                    },
+                    {xtype: 'textfield', fieldLabel: '服务代码', name: 'service_code', emptyText: '请输入…'},
                     {
                         xtype: 'combo', fieldLabel: '服务类型', store: serviceTypeStore, displayField: 'name',
                         valueField: 'service_type', name: 'service_type', queryMode: 'local'
@@ -43,7 +46,7 @@ Ext.define('Tomtalk.grid.FormUI', {
                         valueField: 'status', name: 'status', queryMode: 'local'
                     },
                     {xtype: 'numberfield', fieldLabel: '市场价格', name: 'market_price', minValue: 0, emptyText: '请输入…'},
-                    {xtype: 'numberfield', fieldLabel: '采购价格', name: 'cost_price', minValue: 0, allowBlank: false, emptyText: '请输入…'}
+                    {xtype: 'numberfield', fieldLabel: '采购价格', name: 'cost_price', minValue: 0, emptyText: '请输入…'}
                 ]
             }, {
                 xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
@@ -89,6 +92,7 @@ Ext.define('Tomtalk.grid.FormAction', {
 
         Ext.apply(this.COMPONENTS, {
             recId: Ext.getCmp(this.id + '_rec_id'),
+            supplierCombo: Ext.getCmp(this.id + '_supplier_combo'),
             saveBtn: Ext.getCmp(this.id + '_save'),
             returnBtn: Ext.getCmp(this.id + '_return')
         });
@@ -110,6 +114,10 @@ Ext.define('Tomtalk.grid.FormAction', {
         if (this.up()) {
             this.up()._returnFrom();
         }
+    },
+
+    _loadSupplierCombo: function () {
+        this.COMPONENTS.supplierCombo.getStore().load();
     },
 
     _save: function () {

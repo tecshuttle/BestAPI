@@ -2,11 +2,11 @@ Ext.onReady(function () {
     var fields = ['id', 'name', 'password'];
     var columns = [
         {header: "ID", dataIndex: 'id', hidden: true},
-        {header: '发卡机构', dataIndex: 'company_name'},
-        {header: "卡名称", dataIndex: 'card_name'},
-        {header: "卡代号", dataIndex: 'card_code'},
+        {header: '发卡机构', dataIndex: 'company_name', flex: 1},
+        {header: "卡名称", dataIndex: 'card_name', flex: 1},
+        {header: "卡代号", dataIndex: 'card_code', align: 'center', width: 100},
         {
-            header: "卡类型", dataIndex: 'card_type', align: 'center',
+            header: "卡类型", dataIndex: 'card_type', align: 'center', width: 80,
             renderer: function (v, b, rec) {
                 if (v == 'REAL') {
                     return '实体卡';
@@ -18,7 +18,7 @@ Ext.onReady(function () {
             }
         },
         {
-            header: '有效期', dataIndex: 'valid_date_value', align: 'center',
+            header: '有效期', dataIndex: 'valid_date_value', align: 'center', width: 80,
             renderer: function (v, b, rec) {
                 var row = rec.data
                 var valid_type = row.valid_date_type;
@@ -34,7 +34,7 @@ Ext.onReady(function () {
             }
         },
         {
-            header: '激活标记', dataIndex: 'active_flag', align: 'center',
+            header: '激活标记', dataIndex: 'active_flag', align: 'center', width: 80,
             renderer: function (v, b, rec) {
                 if (v == 0) {
                     return '未激活';
@@ -52,7 +52,7 @@ Ext.onReady(function () {
                 return '￥' + out;
             }
         },
-        {header: '套餐总数', dataIndex: 'package_total', align: 'right'}
+        {header: '套餐总数', dataIndex: 'package_total', align: 'right', width: 100}
     ];
 
     new Ext.Viewport({

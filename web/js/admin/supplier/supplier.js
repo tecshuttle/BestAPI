@@ -1,24 +1,11 @@
 Ext.onReady(function () {
-    var fields = ['id', 'name', 'password'];
     var columns = [
         {header: "ID", dataIndex: 'id', hidden: true},
         {header: "名称", dataIndex: 'supplier_name'},
         {header: '简称', dataIndex: 'supplier_abbr'},
         {header: "代号", dataIndex: 'supplier_code'},
         {
-            header: '激活标记', dataIndex: 'active_flag',
-            renderer: function (v, b, rec) {
-                if (v == 0) {
-                    return '未激活';
-                } else if (v == 1) {
-                    return '已激活';
-                } else {
-                    return v;
-                }
-            }
-        },
-        {
-            header: '使用状态', dataIndex: 'status',
+            header: '使用状态', dataIndex: 'status', align: 'center',
             renderer: function (v, b, rec) {
                 if (v == 'INIT') {
                     return '储备';
@@ -33,7 +20,15 @@ Ext.onReady(function () {
                 }
             }
         },
-        {header: "创建时间", dataIndex: 'create_date'}
+        {header: "联络人", dataIndex: 'contact'},
+        {header: "联络人手机", dataIndex: 'contact_mobile'},
+        {header: "联络人邮箱", dataIndex: 'contact_mail'},
+        {
+            header: "创建时间", dataIndex: 'create_date',
+            renderer: function (v) {
+                return v.substr(0, 10);
+            }
+        }
     ];
 
 
@@ -43,8 +38,6 @@ Ext.onReady(function () {
         style: 'background-color: white;',
         items: [
             new Tomtalk.Idc({
-                module: 'admins',
-                fields: fields,
                 columns: columns
             })
         ]

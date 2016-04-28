@@ -24,7 +24,10 @@ Ext.define('Tomtalk.grid.FormUI', {
                 xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
                 items: [
                     {xtype: 'textfield', fieldLabel: '门店名字', name: 'org_name', margin: 0, allowBlank: false, emptyText: '请输入…'},
-                    {xtype: 'textfield', fieldLabel: '供应商ID', name: 'supplier_id', allowBlank: false, emptyText: '请输入…'},
+                    {
+                        xtype: 'combo', fieldLabel: '供应商', id: this.id + '_supplier_combo', store: supplierStore,
+                        displayField: 'supplier_name', valueField: 'id', name: 'supplier_id', queryMode: 'local'
+                    },
                     {
                         xtype: 'combo', fieldLabel: '激活标记', store: activeFlagStore, displayField: 'name',
                         valueField: 'active_flag', name: 'active_flag', queryMode: 'local'
@@ -70,10 +73,10 @@ Ext.define('Tomtalk.grid.FormUI', {
             {
                 xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
                 items: [
-                    {xtype: 'textfield', fieldLabel: '省', name: 'province_id', margin: 0, allowBlank: false, emptyText: '请输入…'},
-                    {xtype: 'textfield', fieldLabel: '市', name: 'city_id', allowBlank: false, emptyText: '请输入…'},
-                    {xtype: 'textfield', fieldLabel: '区', name: 'area_id', allowBlank: false, emptyText: '请输入…'},
-                    {xtype: 'textfield', fieldLabel: '地址', name: 'address', allowBlank: false, emptyText: '请输入…'}
+                    {xtype: 'textfield', fieldLabel: '省', name: 'province_id', margin: 0, emptyText: '请输入…'},
+                    {xtype: 'textfield', fieldLabel: '市', name: 'city_id', emptyText: '请输入…'},
+                    {xtype: 'textfield', fieldLabel: '区', name: 'area_id', emptyText: '请输入…'},
+                    {xtype: 'textfield', fieldLabel: '地址', name: 'address', emptyText: '请输入…'}
                 ]
             },
             {xtype: 'textarea', fieldLabel: '交通指引', name: 'traffic_guide', anchor: '100%', emptyText: '请输入…'},
@@ -97,6 +100,7 @@ Ext.define('Tomtalk.grid.FormAction', {
 
         Ext.apply(this.COMPONENTS, {
             recId: Ext.getCmp(this.id + '_rec_id'),
+            supplierCombo: Ext.getCmp(this.id + '_supplier_combo'),
             saveBtn: Ext.getCmp(this.id + '_save'),
             returnBtn: Ext.getCmp(this.id + '_return')
         });
@@ -120,13 +124,15 @@ Ext.define('Tomtalk.grid.FormAction', {
         }
     },
 
+    _loadSupplierCombo: function () {
+        this.COMPONENTS.supplierCombo.getStore().load();
+    },
+
     _save: function () {
         var me = this;
         var form = me;
         var $c = this.COMPONENTS;
         var recId = $c.recId.getValue();
-
-        console.log('result');
 
         if (form.isValid()) {
             form.getForm().submit({

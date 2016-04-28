@@ -2,10 +2,10 @@ Ext.onReady(function () {
     var fields = ['id', 'name', 'password'];
     var columns = [
         {header: "ID", dataIndex: 'id', hidden: true},
-        {header: '供应商ID', dataIndex: 'supplier_id'},
-        {header: '产品名称', dataIndex: 'service_name'},
+        {header: '供应商', dataIndex: 'supplier_name', flex: 1},
+        {header: '产品名称', dataIndex: 'service_name', flex: 2},
         {
-            header: '产品类型', dataIndex: 'service_type', align: 'center',
+            header: '产品类型', dataIndex: 'service_type', align: 'center', width: 80,
             renderer: function (v, b, rec) {
                 if (v == 'PHYSICAL') {
                     return '体检';
@@ -19,7 +19,7 @@ Ext.onReady(function () {
             }
         },
         {
-            header: '性别要求', dataIndex: 'sex_select', align: 'center',
+            header: '性别要求', dataIndex: 'sex_select', align: 'center', width: 80,
             renderer: function (v, b, rec) {
                 if (v == 'ALL') {
                     return '全部';
@@ -33,7 +33,7 @@ Ext.onReady(function () {
             }
         },
         {
-            header: '是否提供卡密', dataIndex: 'is_use_verify_code', align: 'center',
+            header: '提供卡密', dataIndex: 'is_use_verify_code', align: 'center', width: 80,
             renderer: function (v, b, rec) {
                 if (v == 'Y') {
                     return '提供';
@@ -43,7 +43,7 @@ Ext.onReady(function () {
             }
         },
         {
-            header: '激活标记', dataIndex: 'active_flag', align: 'center',
+            header: '激活标记', dataIndex: 'active_flag', align: 'center', width: 80,
             renderer: function (v, b, rec) {
                 if (v == 0) {
                     return '未激活';
@@ -55,7 +55,7 @@ Ext.onReady(function () {
             }
         },
         {
-            header: '状态', dataIndex: 'status', align: 'center',
+            header: '状态', dataIndex: 'status', align: 'center', width: 80,
             renderer: function (v, b, rec) {
                 if (v == 0) {
                     return '禁用';

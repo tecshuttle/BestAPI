@@ -9,7 +9,7 @@ public class SupplierOrg {
     private String modify_date;
     private String active_flag;
     private String supplier_id;
-    private String supplier_name; //用表连接取值
+    private String supplier_name; //关联xzh_supplier
     private String org_name;
     private String province_id;
     private String city_id;
