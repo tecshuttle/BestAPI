@@ -17,6 +17,7 @@ Tomtalk.IdcUI = Ext.extend(Ext.Panel, {
     initComponent: function () {
         var me = this;
         me.items = [
+            me._toolbar(),
             me._grid(),
             Ext.create('Tomtalk.grid.AccountForm', {
                 id: me.id + '_form',
@@ -37,6 +38,21 @@ Tomtalk.IdcUI = Ext.extend(Ext.Panel, {
         Tomtalk.IdcUI.superclass.initComponent.call(me);
     },
 
+
+    _toolbar: function () {
+        return {
+            xtype: 'fieldcontainer', layout: 'hbox', bodyPadding: 10,
+            id: this.id + '_toolbar',
+            items: [{
+                xtype: 'button', text: '新建', margin: '0 20 0 0', id: this.id + '_add'
+            }, {
+                xtype: 'combo', fieldLabel: '卡名', labelWidth: 40, id: this.id + '_card_combo',
+                store: cardStore, displayField: 'card_name', valueField: 'id', name: 'card_id', queryMode: 'local'
+            }]
+        }
+    },
+
+
     _grid: function () {
         var me = this;
 
@@ -47,9 +63,6 @@ Tomtalk.IdcUI = Ext.extend(Ext.Panel, {
             proxy: {
                 type: 'ajax',
                 url: '/card/getPackageList',
-                extraParams: {
-                    module: me.module
-                },
                 reader: {
                     type: 'json',
                     root: 'response',
@@ -87,17 +100,17 @@ Tomtalk.IdcUI = Ext.extend(Ext.Panel, {
             columnLines: true,
             store: store,
             columns: me.columns,
-            dockedItems: [
-                {
-                    xtype: 'toolbar',
-                    items: [
-                        {
-                            text: '新建',
-                            id: this.id + '_add'
-                        }
-                    ]
-                }
-            ],
+            /*dockedItems: [
+             {
+             xtype: 'toolbar',
+             items: [
+             {
+             text: '新建',
+             id: this.id + '_add'
+             }
+             ]
+             }
+             ],*/
             bbar: {
                 xtype: 'pagingtoolbar',
                 store: store,
@@ -128,21 +141,16 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
         Tomtalk.IdcAction.superclass.initComponent.call(this);
 
         Ext.apply(this.COMPONENTS, {
+            toolbar: Ext.getCmp(this.id + '_toolbar'),
             addBtn: Ext.getCmp(this.id + '_add'),
-            saveBtn: Ext.getCmp(this.id + '_save'),
-            returnBtn: Ext.getCmp(this.id + '_return'),
+            cardCombo: Ext.getCmp(this.id + '_card_combo'),
+
             grid: Ext.getCmp(this.id + '_grid'),
             form: Ext.getCmp(this.id + '_form'),
 
             //套餐服务管理
             packageGrid: Ext.getCmp(this.id + '_package_grid'),
-            packageForm: Ext.getCmp(this.id + '_package_form'),
-
-            queryForm: Ext.getCmp(this.id + '_query'),
-            id: Ext.getCmp(this.id + '_id'),
-            name: Ext.getCmp(this.id + '_name'),
-            query: Ext.getCmp(this.id + '_btn_query'),
-            reset: Ext.getCmp(this.id + '_btn_reset')
+            packageForm: Ext.getCmp(this.id + '_package_form')
         });
     },
 
@@ -154,26 +162,31 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
 
         this.on('boxready', me._afterrender, me);
         $c.addBtn.on('click', me._add, me);
+        $c.cardCombo.on('change', me._onChangeCardCombo, me);
+        $c.cardCombo.getStore().on('load', me._onLoadCardCombo, me);
     },
 
     _afterrender: function () {
-        var $c = this.COMPONENTS;
+        this.COMPONENTS.cardCombo.getStore().load();
     },
 
-    _delete: function (id) {
-        var me = this;
+    _onChangeCardCombo: function (combo, newValue, oldValue, eOpts) {
+        var store = this.COMPONENTS.grid.getStore();
+        var proxy = store.getProxy();
 
-        Ext.Ajax.request({
-            url: '/admin/gridDelete',
-            params: {
-                module: me.module,
-                id: id
-            },
-            success: function (res) {
-                var result = Ext.decode(res.responseText);
-                me.COMPONENTS.grid.getStore().reload();
-            }
-        });
+        if (newValue == 0) {
+            delete proxy.extraParams.card_id;
+        } else {
+            Ext.apply(proxy.extraParams, {
+                card_id: newValue
+            });
+        }
+
+        store.load();
+    },
+
+    _onLoadCardCombo: function (store, records, successful, eOpts) {
+        store.insert(0, [{id: 0, card_name: '全部'}]);
     },
 
     _add: function () {
@@ -188,6 +201,8 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
         var $c = this.COMPONENTS;
 
         $c.grid.hide();
+        $c.toolbar.hide();
+
         $c.form.getForm().setValues(rec.data);
         $c.form.show();
     },
@@ -196,6 +211,8 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
         var $c = this.COMPONENTS;
 
         $c.grid.hide();
+        $c.toolbar.hide();
+
         $c.packageGrid.loadList(rec.data);
         $c.packageGrid.show();
     },
@@ -206,11 +223,14 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
         $c.form.hide();
 
         $c.grid.show();
+        $c.toolbar.show();
+
         $c.grid.getStore().reload();
     },
 
     _return: function () {
         this.COMPONENTS.grid.show();
+        this.COMPONENTS.toolbar.show();
     }
 });
 

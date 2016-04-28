@@ -58,6 +58,10 @@ public class CardService {
         return CardDao.findCardPackageList();
     }
 
+    public List<CardPackage> findCardPackageList(String card_id) {
+        return CardDao.findCardPackageList(card_id);
+    }
+
     public List<CardPackage> findCardPackageListByCardId(String card_id) {
         return CardDao.findCardPackageListByCardId(card_id);
     }

@@ -112,9 +112,15 @@ public class CardController {
     }
 
     @RequestMapping(value = "getPackageList", method = RequestMethod.GET)
-    public void getPackageList(HttpServletRequest request, HttpServletResponse response, int start, int limit) throws Exception {
+    public void getPackageList(HttpServletRequest request, HttpServletResponse response, String card_id, int start, int limit) throws Exception {
         ExtListResponse<CardPackage> listResponse = new ExtListResponse<CardPackage>();
-        listResponse.setResponse(service.findCardPackageList(), start, limit);
+
+        if (card_id == null) {
+            listResponse.setResponse(service.findCardPackageList(), start, limit);
+        } else {
+            listResponse.setResponse(service.findCardPackageList(card_id), start, limit);
+        }
+
         AjaxUtil.sendJSON(response, listResponse);
     }
 
@@ -163,7 +169,6 @@ public class CardController {
         service.updateCardPackageDtl(model);
         AjaxUtil.sendJSON(response, genResponse);
     }
-
 
 
 }

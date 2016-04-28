@@ -112,4 +112,17 @@ var supplierStore = Ext.create('Ext.data.Store', {
     }
 });
 
+var cardStore = Ext.create('Ext.data.Store', {
+    fields: ['id', 'card_name'],
+    pageSize: 9999,
+    proxy: {
+        type: 'ajax',
+        url: '/card/getTypeList',
+        reader: {
+            root: 'response',
+            type: 'json'
+        }
+    }
+});
+
 //end file
