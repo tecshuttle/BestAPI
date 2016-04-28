@@ -193,6 +193,7 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
         var $c = this.COMPONENTS;
 
         $c.grid.hide();
+        $c.toolbar.hide();
         $c.form.getForm().reset();
         $c.form.show();
     },

@@ -20,14 +20,13 @@ Ext.define('Tomtalk.grid.FormUI', {
 
         me.items = [
             {xtype: 'hiddenfield', id: this.id + '_rec_id', name: 'id', value: 0},
-            {xtype: 'hiddenfield', fieldLabel: '健康卡ID', name: 'card_id'},
             {
                 xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
                 items: [
                     {xtype: 'textfield', fieldLabel: '名字', name: 'package_name', margin: 0, allowBlank: false, emptyText: '请输入…'},
                     {
-                        xtype: 'combo', fieldLabel: '激活标记', store: activeFlagStore, displayField: 'name',
-                        valueField: 'active_flag', name: 'active_flag', queryMode: 'local'
+                        xtype: 'combo', fieldLabel: '卡名', id: this.id + '_card_combo',
+                        store: cardStore, displayField: 'card_name', valueField: 'id', name: 'card_id', queryMode: 'local'
                     },
                     {xtype: 'numberfield', fieldLabel: '排列顺序', name: 'seq', minValue: 0, emptyText: '请输入…'}
                 ]
@@ -91,8 +90,6 @@ Ext.define('Tomtalk.grid.FormAction', {
         var form = me;
         var $c = this.COMPONENTS;
         var recId = $c.recId.getValue();
-
-        console.log('result');
 
         if (form.isValid()) {
             form.getForm().submit({
