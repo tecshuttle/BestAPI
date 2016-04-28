@@ -40,6 +40,7 @@
         <typeAlias type="com.best.web.model.admin.User" alias="User"/>
 
         <typeAlias type="com.best.web.model.admin.CardType" alias="CardType"/>
+        <typeAlias type="com.best.web.model.admin.CardPackageDtl" alias="CardPackageDtl"/>
         <typeAlias type="com.best.web.model.admin.Supplier" alias="Supplier"/>
         <typeAlias type="com.best.web.model.admin.SupplierOrg" alias="SupplierOrg"/>
         <typeAlias type="com.best.web.model.admin.SupplierProduct" alias="SupplierService"/>

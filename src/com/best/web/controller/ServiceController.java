@@ -4,6 +4,7 @@ package com.best.web.controller;
 import com.best.msg.ExtResponse;
 import com.best.msg.GenResponse;
 import com.best.msg.ExtListResponse;
+import com.best.web.model.admin.CardPackageDtl;
 import com.best.web.model.admin.ProdService;
 import com.best.web.model.admin.ProdServiceMap;
 import com.best.util.AjaxUtil;
@@ -50,6 +51,15 @@ public class ServiceController {
             ProdService CSM = service.getCountServiceMap(row.getId());
             row.setCount_service_map(CSM.getCount_service_map());
         }
+
+        AjaxUtil.sendJSON(response, listResponse);
+    }
+
+
+    @RequestMapping(value = "getProdServiceListByPackageId", method = RequestMethod.GET)
+    public void getProdServiceListByPackageId(HttpServletRequest request, HttpServletResponse response, String package_id, int start, int limit) throws Exception {
+        ExtListResponse<CardPackageDtl> listResponse = new ExtListResponse<CardPackageDtl>();
+        listResponse.setResponse(service.findProdServiceListByPackageId(package_id), start, limit);
 
         AjaxUtil.sendJSON(response, listResponse);
     }

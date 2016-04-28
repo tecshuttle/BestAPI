@@ -1,5 +1,6 @@
 package com.best.web.dao;
 
+import com.best.web.model.admin.CardPackageDtl;
 import com.best.web.model.admin.ProdService;
 import com.best.web.model.admin.ProdServiceMap;
 
@@ -8,6 +9,8 @@ import java.util.List;
 public interface ProductDao {
     //产品管理 - 服务
     public List<ProdService> findProdServiceList();
+
+    public List<CardPackageDtl> findProdServiceListByPackageId(String package_id);
 
     public void insertProdService(ProdService model);
 

@@ -1,25 +1,12 @@
 Ext.ns('Best.product');
 
-var supplierStore = Ext.create('Ext.data.Store', {
-    fields: ['id', 'supplier_name'],
-    autoLoad: true,
-    proxy: {
-        type: 'ajax',
-        url: '/supplier/getSupplierList',
-        reader: {
-            //totalProperty: 'total',
-            root: 'response',
-            type: 'json'
-        }
-    }
-});
-
-var supplierServiceStore = Ext.create('Ext.data.Store', {
+var productServiceStore = Ext.create('Ext.data.Store', {
     fields: ['id', 'service_name'],
-    //autoLoad: true,
+    autoLoad: true,
+    pageSize: 9999,
     proxy: {
         type: 'ajax',
-        url: '/supplier/getServiceListBySupplier',
+        url: '/service/getProdServiceList',
         reader: {
             //totalProperty: 'total',
             root: 'response',
@@ -57,31 +44,19 @@ Ext.define('Best.product.packageFormUI', {
 
         me.items = [
             {xtype: 'hiddenfield', id: this.id + '_rec_id', name: 'id', value: 0},
-            {
-                xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
-                items: [
-                    {xtype: 'textfield', fieldLabel: '名字', name: 'package_name', margin: 0, allowBlank: false, emptyText: '请输入…'},
-                    {xtype: 'textfield', fieldLabel: '健康卡ID', name: 'card_id', allowBlank: false, emptyText: '请输入…'},
-                    {
-                        xtype: 'combo', fieldLabel: '激活标记', store: activeFlagStore, displayField: 'name',
-                        valueField: 'active_flag', name: 'active_flag', queryMode: 'local'
-                    },
-                    {xtype: 'textfield', fieldLabel: '套餐号', name: 'package_code', allowBlank: false, emptyText: '请输入…'}
-                ]
-            },
+            {xtype: 'hiddenfield', fieldLabel: '套餐ID', name: 'package_id'},
             {
                 xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
                 items: [
                     {
-                        xtype: 'combo', fieldLabel: '性别要求', store: sexSelectStore, displayField: 'name', margin: '0 0 0 0',
-                        valueField: 'sex_select', name: 'sex_select', queryMode: 'local'
+                        xtype: 'combo', fieldLabel: '服务', store: productServiceStore, displayField: 'service_name', margin: '0 0 0 0',
+                        valueField: 'id', name: 'service_id', queryMode: 'local'
                     },
-                    {xtype: 'numberfield', fieldLabel: '服务总数', name: 'dtl_count', minValue: 0, allowBlank: false, emptyText: '请输入…'},
-                    {xtype: 'numberfield', fieldLabel: '价格', name: 'price', minValue: 0, emptyText: '请输入…'},
+                    {xtype: 'displayfield'},
+                    {xtype: 'displayfield'},
                     {xtype: 'displayfield'}
                 ]
             },
-            {xtype: 'textarea', fieldLabel: '说明', name: 'intro', anchor: '100%', allowBlank: false, emptyText: '请输入…'},
             {xtype: 'button', text: '保存', id: this.id + '_save', width: 100},
             {xtype: 'button', text: '返回', id: this.id + '_return', style: 'margin-left: 50px;', width: 100}
         ];
@@ -152,7 +127,7 @@ Ext.define('Best.product.packageFormAction', {
 
         if (form.isValid()) {
             form.getForm().submit({
-                url: '/card/' + (recId == 0 ? 'insertPackage' : 'updatePackage'),   //后台处理的页面
+                url: '/card/' + (recId == 0 ? 'insertPackageDtl' : 'updatePackageDtl'),   //后台处理的页面
                 submitEmptyText: false,
                 success: function (fp, o) {
                     var result = Ext.decode(o.response.responseText);

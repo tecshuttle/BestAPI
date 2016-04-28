@@ -23,7 +23,8 @@ public class ProdService {
     private String price;
     private String intro;
     private String count_service_map; //所属产品数
-
+    private String package_id; //关联xzh_card_package_dtl
+    private String dtl_id; //关联xzh_card_package_dtl
 
     public String getId() {
         return id;
@@ -153,9 +154,29 @@ public class ProdService {
         this.intro = value;
     }
 
-    public String getCount_service_map() { return count_service_map; }
+    public String getCount_service_map() {
+        return count_service_map;
+    }
 
-    public void setCount_service_map(String value) { this.count_service_map = value; }
+    public void setCount_service_map(String value) {
+        this.count_service_map = value;
+    }
+
+    public String getPackage_id() {
+        return package_id;
+    }
+
+    public void setPackage_id(String value) {
+        this.package_id = value;
+    }
+
+    public String getDtl_id() {
+        return dtl_id;
+    }
+
+    public void setDtl_id(String value) {
+        this.dtl_id = value;
+    }
 }
 
 //end file

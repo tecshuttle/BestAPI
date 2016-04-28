@@ -137,4 +137,20 @@
 		active_flag = '0'
 		where id = #{id}
 	</update>
+
+
+	<!-- 卡套餐服务管理 -->
+	<insert id="insertCardPackageDtl" parameterType="CardPackageDtl">
+		insert into xzh_card_package_dtl
+		( id, package_id, service_id )
+		values
+		( sys_guid(), #{package_id}, #{service_id} )
+	</insert>
+
+	<update id="updateCardPackageDtl" parameterType="CardPackageDtl">
+		update xzh_card_package_dtl
+		set package_id = #{package_id},
+		    service_id = #{service_id}
+		where id = #{id}
+	</update>
 </mapper>

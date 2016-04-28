@@ -7,6 +7,7 @@ import com.best.msg.GenResponse;
 import com.best.msg.ListResponse;
 import com.best.util.AjaxUtil;
 import com.best.web.model.admin.CardType;
+import com.best.web.model.admin.CardPackageDtl;
 import com.best.web.model.cust.CardPackage;
 import com.best.web.model.order.CardNo;
 import com.best.web.service.CardService;
@@ -141,6 +142,30 @@ public class CardController {
         genResponse.setResponse(cardType.getId());
         AjaxUtil.sendJSON(response, genResponse);
     }
+
+
+    /**
+     * 卡套餐 - 服务
+     * 仅两个接口
+     */
+    @RequestMapping(value = "insertPackageDtl", method = RequestMethod.POST)
+    public void insertPackageDtl(HttpServletRequest request, HttpServletResponse response, CardPackageDtl model, BindingResult result) throws Exception {
+        GenResponse<String> genResponse = new GenResponse<String>();
+        service.insertCardPackageDtl(model);
+        genResponse.setResponse(model.getId());
+        AjaxUtil.sendJSON(response, genResponse);
+    }
+
+
+    @RequestMapping(value = "updatePackageDtl", method = RequestMethod.POST)
+    public void updatePackageDtl(HttpServletRequest request, HttpServletResponse response, CardPackageDtl model, BindingResult result) throws Exception {
+        ExtResponse<String> genResponse = new ExtResponse<String>();
+        service.updateCardPackageDtl(model);
+        AjaxUtil.sendJSON(response, genResponse);
+    }
+
+
+
 }
 
 //end file

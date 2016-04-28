@@ -1,6 +1,7 @@
 package com.best.web.dao.impl;
 
 import com.best.web.dao.ProductDao;
+import com.best.web.model.admin.CardPackageDtl;
 import com.best.web.model.admin.ProdService;
 import com.best.web.model.admin.ProdServiceMap;
 import org.apache.ibatis.session.SqlSession;
@@ -17,6 +18,10 @@ public class ProductDaoImpl implements ProductDao {
     //产品管理 - 服务
     public List<ProdService> findProdServiceList() {
         return sqlSession.selectList("productSql.findProdServiceList");
+    }
+
+    public List<CardPackageDtl> findProdServiceListByPackageId(String package_id) {
+        return sqlSession.selectList("productSql.findProdServiceListByPackageId", package_id);
     }
 
     public void insertProdService(ProdService model) {

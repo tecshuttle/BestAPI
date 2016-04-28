@@ -1,6 +1,7 @@
 package com.best.web.dao;
 
 import com.best.web.model.admin.CardType;
+import com.best.web.model.admin.CardPackageDtl;
 import com.best.web.model.order.CardNo;
 import com.best.web.model.cust.CardPackage;
 
@@ -38,6 +39,12 @@ public interface CardDao {
     public void updateCardPackage(CardPackage model);
 
     public void deleteCardPackage(CardPackage model);
+
+
+    //卡套餐 - 服务管理
+    public void insertCardPackageDtl(CardPackageDtl model);
+
+    public void updateCardPackageDtl(CardPackageDtl model);
 }
 
 //end file

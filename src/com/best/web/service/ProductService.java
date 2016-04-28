@@ -3,6 +3,7 @@ package com.best.web.service;
 import com.best.util.BasicUtil;
 import com.best.web.dao.ProductDao;
 import com.best.web.model.admin.ProdService;
+import com.best.web.model.admin.CardPackageDtl;
 
 import com.best.web.model.admin.ProdServiceMap;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,10 @@ public class ProductService {
     //供应商务管理
     public List<ProdService> findProdServiceList() {
         return ProductDao.findProdServiceList();
+    }
+
+    public List<CardPackageDtl> findProdServiceListByPackageId(String package_id) {
+        return ProductDao.findProdServiceListByPackageId(package_id);
     }
 
     public void insertProdService(ProdService model) {

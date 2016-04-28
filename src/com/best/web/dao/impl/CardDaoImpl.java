@@ -2,6 +2,7 @@ package com.best.web.dao.impl;
 
 import com.best.web.dao.CardDao;
 import com.best.web.model.admin.CardType;
+import com.best.web.model.admin.CardPackageDtl;
 import com.best.web.model.order.CardNo;
 import com.best.web.model.cust.CardPackage;
 import org.apache.ibatis.session.RowBounds;
@@ -74,6 +75,16 @@ public class CardDaoImpl implements CardDao {
 
     public void deleteCardPackage(CardPackage model) {
         sqlSession.insert("cardSql.deleteCardPackage", model);
+    }
+
+
+    //卡套餐 - 服务管理
+    public void insertCardPackageDtl(CardPackageDtl model) {
+        sqlSession.insert("cardSql.insertCardPackageDtl", model);
+    }
+
+    public void updateCardPackageDtl(CardPackageDtl model) {
+        sqlSession.insert("cardSql.updateCardPackageDtl", model);
     }
 }
 

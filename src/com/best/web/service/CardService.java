@@ -3,6 +3,7 @@ package com.best.web.service;
 import com.best.util.BasicUtil;
 import com.best.web.dao.CardDao;
 import com.best.web.model.admin.CardType;
+import com.best.web.model.admin.CardPackageDtl;
 import com.best.web.model.cust.CardPackage;
 import com.best.web.model.order.CardNo;
 import org.springframework.stereotype.Service;
@@ -72,6 +73,17 @@ public class CardService {
 
     public void deleteCardPackage(CardPackage model) {
         CardDao.deleteCardPackage(model);
+    }
+
+
+    //卡套餐 - 服务管理
+    public void insertCardPackageDtl(CardPackageDtl model) {
+        model.setId(BasicUtil.generateId());
+        CardDao.insertCardPackageDtl(model);
+    }
+
+    public void updateCardPackageDtl(CardPackageDtl model) {
+        CardDao.updateCardPackageDtl(model);
     }
 }
 

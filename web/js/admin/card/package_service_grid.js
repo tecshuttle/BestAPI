@@ -32,7 +32,7 @@ Best.product.packageGridUI = Ext.extend(Ext.grid.GridPanel, {
         var store = Ext.create('Ext.data.Store', {
             //autoLoad: true,
             pageSize: 20,
-            fields: me.fields,
+            //fields: me.fields,
             proxy: {
                 type: 'ajax',
                 url: '/service/getProdServiceListByPackageId',
@@ -99,18 +99,6 @@ Best.product.packageGridUI = Ext.extend(Ext.grid.GridPanel, {
                         return '男';
                     } else if (v == 'F') {
                         return '女';
-                    } else {
-                        return v;
-                    }
-                }
-            },
-            {
-                header: "激活状态", dataIndex: 'active_flag', align: 'center',
-                renderer: function (v, b, rec) {
-                    if (v == 0) {
-                        return '未激活';
-                    } else if (v == 1) {
-                        return '已激活';
                     } else {
                         return v;
                     }
@@ -217,6 +205,10 @@ Best.product.packageGridAction = Ext.extend(Best.product.packageGridUI, {
         var form = this.parent.COMPONENTS.packageForm;
 
         this.hide();
+        //rec.data.service_id = rec.data.id;
+        //rec.data.id = rec.data.dtl_id;
+
+        //console.log(rec.data)
 
         form.getForm().setValues(rec.data);
         form.show();
