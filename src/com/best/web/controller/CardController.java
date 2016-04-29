@@ -1,6 +1,8 @@
 package com.best.web.controller;
 
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.best.msg.ExtListResponse;
 import com.best.msg.ExtResponse;
 import com.best.msg.GenResponse;
@@ -8,6 +10,7 @@ import com.best.msg.ListResponse;
 import com.best.util.AjaxUtil;
 import com.best.web.model.admin.CardType;
 import com.best.web.model.admin.CardPackageDtl;
+import com.best.web.model.admin.CardNoBatch;
 import com.best.web.model.cust.CardPackage;
 import com.best.web.model.order.CardNo;
 import com.best.web.service.CardService;
@@ -20,6 +23,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Random;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/card")
@@ -97,6 +102,73 @@ public class CardController {
         service.insertCardNo(cardType);
         genResponse.setResponse(cardType.getId());
         AjaxUtil.sendJSON(response, genResponse);
+    }
+
+
+    @RequestMapping(value = "/insertCardNoBatch", method = RequestMethod.POST)
+    public void insertCardNoBatch(HttpServletRequest request, HttpServletResponse response, CardNoBatch batch) throws Exception {
+        GenResponse<String> genResponse = new GenResponse<String>();
+        String json = JSON.toJSONString(batch, SerializerFeature.WriteMapNullValue);
+
+        int amount = batch.getAmount();
+
+        //生成卡号
+        for (int i = 0; i < amount; i++) {
+            CardNo newNo = new CardNo();
+
+            newNo.setCard_no(newCardNo());
+            newNo.setCard_code(RandomString(6, batch.getCard_code_type()));
+            newNo.setCard_no_type(batch.getCard_no_type());
+            newNo.setDept_id(batch.getDept_id());
+            newNo.setDept2_id(batch.getDept2_id());
+            newNo.setBatch_id(batch.getBatch_id());
+
+            service.insertCardNo(newNo);
+
+            //String json_newNo = JSON.toJSONString(newNo, SerializerFeature.WriteMapNullValue);
+            //System.out.println(json_newNo);
+        }
+
+        AjaxUtil.sendJSON(response, genResponse);
+    }
+
+    private String newCardNo() {
+        //判断卡号是否存在
+        return guid();
+
+        //按卡规则生成卡号
+    }
+
+    private boolean isNoExist(String CardNo) {
+        return false;
+    }
+
+    private String RandomString(int length, String type) {
+        String number = "0123456789";
+        String str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        Random random = new Random();
+        StringBuffer sb = new StringBuffer();
+
+        for (int i = 0; i < length; i++) {
+            if (type.equals("number")) {
+                int num = random.nextInt(number.length());
+                sb.append(number.charAt(num));
+            } else {
+                int num = random.nextInt(str.length());
+                sb.append(str.charAt(num));
+            }
+        }
+
+        return sb.toString();
+    }
+
+    private String guid() {
+        UUID uuid = UUID.randomUUID();
+        String str = uuid.toString();
+
+        // 去掉"-"符号
+        String temp = str.substring(0, 8) + str.substring(9, 13) + str.substring(14, 18) + str.substring(19, 23) + str.substring(24);
+        return temp;
     }
 
 

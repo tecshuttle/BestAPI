@@ -32,17 +32,30 @@ Ext.define('Best.card.BatchFormUI', {
                 items: [
                     {
                         xtype: 'combo', fieldLabel: '发卡机构', id: this.id + '_company_combo', store: companyStore,
-                        displayField: 'company_name', margin: 0, valueField: 'id', name: 'dept_id', allowBlank: false, queryMode: 'local'
+                        displayField: 'company_name', margin: 0, valueField: 'id', name: 'company_id', allowBlank: false, queryMode: 'local'
                     },
                     {
-                        xtype: 'combo', fieldLabel: '下级部门', store: companyStore, displayField: 'company_name',
+                        xtype: 'combo', fieldLabel: '卡名称', store: companyStore, displayField: 'company_name',
+                        valueField: 'id', name: 'dept2_id', allowBlank: false, queryMode: 'local'
+                    },
+                    {xtype: 'displayfield'}
+                ]
+            },
+            {
+                xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
+                items: [
+                    {
+                        xtype: 'combo', fieldLabel: '一级部门', store: companyStore, displayField: 'company_name',
+                        valueField: 'id', name: 'dept1_id', margin: 0, allowBlank: false, queryMode: 'local'
+                    },
+                    {
+                        xtype: 'combo', fieldLabel: '二级部门', store: companyStore, displayField: 'company_name',
                         valueField: 'id', name: 'dept2_id', queryMode: 'local'
                     },
-                    {
-                        xtype: 'displayfield'
-                    }
+                    {xtype: 'displayfield'}
                 ]
-            }, {
+            },
+            {
                 xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
                 items: [
                     {
@@ -53,10 +66,18 @@ Ext.define('Best.card.BatchFormUI', {
                         xtype: 'combo', fieldLabel: '卡密规则', store: cardCodeTypeStore, displayField: 'name',
                         valueField: 'code_type', name: 'card_code_type', allowBlank: false, queryMode: 'local'
                     },
-                    {xtype: 'numberfield', fieldLabel: '卡数量', name: 'amount', minValue: 0, allowBlank: false, emptyText: '请输入…'}
+                    {xtype: 'displayfield'}
                 ]
             },
-            {xtype: 'textarea', fieldLabel: '批次号', name: 'batch_id', anchor: '100%', allowBlank: false, emptyText: '请输入…'},
+            {
+                xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
+                items: [
+                    {xtype: 'numberfield', fieldLabel: '发卡数量', name: 'amount', minValue: 0, margin: 0, allowBlank: false, emptyText: '请输入…'},
+                    {xtype: 'displayfield'},
+                    {xtype: 'displayfield'}
+                ]
+            },
+            {xtype: 'textarea', fieldLabel: '批次说明', name: 'batch_id', anchor: '100%', allowBlank: false, emptyText: '请输入…'},
             {xtype: 'button', text: '保存', id: this.id + '_save', width: 100},
             {xtype: 'button', text: '返回', id: this.id + '_return', style: 'margin-left: 50px;', width: 100}
         ];

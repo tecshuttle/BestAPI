@@ -78,6 +78,7 @@ Tomtalk.IdcUI = Ext.extend(Ext.Panel, {
                 xtype: 'toolbar',
                 items: [{
                     text: '新建',
+                    hidden: true,
                     id: this.id + '_add'
                 }, {
                     text: '批量新建',
@@ -161,7 +162,7 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
         $c.form.getForm().reset();
         $c.form.show();
     },
-    
+
     _add_batch: function () {
         var $c = this.COMPONENTS;
 

@@ -20,6 +20,8 @@ public class CardNo {
     private String verify_count;
     private String rel_order_id;
     private String dept_id;
+    private String dept2_id;
+    private String batch_id;
     private String company_name;
     private String memo;
     private String cardNo;  //接口用
@@ -160,6 +162,14 @@ public class CardNo {
     public void setDept_id(String value) {
         this.dept_id = value;
     }
+
+    public String getDept2_id() { return dept2_id; }
+
+    public void setDept2_id(String value) { this.dept2_id = value; }
+
+    public String getBatch_id() { return batch_id; }
+
+    public void setBatch_id(String value) { this.batch_id = value; }
 
     public String getCompany_name() { return company_name; }
 
