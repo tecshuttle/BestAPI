@@ -14,6 +14,9 @@ import com.best.web.model.admin.CardNoBatch;
 import com.best.web.model.cust.CardPackage;
 import com.best.web.model.order.CardNo;
 import com.best.web.service.CardService;
+import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +26,10 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.util.Date;
 import java.util.Random;
 import java.util.UUID;
 
@@ -169,6 +176,36 @@ public class CardController {
         // 去掉"-"符号
         String temp = str.substring(0, 8) + str.substring(9, 13) + str.substring(14, 18) + str.substring(19, 23) + str.substring(24);
         return temp;
+    }
+
+
+    @RequestMapping(value = "batchCardNoExport", method = RequestMethod.GET)
+    public void batchCardNoExport(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        //ExtListResponse<CardNo> listResponse = new ExtListResponse<CardNo>();
+        //listResponse.setResponse(service.findCardNoList(), start, limit);
+
+        // 创建Excel的工作书册 Workbook,对应到一个excel文档
+        HSSFWorkbook wb = new HSSFWorkbook();
+
+        // 创建Excel的工作sheet,对应到一个excel文档的tab
+        HSSFSheet sheet = wb.createSheet("sheet1");
+
+        HSSFRow row;
+        HSSFCell cell;
+
+        for (int i = 0; i < 60000; i++) {
+            row = sheet.createRow(i); // 创建Excel的sheet的一行
+            for (int j = 0; j < 30; j++) {
+                cell = row.createCell(j); // 创建一个Excel的单元格
+                cell.setCellValue("hello world " + i + " " + j);
+            }
+        }
+
+        FileOutputStream os = new FileOutputStream("e://workbook.xls");
+        wb.write(os);
+        os.close();
+
+        //AjaxUtil.sendJSON(response, listResponse);
     }
 
 
