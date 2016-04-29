@@ -1,4 +1,4 @@
-<%@page session="true"%>
+<%@page session="true" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 
 
@@ -29,6 +29,12 @@
         }
 
         /* text for actioncolumn end */
+
+        /* 发现一个displayfield的bug */
+        .x-form-display-field-default {
+            margin-top: 0px;
+            padding-top: 8px;
+        }
     </style>
 </head>
 
@@ -39,6 +45,7 @@
 <script src="/js/admin/common.js"></script>
 <script src="/js/admin/card/card_no_grid.js"></script>
 <script src="/js/admin/card/card_no_form.js"></script>
+<script src="/js/admin/card/card_no_batch_form.js"></script>
 <script src="/js/admin/card/card_no.js"></script>
 
 </html>

@@ -35,8 +35,8 @@ Ext.define('Tomtalk.grid.FormUI', {
                         valueField: 'cardType', name: 'card_no_type', queryMode: 'local', flex: 1
                     },
                     {
-                        xtype: 'combo', fieldLabel: '发卡机构', store: companyStore, displayField: 'company_name',
-                        valueField: 'id', name: 'dept_id', queryMode: 'local', flex: 1
+                        xtype: 'combo', fieldLabel: '发卡机构', id: this.id + '_company_combo',store: companyStore, 
+                        displayField: 'company_name', valueField: 'id', name: 'dept_id', queryMode: 'local', flex: 1
                     }
                 ]
             }, {
@@ -82,6 +82,7 @@ Ext.define('Tomtalk.grid.FormAction', {
 
         Ext.apply(this.COMPONENTS, {
             recId: Ext.getCmp(this.id + '_rec_id'),
+            companyCombo: Ext.getCmp(this.id + '_company_combo'),
             saveBtn: Ext.getCmp(this.id + '_save'),
             returnBtn: Ext.getCmp(this.id + '_return')
         });
@@ -92,9 +93,15 @@ Ext.define('Tomtalk.grid.FormAction', {
         var $c = this.COMPONENTS;
 
         Tomtalk.grid.FormAction.superclass.initEvents.call(me);
-
+        
+        this.on('boxready', me._afterrender, me);
+        
         $c.saveBtn.on('click', me._save, me);
         $c.returnBtn.on('click', me._return, me);
+    },
+
+    _afterrender: function () {
+        this.COMPONENTS.companyCombo.getStore().load();
     },
 
     _return: function () {
