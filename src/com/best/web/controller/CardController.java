@@ -2,6 +2,7 @@ package com.best.web.controller;
 
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.IntegerCodec;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.best.msg.ExtListResponse;
 import com.best.msg.ExtResponse;
@@ -14,6 +15,7 @@ import com.best.web.model.admin.CardNoBatch;
 import com.best.web.model.cust.CardPackage;
 import com.best.web.model.order.CardNo;
 import com.best.web.service.CardService;
+import org.apache.logging.log4j.Logger;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -29,6 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.Random;
 import java.util.UUID;
@@ -61,6 +64,14 @@ public class CardController {
         }
 
         AjaxUtil.sendJSON(response, listResponse);
+    }
+
+
+    @RequestMapping(value = "getTypeById", method = RequestMethod.GET)
+    public void getTypeById(HttpServletRequest request, HttpServletResponse response, String id) throws Exception {
+        GenResponse<CardType> genResponse = new GenResponse<CardType>();
+        genResponse.setResponse(service.findCardTypeById(id));
+        AjaxUtil.sendJSON(response, genResponse);
     }
 
 
@@ -120,40 +131,57 @@ public class CardController {
 
     @RequestMapping(value = "/insertCardNoBatch", method = RequestMethod.POST)
     public void insertCardNoBatch(HttpServletRequest request, HttpServletResponse response, CardNoBatch batch) throws Exception {
-        GenResponse<String> genResponse = new GenResponse<String>();
-        String json = JSON.toJSONString(batch, SerializerFeature.WriteMapNullValue);
+        //取卡信息，获取卡号生成规则
+        CardType card = service.findCardTypeById(batch.getCard_id());
 
-        int amount = batch.getAmount();
+        //登记批次记录
+
+        //获取最大卡号流水
+        CardType card_max_card_sn = service.findMaxCardSn(card.getCard_no_prefix());
+        int card_no_max = Integer.parseInt(card_max_card_sn.getMax_sn()) + 1;
 
         //生成卡号
+        int amount = batch.getAmount();
         for (int i = 0; i < amount; i++) {
+            String card_code = RandomString(card.getCard_code_length(), batch.getCard_code_type());
+            String card_sn = new DecimalFormat(repeat("0", card.getCard_no_sn_length())).format(card_no_max + i);
+            String card_no = card.getCard_no_prefix() + card_sn;
+
             CardNo newNo = new CardNo();
 
-            newNo.setCard_no(newCardNo());
-            newNo.setCard_code(RandomString(6, batch.getCard_code_type()));
+            newNo.setCard_id(batch.getCard_id());
+            newNo.setCard_no(newCardNo(card_no));
+            newNo.setCard_code(card_code);
             newNo.setCard_no_type(batch.getCard_no_type());
             newNo.setDept_id(batch.getDept_id());
             newNo.setDept2_id(batch.getDept2_id());
+            newNo.setActive_flag("1");
+            newNo.setStatus("1");
+
             newNo.setBatch_id(batch.getBatch_id());
 
             service.insertCardNo(newNo);
-
-            //String json_newNo = JSON.toJSONString(newNo, SerializerFeature.WriteMapNullValue);
-            //System.out.println(json_newNo);
         }
 
+        GenResponse<String> genResponse = new GenResponse<String>();
         AjaxUtil.sendJSON(response, genResponse);
+
     }
 
-    private String newCardNo() {
+    private String repeat(String chr, int n) {
+        String str = "";
+
+        for (int i = 0; i < n; i++) {
+            str += chr;
+        }
+
+        return str;
+    }
+
+    private String newCardNo(String card_no) {
         //判断卡号是否存在
-        return guid();
 
-        //按卡规则生成卡号
-    }
-
-    private boolean isNoExist(String CardNo) {
-        return false;
+        return card_no;
     }
 
     private String RandomString(int length, String type) {
@@ -284,8 +312,6 @@ public class CardController {
         service.updateCardPackageDtl(model);
         AjaxUtil.sendJSON(response, genResponse);
     }
-
-
 }
 
 //end file

@@ -9,6 +9,16 @@
 		left join pf_company2 company on card.company_id = company.id
 	</select>
 
+    <select id="findCardTypeById" parameterType="String" resultType="CardType">
+		select * from XZH_CARD where id = #{id}
+	</select>
+
+    <select id="findMaxCardSn" parameterType="Map" resultType="CardType">
+        select * from (
+            select card_no, SUBSTR(card_no, #{card_no_prefix_length}) as max_sn from xzh_card_no where card_no like #{card_no_prefix} || '%' order by max_sn desc
+        ) where rownum = 1
+	</select>
+
     <select id="findCardTypeListByCompany" parameterType="String" resultType="CardType">
 		select card.*, company.company_name
 		from XZH_CARD card
@@ -69,17 +79,19 @@
 		select no.*, company.company_name from xzh_card_no no left join pf_company2 company on no.dept_id = company.id
 	</select>
 
+
     <insert id="insertCardNo" parameterType="CardNo">
 		insert into xzh_card_no
-		( id, active_flag, card_no, card_code, card_no_type, open_date, close_date, status,
-		  verify_count, rel_order_id, dept_id, memo
+		( id, active_flag, card_id, card_no, card_code, card_no_type, open_date, close_date, status,
+		  verify_count, rel_order_id, dept_id, dept2_id, memo
         )
 		values
-		( sys_guid(),  #{active_flag}, #{card_no}, #{card_code}, #{card_no_type},
+		( sys_guid(), #{active_flag}, #{card_id}, #{card_no}, #{card_code}, #{card_no_type},
 		  to_date(#{open_date},'yyyy/mm/dd HH24:MI:SS'), to_date(#{close_date},'yyyy/mm/dd HH24:MI:SS'),
-		  #{status}, #{verify_count}, #{rel_order_id}, #{dept_id}, #{memo}
+		  #{status}, #{verify_count}, #{rel_order_id}, #{dept_id}, #{dept2_id}, #{memo}
 		)
 	</insert>
+
 
     <update id="updateCardNo" parameterType="CardNo">
 		update xzh_card_no

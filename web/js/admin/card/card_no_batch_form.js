@@ -51,8 +51,8 @@ var companyDept2Store = Ext.create('Ext.data.Store', {
 var cardCodeTypeStore = Ext.create('Ext.data.Store', {
     fields: ['code_type', 'name'],
     data: [
-        {code_type: 'number', name: '6位随机数字'},
-        {code_type: 'number_and_letter', name: '6位随机数字字母组合'}
+        {code_type: 'number', name: '随机数字'},
+        {code_type: 'number_and_letter', name: '随机数字字母组合'}
     ]
 });
 
@@ -94,7 +94,7 @@ Ext.define('Best.card.BatchFormUI', {
                 items: [
                     {
                         xtype: 'combo', fieldLabel: '一级部门', id: this.id + '_dept1_combo', store: companyDept1Store,
-                        displayField: 'company_name', valueField: 'id', name: 'dept1_id', margin: 0, queryMode: 'local'
+                        displayField: 'company_name', valueField: 'id', name: 'dept_id', margin: 0, queryMode: 'local'
                     },
                     {
                         xtype: 'combo', fieldLabel: '二级部门', id: this.id + '_dept2_combo', store: companyDept2Store,

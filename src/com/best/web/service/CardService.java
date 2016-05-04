@@ -21,6 +21,14 @@ public class CardService {
         return CardDao.findCardTypeList();
     }
 
+    public CardType findCardTypeById(String id) {
+        return CardDao.findCardTypeById(id);
+    }
+
+    public CardType findMaxCardSn(String card_no_prefix) {
+        return CardDao.findMaxCardSn(card_no_prefix);
+    }
+
     public List<CardType> findCardTypeListByCompany(String company_id) {
         return CardDao.findCardTypeListByCompany(company_id);
     }

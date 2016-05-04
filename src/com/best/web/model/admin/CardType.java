@@ -25,10 +25,13 @@ public class CardType {
     private String package_total;
     private String select_count;
     private String allow_change_count;
-    private String card_no_length;
-    private String card_code_length;
     private String card_no_prefix;
-    private String card_no_sn_length;
+    private String card_no_prefix_length; //获取最大卡号流水时用
+    private String max_sn;                //最大卡号流水
+    private String sn;                //最大卡号流水
+    private int card_no_length;
+    private int card_code_length;
+    private int card_no_sn_length;
     private String valid_date_type;
     private String valid_date_value;
     private String company_abbr;
@@ -218,19 +221,19 @@ public class CardType {
         this.allow_change_count = value;
     }
 
-    public String getCard_no_length() {
+    public int getCard_no_length() {
         return card_no_length;
     }
 
-    public void setCard_no_length(String value) {
+    public void setCard_no_length(int value) {
         this.card_no_length = value;
     }
 
-    public String getCard_code_length() {
+    public int getCard_code_length() {
         return card_code_length;
     }
 
-    public void setCard_code_length(String value) {
+    public void setCard_code_length(int value) {
         this.card_code_length = value;
     }
 
@@ -242,11 +245,33 @@ public class CardType {
         this.card_no_prefix = value;
     }
 
-    public String getCard_no_sn_length() {
+    public String getMax_sn() {
+        return max_sn;
+    }
+
+    public void setMax_sn(String value) {
+        this.max_sn = value;
+    }
+
+    public String getSn() { return sn; }
+
+    public void setSn(String value) {
+        this.sn = value;
+    }
+
+    public String getCard_no_prefix_length() {
+        return card_no_prefix_length;
+    }
+
+    public void setCard_no_prefix_length(String value) {
+        this.card_no_prefix_length = value;
+    }
+
+    public int getCard_no_sn_length() {
         return card_no_sn_length;
     }
 
-    public void setCard_no_sn_length(String value) {
+    public void setCard_no_sn_length(int value) {
         this.card_no_sn_length = value;
     }
 

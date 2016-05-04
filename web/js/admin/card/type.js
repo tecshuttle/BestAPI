@@ -5,6 +5,7 @@ Ext.onReady(function () {
         {header: '发卡机构', dataIndex: 'company_name', flex: 1},
         {header: "卡名称", dataIndex: 'card_name', flex: 1},
         {header: "卡代号", dataIndex: 'card_code', align: 'center', width: 100},
+        {header: "卡号前缀", dataIndex: 'card_no_prefix', align: 'center', width: 100},
         {
             header: "卡类型", dataIndex: 'card_type', align: 'center', width: 80,
             renderer: function (v, b, rec) {

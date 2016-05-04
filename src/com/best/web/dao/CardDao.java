@@ -12,6 +12,10 @@ public interface CardDao {
     //卡类型
     public List<CardType> findCardTypeList();
 
+    public CardType findCardTypeById(String id);
+
+    public CardType findMaxCardSn(String card_no_prefix);
+
     public List<CardType> findCardTypeListByCompany(String company_id);
 
     public void insertCardType(CardType model);

@@ -2,7 +2,6 @@ package com.best.web.model.order;
 
 
 public class CardNo {
-
     private String id;
     private String creator;
     private String create_date;

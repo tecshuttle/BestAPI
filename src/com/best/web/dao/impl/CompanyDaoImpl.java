@@ -24,8 +24,6 @@ public class CompanyDaoImpl implements CompanyDao {
         param.put("company_type", company_type);
         param.put("parent_id", parent_id);
 
-        System.out.println(param);
-
         return sqlSession.selectList("companySql.findCompanyListByType", param);
     }
 }

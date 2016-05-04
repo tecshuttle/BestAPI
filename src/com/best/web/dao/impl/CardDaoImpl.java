@@ -10,6 +10,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 
 @Repository
@@ -20,6 +21,18 @@ public class CardDaoImpl implements CardDao {
     //卡类型
     public List<CardType> findCardTypeList() {
         return sqlSession.selectList("cardSql.findCardTypeList");
+    }
+
+    public CardType findCardTypeById(String id) {
+        return sqlSession.selectOne("cardSql.findCardTypeById", id);
+    }
+
+    public CardType findMaxCardSn(String card_no_prefix) {
+        HashMap<String, String> param = new HashMap<String, String>();
+        param.put("card_no_prefix_length", (card_no_prefix.length() + 1) + "");
+        param.put("card_no_prefix", card_no_prefix);
+
+        return sqlSession.selectOne("cardSql.findMaxCardSn", param);
     }
 
     public List<CardType> findCardTypeListByCompany(String company_id) {
