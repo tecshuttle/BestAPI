@@ -24,9 +24,15 @@ public class CompanyController {
     private CompanyService service;
 
     @RequestMapping(value = "getList", method = RequestMethod.GET)
-    public void testConn(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void testConn(HttpServletRequest request, HttpServletResponse response, String company_type, String parent_id) throws Exception {
         ListResponse<Company> listResponse = new ListResponse<Company>();
-        listResponse.setResponse(service.findCompanyList());
+
+        if (company_type == null) {
+            listResponse.setResponse(service.findCompanyList());
+        } else {
+            listResponse.setResponse(service.findCompanyList(company_type, parent_id));
+        }
+
         AjaxUtil.sendJSON(response, listResponse);
     }
 }

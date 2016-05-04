@@ -51,9 +51,15 @@ public class CardController {
     }
 
     @RequestMapping(value = "getTypeList", method = RequestMethod.GET)
-    public void testConn(HttpServletRequest request, HttpServletResponse response, String username, String password, String start_date, String end_date) throws Exception {
+    public void getTypeList(HttpServletRequest request, HttpServletResponse response, String company_id) throws Exception {
         ListResponse<CardType> listResponse = new ListResponse<CardType>();
-        listResponse.setResponse(service.findCardTypeList());
+
+        if (company_id == null) {
+            listResponse.setResponse(service.findCardTypeList());
+        } else {
+            listResponse.setResponse(service.findCardTypeListByCompany(company_id));
+        }
+
         AjaxUtil.sendJSON(response, listResponse);
     }
 

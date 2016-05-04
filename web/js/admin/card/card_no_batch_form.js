@@ -1,5 +1,53 @@
 Ext.ns('Best.card');
 
+var cardTypeByCompanyStore = Ext.create('Ext.data.Store', {
+    fields: ['id', 'card_name'],
+    pageSize: 9999,
+    proxy: {
+        type: 'ajax',
+        url: '/card/getTypeList',
+        extraParams: {
+            company_id: ''
+        },
+        reader: {
+            root: 'response',
+            type: 'json'
+        }
+    }
+});
+
+var companyDept1Store = Ext.create('Ext.data.Store', {
+    fields: ['id', 'company_name'],
+    proxy: {
+        type: 'ajax',
+        url: '/company/getList',
+        extraParams: {
+            company_type: 1,
+            parent_id: ''
+        },
+        reader: {
+            root: 'response',
+            type: 'json'
+        }
+    }
+});
+
+var companyDept2Store = Ext.create('Ext.data.Store', {
+    fields: ['id', 'company_name'],
+    proxy: {
+        type: 'ajax',
+        url: '/company/getList',
+        extraParams: {
+            company_type: 2,
+            parent_id: ''
+        },
+        reader: {
+            root: 'response',
+            type: 'json'
+        }
+    }
+});
+
 var cardCodeTypeStore = Ext.create('Ext.data.Store', {
     fields: ['code_type', 'name'],
     data: [
@@ -35,8 +83,8 @@ Ext.define('Best.card.BatchFormUI', {
                         displayField: 'company_name', margin: 0, valueField: 'id', name: 'company_id', allowBlank: false, queryMode: 'local'
                     },
                     {
-                        xtype: 'combo', fieldLabel: '卡名称', store: companyStore, displayField: 'company_name',
-                        valueField: 'id', name: 'dept2_id', allowBlank: false, queryMode: 'local'
+                        xtype: 'combo', fieldLabel: '卡名称', id: this.id + '_card_combo', store: cardTypeByCompanyStore,
+                        displayField: 'card_name', valueField: 'id', name: 'card_id', allowBlank: false, queryMode: 'local'
                     },
                     {xtype: 'displayfield'}
                 ]
@@ -45,12 +93,12 @@ Ext.define('Best.card.BatchFormUI', {
                 xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
                 items: [
                     {
-                        xtype: 'combo', fieldLabel: '一级部门', store: companyStore, displayField: 'company_name',
-                        valueField: 'id', name: 'dept1_id', margin: 0, allowBlank: false, queryMode: 'local'
+                        xtype: 'combo', fieldLabel: '一级部门', id: this.id + '_dept1_combo', store: companyDept1Store,
+                        displayField: 'company_name', valueField: 'id', name: 'dept1_id', margin: 0, queryMode: 'local'
                     },
                     {
-                        xtype: 'combo', fieldLabel: '二级部门', store: companyStore, displayField: 'company_name',
-                        valueField: 'id', name: 'dept2_id', queryMode: 'local'
+                        xtype: 'combo', fieldLabel: '二级部门', id: this.id + '_dept2_combo', store: companyDept2Store,
+                        displayField: 'company_name', valueField: 'id', name: 'dept2_id', queryMode: 'local'
                     },
                     {xtype: 'displayfield'}
                 ]
@@ -97,6 +145,10 @@ Ext.define('Best.card.BatchFormAction', {
 
         Ext.apply(this.COMPONENTS, {
             companyCombo: Ext.getCmp(this.id + '_company_combo'),
+            cardCombo: Ext.getCmp(this.id + '_card_combo'),
+            dept1Combo: Ext.getCmp(this.id + '_dept1_combo'),
+            dept2Combo: Ext.getCmp(this.id + '_dept2_combo'),
+
             saveBtn: Ext.getCmp(this.id + '_save'),
             returnBtn: Ext.getCmp(this.id + '_return')
         });
@@ -112,6 +164,54 @@ Ext.define('Best.card.BatchFormAction', {
 
         $c.saveBtn.on('click', me._save, me);
         $c.returnBtn.on('click', me._return, me);
+
+        $c.companyCombo.on('change', me._onChangeCompanyCombo, me);
+        $c.dept1Combo.on('change', me._onChangeDept1Combo, me);
+    },
+
+    _onChangeCompanyCombo: function (combo, company_id, oldValue, eOpts) {
+        //更新卡名
+        var cardCombo = this.COMPONENTS.cardCombo;
+
+        var store = cardCombo.getStore();
+        var proxy = store.getProxy();
+
+        Ext.apply(proxy.extraParams, {
+            company_id: company_id
+        });
+
+        store.load();
+
+        //更新一级部门名
+        var dept1Combo = this.COMPONENTS.dept1Combo;
+
+        var store1 = dept1Combo.getStore();
+        var proxy1 = store1.getProxy();
+
+        Ext.apply(proxy1.extraParams, {
+            parent_id: company_id
+        });
+
+        store1.load();
+
+        //清除表单值：卡名、一级部门、二级部门
+        this.COMPONENTS.cardCombo.setValue('');
+        this.COMPONENTS.dept1Combo.setValue('');
+        this.COMPONENTS.dept2Combo.setValue('');
+    },
+
+    _onChangeDept1Combo: function (combo, parent_id, oldValue, eOpts) {
+        //更新二级部门名
+        var dept2Combo = this.COMPONENTS.dept2Combo;
+
+        var store2 = dept2Combo.getStore();
+        var proxy2 = store2.getProxy();
+
+        Ext.apply(proxy2.extraParams, {
+            parent_id: parent_id
+        });
+
+        store2.load();
     },
 
     _afterrender: function () {

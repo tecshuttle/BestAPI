@@ -12,6 +12,8 @@ public interface CardDao {
     //卡类型
     public List<CardType> findCardTypeList();
 
+    public List<CardType> findCardTypeListByCompany(String company_id);
+
     public void insertCardType(CardType model);
 
     public void updateCardType(CardType model);

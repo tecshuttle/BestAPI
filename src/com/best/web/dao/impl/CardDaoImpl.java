@@ -22,16 +22,17 @@ public class CardDaoImpl implements CardDao {
         return sqlSession.selectList("cardSql.findCardTypeList");
     }
 
+    public List<CardType> findCardTypeListByCompany(String company_id) {
+        return sqlSession.selectList("cardSql.findCardTypeListByCompany", company_id);
+    }
 
     public void insertCardType(CardType model) {
         sqlSession.insert("cardSql.insertCardType", model);
     }
 
-
     public void updateCardType(CardType model) {
         sqlSession.insert("cardSql.updateCardType", model);
     }
-
 
     public void deleteCardType(CardType model) {
         sqlSession.insert("cardSql.deleteCardType", model);

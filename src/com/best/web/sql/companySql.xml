@@ -3,6 +3,10 @@
 
 <mapper namespace="companySql">
     <select id="findCompanyList" resultType="Company">
-		select * from pf_company2 where company_type =  0 and active_flag = 1
+		select * from pf_company2 where company_type = 0 and active_flag = 1
+	</select>
+
+    <select id="findCompanyListByType" parameterType="Map" resultType="Company">
+		select * from pf_company2 where parent_id = #{parent_id} and company_type = #{company_type} and active_flag = 1
 	</select>
 </mapper>

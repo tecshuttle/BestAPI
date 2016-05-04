@@ -21,6 +21,10 @@ public class CardService {
         return CardDao.findCardTypeList();
     }
 
+    public List<CardType> findCardTypeListByCompany(String company_id) {
+        return CardDao.findCardTypeListByCompany(company_id);
+    }
+
     public void insertCardType(CardType model) {
         model.setId(BasicUtil.generateId());
         CardDao.insertCardType(model);

@@ -17,7 +17,9 @@ public class CompanyService {
         return CompanyDao.findCompanyList();
     }
 
-
+    public List<Company> findCompanyList(String company_type, String parent_id) {
+        return CompanyDao.findCompanyList(company_type, parent_id);
+    }
 }
 
 //end file

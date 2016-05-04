@@ -2,12 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cardSql">
 
-
     <!-- 卡类型 -->
     <select id="findCardTypeList" resultType="CardType">
-		select card.*, company.company_name from XZH_CARD card left join pf_company2 company on card.company_id = company.id
+		select card.*, company.company_name
+		from XZH_CARD card
+		left join pf_company2 company on card.company_id = company.id
 	</select>
 
+    <select id="findCardTypeListByCompany" parameterType="String" resultType="CardType">
+		select card.*, company.company_name
+		from XZH_CARD card
+		left join pf_company2 company on card.company_id = company.id
+		where card.company_id = #{company_id}
+	</select>
 
     <insert id="insertCardType" parameterType="CardType">
 		insert into xzh_card
@@ -99,12 +106,12 @@
 	</update>
 
 
-	<!-- 卡套餐管理 -->
+    <!-- 卡套餐管理 -->
     <select id="findCardPackageList" resultType="CardPackage">
 		select package.*, card.card_name from xzh_card_package package left join xzh_card card on package.card_id = card.id
 	</select>
 
-	<select id="findCardPackageListByCardId" parameterType="String" resultType="CardPackage">
+    <select id="findCardPackageListByCardId" parameterType="String" resultType="CardPackage">
 		select package.*, card.card_name
 		from xzh_card_package package
 		left join xzh_card card on package.card_id = card.id
@@ -142,15 +149,15 @@
 	</update>
 
 
-	<!-- 卡套餐服务管理 -->
-	<insert id="insertCardPackageDtl" parameterType="CardPackageDtl">
+    <!-- 卡套餐服务管理 -->
+    <insert id="insertCardPackageDtl" parameterType="CardPackageDtl">
 		insert into xzh_card_package_dtl
 		( id, package_id, service_id )
 		values
 		( sys_guid(), #{package_id}, #{service_id} )
 	</insert>
 
-	<update id="updateCardPackageDtl" parameterType="CardPackageDtl">
+    <update id="updateCardPackageDtl" parameterType="CardPackageDtl">
 		update xzh_card_package_dtl
 		set package_id = #{package_id},
 		    service_id = #{service_id}
