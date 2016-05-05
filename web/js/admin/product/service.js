@@ -82,7 +82,7 @@ Ext.onReady(function () {
                 }
             }
         },
-        {header: '包含服务数', dataIndex: 'count_service_map', align: 'right'},
+        {header: '服务数', dataIndex: 'count_service_map', align: 'right'},
         {
             header: '售价', dataIndex: 'price', align: 'right',
             renderer: function (val) {
@@ -96,6 +96,7 @@ Ext.onReady(function () {
             align: 'center',
             xtype: 'actioncolumn',
             name: 'opertation',
+            width: 120,
             items: [{
                 glyph: '编辑',
                 handler: function (grid, rowIndex, colIndex) {

@@ -49,8 +49,8 @@ Ext.define('Tomtalk.grid.FormUI', {
                     },
                     {xtype: 'numberfield', fieldLabel: '价格', name: 'price', padding: 0, minValue: 0, allowBlank: false, emptyText: '请输入…'},
                     {
-                        xtype: 'combo', fieldLabel: '发卡机构', store: companyStore, displayField: 'company_name',
-                        valueField: 'id', name: 'company_id', queryMode: 'local', flex: 1
+                        xtype: 'combo', fieldLabel: '发卡机构', id: this.id + '_company_combo', store: companyStore, displayField: 'company_name',
+                        valueField: 'id', name: 'company_id', queryMode: 'local', allowBlank: false, flex: 1
                     },
                     {xtype: 'textfield', fieldLabel: '发卡机构别名', name: 'company_abbr', emptyText: '请输入…'}
                 ]
@@ -81,19 +81,12 @@ Ext.define('Tomtalk.grid.FormUI', {
                         fieldLabel: '有效期',
                         items: [
                             {
-                                xtype: 'numberfield',
-                                hideLabel: true,
-                                fieldLabel: '有效期值',
-                                name: 'valid_date_value',
-                                minValue: 0,
-                                flex: 1,
-                                padding: '0 10 0 0',
-                                allowBlank: false,
-                                emptyText: '请输入…'
+                                xtype: 'numberfield', hideLabel: true, fieldLabel: '有效期值', name: 'valid_date_value', minValue: 0,
+                                flex: 1, padding: '0 10 0 0', allowBlank: false, emptyText: '请输入…'
                             },
                             {
                                 xtype: 'combo', hideLabel: true, fieldLabel: '有效期单位', store: validDateTypeStore, displayField: 'name',
-                                valueField: 'validDateType', name: 'valid_date_type', queryMode: 'local', flex: 1
+                                valueField: 'validDateType', name: 'valid_date_type', queryMode: 'local', allowBlank: false, flex: 1
                             }
                         ]
                     },
@@ -120,6 +113,7 @@ Ext.define('Tomtalk.grid.FormAction', {
         Tomtalk.grid.FormAction.superclass.initComponent.call(this);
 
         Ext.apply(this.COMPONENTS, {
+            companyCombo: Ext.getCmp(this.id + '_company_combo'),
             recId: Ext.getCmp(this.id + '_rec_id'),
             saveBtn: Ext.getCmp(this.id + '_save'),
             returnBtn: Ext.getCmp(this.id + '_return')
@@ -132,8 +126,14 @@ Ext.define('Tomtalk.grid.FormAction', {
 
         Tomtalk.grid.FormAction.superclass.initEvents.call(me);
 
+        this.on('boxready', me._afterrender, me);
+
         $c.saveBtn.on('click', me._save, me);
         $c.returnBtn.on('click', me._return, me);
+    },
+
+    _afterrender: function () {
+        this.COMPONENTS.companyCombo.getStore().load();
     },
 
     _return: function () {

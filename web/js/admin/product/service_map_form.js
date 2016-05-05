@@ -2,12 +2,10 @@ Ext.ns('Best.product');
 
 var supplierServiceStore = Ext.create('Ext.data.Store', {
     fields: ['id', 'service_name'],
-    //autoLoad: true,
     proxy: {
         type: 'ajax',
         url: '/supplier/getServiceListBySupplier',
         reader: {
-            //totalProperty: 'total',
             root: 'response',
             type: 'json'
         }
@@ -48,28 +46,27 @@ Ext.define('Best.product.serviceListFormUI', {
                 xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
                 items: [
                     {
-                        xtype: 'combo', fieldLabel: '激活标记', store: activeFlagStore, displayField: 'name', margin: 0,
-                        valueField: 'active_flag', name: 'active_flag', queryMode: 'local'
+                        xtype: 'combo', fieldLabel: '供应商', store: supplierStore, id: this.id + '_supplier_combo', allowBlank: false,
+                        displayField: 'supplier_name', margin: 0, valueField: 'id', name: 'supplier_id', queryMode: 'local'
                     },
                     {
-                        xtype: 'combo', fieldLabel: '业务状态', store: serviceMapStatusStore, displayField: 'name',
-                        valueField: 'status', name: 'status', queryMode: 'local'
+                        xtype: 'combo', fieldLabel: '服务', store: supplierServiceStore, displayField: 'service_name', allowBlank: false,
+                        id: this.id + '_supplier_service_combo', valueField: 'id', name: 'supplier_service_id', queryMode: 'local'
                     },
-                    {xtype: 'numberfield', fieldLabel: '显示顺序', name: 'seq', minValue: 0, allowBlank: false, emptyText: '请输入…'},
+
+                    {xtype: 'numberfield', fieldLabel: '显示顺序', name: 'seq', minValue: 0, emptyText: '请输入…'},
                 ]
             },
             {
                 xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
                 items: [
                     {
-                        xtype: 'combo', fieldLabel: '供应商', store: supplierStore,
-                        id: this.id + '_supplier_combo',
-                        displayField: 'supplier_name', margin: 0, valueField: 'id', name: 'supplier_id', queryMode: 'local'
+                        xtype: 'combo', fieldLabel: '激活标记', store: activeFlagStore, displayField: 'name', margin: 0,
+                        valueField: 'active_flag', name: 'active_flag', queryMode: 'local'
                     },
                     {
-                        xtype: 'combo', fieldLabel: '服务', store: supplierServiceStore, displayField: 'service_name',
-                        id: this.id + '_supplier_service_combo',
-                        valueField: 'id', name: 'supplier_service_id', queryMode: 'local'
+                        xtype: 'combo', fieldLabel: '业务状态', store: serviceMapStatusStore, displayField: 'name',
+                        valueField: 'status', name: 'status', queryMode: 'local'
                     },
                     {xtype: 'displayfield'}
                 ]
@@ -106,10 +103,15 @@ Ext.define('Best.product.serviceListFormAction', {
 
         Best.product.serviceListFormAction.superclass.initEvents.call(me);
 
-        $c.supplierCombo.on('change', me._onChangeSupplierCombo, me);
+        this.on('boxready', me._afterrender, me);
 
+        $c.supplierCombo.on('change', me._onChangeSupplierCombo, me);
         $c.saveBtn.on('click', me._save, me);
         $c.returnBtn.on('click', me._return, me);
+    },
+
+    _afterrender: function () {
+        this.COMPONENTS.supplierCombo.getStore().load();
     },
 
     _onChangeSupplierCombo: function (combo, supplier_id, oldValue, eOpts) {
