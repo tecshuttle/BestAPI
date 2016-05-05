@@ -79,16 +79,22 @@
 		select no.*, company.company_name from xzh_card_no no left join pf_company2 company on no.dept_id = company.id
 	</select>
 
+	<select id="findCardNoListByBatchId" parameterType="String" resultType="CardNo">
+		select no.*, company.company_name from xzh_card_no no
+		left join pf_company2 company on no.dept_id = company.id
+		where no.batch_id = #{batch_id}
+	</select>
+
 
     <insert id="insertCardNo" parameterType="CardNo">
 		insert into xzh_card_no
 		( id, active_flag, card_id, card_no, card_code, card_no_type, open_date, close_date, status,
-		  verify_count, rel_order_id, dept_id, dept2_id, memo
+		  verify_count, rel_order_id, dept_id, dept2_id, memo, batch_id
         )
 		values
 		( sys_guid(), #{active_flag}, #{card_id}, #{card_no}, #{card_code}, #{card_no_type},
 		  to_date(#{open_date},'yyyy/mm/dd HH24:MI:SS'), to_date(#{close_date},'yyyy/mm/dd HH24:MI:SS'),
-		  #{status}, #{verify_count}, #{rel_order_id}, #{dept_id}, #{dept2_id}, #{memo}
+		  #{status}, #{verify_count}, #{rel_order_id}, #{dept_id}, #{dept2_id}, #{memo}, #{batch_id}
 		)
 	</insert>
 
@@ -130,7 +136,7 @@
 		insert into xzh_card_no_gen_batch
 		( id, card_id, card_no_area, card_type, batch_no, proposer, gen_quantity, memo )
 		values
-		( sys_guid(), #{card_id}, #{card_no_area}, #{card_type}, #{batch_no}, #{proposer}, #{gen_quantity}, #{memo} )
+		( #{id}, #{card_id}, #{card_no_area}, #{card_type}, #{batch_no}, #{proposer}, #{gen_quantity}, #{memo} )
 	</insert>
 
 

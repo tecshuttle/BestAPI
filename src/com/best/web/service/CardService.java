@@ -52,6 +52,10 @@ public class CardService {
         return CardDao.findCardNoList();
     }
 
+    public List<CardNo> findCardNoListByBatchId(String batch_id) {
+        return CardDao.findCardNoListByBatchId(batch_id);
+    }
+
     public void insertCardNo(CardNo model) {
         model.setId(BasicUtil.generateId());
         CardDao.insertCardNo(model);

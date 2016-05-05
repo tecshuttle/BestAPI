@@ -29,6 +29,8 @@ public interface CardDao {
     //卡号管理
     public List<CardNo> findCardNoList();
 
+    public List<CardNo> findCardNoListByBatchId(String batch_id);
+
     public void insertCardNo(CardNo model);
 
     public void updateCardNo(CardNo model);

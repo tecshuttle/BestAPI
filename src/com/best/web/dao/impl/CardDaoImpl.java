@@ -58,6 +58,10 @@ public class CardDaoImpl implements CardDao {
         return sqlSession.selectList("cardSql.findCardNoList");
     }
 
+    public List<CardNo> findCardNoListByBatchId(String batch_id) {
+        return sqlSession.selectList("cardSql.findCardNoListByBatchId", batch_id);
+    }
+
     public void insertCardNo(CardNo model) {
         sqlSession.insert("cardSql.insertCardNo", model);
     }

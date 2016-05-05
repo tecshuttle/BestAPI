@@ -34,6 +34,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.text.DecimalFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -202,7 +203,6 @@ public class CardController {
             newNo.setDept2_id(batch.getDept2_id());
             newNo.setActive_flag("1");
             newNo.setStatus("1");
-
             newNo.setBatch_id(gen.getId());
 
             service.insertCardNo(newNo);
@@ -210,7 +210,6 @@ public class CardController {
 
         GenResponse<String> genResponse = new GenResponse<String>();
         AjaxUtil.sendJSON(response, genResponse);
-
     }
 
     private String repeat(String chr, int n) {
@@ -225,7 +224,6 @@ public class CardController {
 
     private String newCardNo(String card_no) {
         //判断卡号是否存在
-
         return card_no;
     }
 
@@ -259,32 +257,56 @@ public class CardController {
 
 
     @RequestMapping(value = "batchCardNoExport", method = RequestMethod.GET)
-    public void batchCardNoExport(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        //ExtListResponse<CardNo> listResponse = new ExtListResponse<CardNo>();
-        //listResponse.setResponse(service.findCardNoList(), start, limit);
+    public void batchCardNoExport(HttpServletRequest request, HttpServletResponse response, String batch_id) throws Exception {
+        //获取批次卡号
+        ExtListResponse<CardNo> listResponse = new ExtListResponse<CardNo>();
+        listResponse.setResponse(service.findCardNoListByBatchId(batch_id), 0, 9999);
 
-        // 创建Excel的工作书册 Workbook,对应到一个excel文档
-        HSSFWorkbook wb = new HSSFWorkbook();
+        List<CardNo> card_no = listResponse.getResponse();
 
-        // 创建Excel的工作sheet,对应到一个excel文档的tab
-        HSSFSheet sheet = wb.createSheet("sheet1");
+        for (int i = 0; i < card_no.size(); i++) {
+            CardNo row = card_no.get(i);
+            System.out.println(row.getCard_code());
+        }
+
+        //生成excel
+        HSSFWorkbook wb = new HSSFWorkbook();// 创建Excel的工作书册 Workbook,对应到一个excel文档
+        HSSFSheet sheet = wb.createSheet("sheet1");// 创建Excel的工作sheet,对应到一个excel文档的tab
 
         HSSFRow row;
         HSSFCell cell;
 
-        for (int i = 0; i < 60000; i++) {
-            row = sheet.createRow(i); // 创建Excel的sheet的一行
-            for (int j = 0; j < 30; j++) {
-                cell = row.createCell(j); // 创建一个Excel的单元格
-                cell.setCellValue("hello world " + i + " " + j);
-            }
+        row = sheet.createRow(0); // 创建标题
+
+        cell = row.createCell(0);
+        cell.setCellValue("卡号");
+
+        cell = row.createCell(1);
+        cell.setCellValue("卡密");
+
+        cell = row.createCell(2);
+        cell.setCellValue("卡类型"); //卡类型：实体、虚拟
+
+        for (int i = 0; i < card_no.size(); i++) {
+            CardNo no = card_no.get(i);
+
+            row = sheet.createRow(i + 1); // 创建Excel的sheet的一行
+
+            cell = row.createCell(0);
+            cell.setCellValue(no.getCard_no());  //卡号
+
+            cell = row.createCell(1);
+            cell.setCellValue(no.getCard_code()); //卡密
+
+            cell = row.createCell(2);
+            cell.setCellValue(no.getCard_no_type()); //卡类型：实体、虚拟
         }
 
-        FileOutputStream os = new FileOutputStream("e://workbook.xls");
-        wb.write(os);
-        os.close();
-
-        //AjaxUtil.sendJSON(response, listResponse);
+        //下载excel文件
+        response.setContentType("application/vnd.ms-excel");
+        response.setHeader("Content-Disposition", "attachment; filename=filename.xls");
+        wb.write(response.getOutputStream()); // Write workbook to response.
+        wb.close();
     }
 
 
