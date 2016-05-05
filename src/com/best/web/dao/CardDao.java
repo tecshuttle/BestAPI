@@ -1,5 +1,6 @@
 package com.best.web.dao;
 
+import com.best.web.model.admin.CardNoGenBatch;
 import com.best.web.model.admin.CardType;
 import com.best.web.model.admin.CardPackageDtl;
 import com.best.web.model.order.CardNo;
@@ -33,6 +34,13 @@ public interface CardDao {
     public void updateCardNo(CardNo model);
 
     public void deleteCardNo(CardNo model);
+
+    //卡号生成
+    public List<CardNoGenBatch> findCardNoGenBatchList();
+
+    public void insertCardNoGenBatch(CardNoGenBatch model);
+
+    public void updateCardNoGenBatch(CardNoGenBatch model);
 
 
     //卡套餐管理

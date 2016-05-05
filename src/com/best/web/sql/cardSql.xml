@@ -118,6 +118,33 @@
 	</update>
 
 
+	<!-- 卡号生成 -->
+	<select id="findCardNoGenBatchList" resultType="CardNoGenBatch">
+		select * from xzh_card_no_gen_batch
+	</select>
+
+
+	<insert id="insertCardNoGenBatch" parameterType="CardNoGenBatch">
+		insert into xzh_card_no_gen_batch
+		( id, card_id, card_no_area, card_type, batch_no, proposer, gen_quantity, memo )
+		values
+		( sys_guid(), #{card_id}, #{card_no_area}, #{card_type}, #{batch_no}, #{proposer}, #{gen_quantity}, #{memo} )
+	</insert>
+
+
+	<update id="updateCardNoGenBatch" parameterType="CardNoGenBatch">
+		update xzh_card_no_gen_batch
+		set card_id = #{card_id},
+		card_no_area = #{card_no_area},
+		card_type = #{card_type},
+		batch_no = #{batch_no},
+		proposer = #{proposer},
+		gen_quantity = #{gen_quantity},
+		memo = #{memo}
+		where id = #{id}
+	</update>
+
+
     <!-- 卡套餐管理 -->
     <select id="findCardPackageList" resultType="CardPackage">
 		select package.*, card.card_name from xzh_card_package package left join xzh_card card on package.card_id = card.id

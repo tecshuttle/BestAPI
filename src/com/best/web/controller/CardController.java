@@ -9,6 +9,7 @@ import com.best.msg.ExtResponse;
 import com.best.msg.GenResponse;
 import com.best.msg.ListResponse;
 import com.best.util.AjaxUtil;
+import com.best.web.model.admin.CardNoGenBatch;
 import com.best.web.model.admin.CardType;
 import com.best.web.model.admin.CardPackageDtl;
 import com.best.web.model.admin.CardNoBatch;
@@ -104,6 +105,15 @@ public class CardController {
     }
 
 
+    //卡号批量生成
+    @RequestMapping(value = "noGen", method = RequestMethod.GET)
+    public ModelAndView noGenPage() {
+        ModelAndView model = new ModelAndView();
+        model.setViewName("card_no_gen_batch");
+        return model;
+    }
+
+
     @RequestMapping(value = "getCardNoList", method = RequestMethod.GET)
     public void getCardNoList(HttpServletRequest request, HttpServletResponse response, int start, int limit) throws Exception {
         ExtListResponse<CardNo> listResponse = new ExtListResponse<CardNo>();
@@ -129,12 +139,45 @@ public class CardController {
     }
 
 
+    //卡号生成
+    @RequestMapping(value = "getCardNoGenBatchList", method = RequestMethod.GET)
+    public void getCardNoGenBatchList(HttpServletRequest request, HttpServletResponse response, int start, int limit) throws Exception {
+        ExtListResponse<CardNoGenBatch> listResponse = new ExtListResponse<CardNoGenBatch>();
+        listResponse.setResponse(service.findCardNoGenBatchList(), start, limit);
+        AjaxUtil.sendJSON(response, listResponse);
+    }
+
+
+    @RequestMapping(value = "/updateCardNoGenBatch", method = RequestMethod.POST)
+    public void updateCardNoGenBatch(HttpServletRequest request, HttpServletResponse response, CardNoGenBatch model, BindingResult result) throws Exception {
+        ExtResponse<String> genResponse = new ExtResponse<String>();
+        service.updateCardNoGenBatch(model);
+        AjaxUtil.sendJSON(response, genResponse);
+    }
+
+
+    @RequestMapping(value = "/insertCardNoGenBatch", method = RequestMethod.POST)
+    public void insertCardNoGenBatch(HttpServletRequest request, HttpServletResponse response, CardNoGenBatch model, BindingResult result) throws Exception {
+        GenResponse<String> genResponse = new GenResponse<String>();
+        service.insertCardNoGenBatch(model);
+        genResponse.setResponse(model.getId());
+        AjaxUtil.sendJSON(response, genResponse);
+    }
+
+
     @RequestMapping(value = "/insertCardNoBatch", method = RequestMethod.POST)
     public void insertCardNoBatch(HttpServletRequest request, HttpServletResponse response, CardNoBatch batch) throws Exception {
         //取卡信息，获取卡号生成规则
         CardType card = service.findCardTypeById(batch.getCard_id());
 
         //登记批次记录
+        CardNoGenBatch gen = new CardNoGenBatch();
+        gen.setCard_id(batch.getCard_id());
+        gen.setCard_type(batch.getCard_no_type());
+        gen.setGen_quantity(batch.getAmount());
+        gen.setMemo(batch.getBatch_id());
+
+        service.insertCardNoGenBatch(gen);
 
         //获取最大卡号流水
         CardType card_max_card_sn = service.findMaxCardSn(card.getCard_no_prefix());
@@ -158,7 +201,7 @@ public class CardController {
             newNo.setActive_flag("1");
             newNo.setStatus("1");
 
-            newNo.setBatch_id(batch.getBatch_id());
+            newNo.setBatch_id(gen.getId());
 
             service.insertCardNo(newNo);
         }

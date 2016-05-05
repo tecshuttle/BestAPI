@@ -1,6 +1,7 @@
 package com.best.web.dao.impl;
 
 import com.best.web.dao.CardDao;
+import com.best.web.model.admin.CardNoGenBatch;
 import com.best.web.model.admin.CardType;
 import com.best.web.model.admin.CardPackageDtl;
 import com.best.web.model.order.CardNo;
@@ -67,6 +68,20 @@ public class CardDaoImpl implements CardDao {
 
     public void deleteCardNo(CardNo model) {
         sqlSession.insert("cardSql.deleteCardNo", model);
+    }
+
+
+    //卡号生成
+    public List<CardNoGenBatch> findCardNoGenBatchList() {
+        return sqlSession.selectList("cardSql.findCardNoGenBatchList");
+    }
+
+    public void insertCardNoGenBatch(CardNoGenBatch model) {
+        sqlSession.insert("cardSql.insertCardNoGenBatch", model);
+    }
+
+    public void updateCardNoGenBatch(CardNoGenBatch model) {
+        sqlSession.insert("cardSql.updateCardNoGenBatch", model);
     }
 
 

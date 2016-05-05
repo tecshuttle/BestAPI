@@ -2,6 +2,7 @@ package com.best.web.service;
 
 import com.best.util.BasicUtil;
 import com.best.web.dao.CardDao;
+import com.best.web.model.admin.CardNoGenBatch;
 import com.best.web.model.admin.CardType;
 import com.best.web.model.admin.CardPackageDtl;
 import com.best.web.model.cust.CardPackage;
@@ -62,6 +63,20 @@ public class CardService {
 
     public void deleteCardNo(CardNo model) {
         CardDao.deleteCardNo(model);
+    }
+
+    //卡号生成
+    public List<CardNoGenBatch> findCardNoGenBatchList() {
+        return CardDao.findCardNoGenBatchList();
+    }
+
+    public void insertCardNoGenBatch(CardNoGenBatch model) {
+        model.setId(BasicUtil.generateId());
+        CardDao.insertCardNoGenBatch(model);
+    }
+
+    public void updateCardNoGenBatch(CardNoGenBatch model) {
+        CardDao.updateCardNoGenBatch(model);
     }
 
 
