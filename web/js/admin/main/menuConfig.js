@@ -11,6 +11,11 @@ Docs.Menu = [
                 leaf: true
             },
             {
+                href: "/card/package",
+                text: "卡套餐",
+                leaf: true
+            },
+            {
                 href: "/card/noGen",
                 text: "卡号生成",
                 leaf: true
@@ -18,11 +23,6 @@ Docs.Menu = [
             {
                 href: "/card/no",
                 text: "卡号管理",
-                leaf: true
-            },
-            {
-                href: "/card/package",
-                text: "卡套餐",
                 leaf: true
             }
         ]

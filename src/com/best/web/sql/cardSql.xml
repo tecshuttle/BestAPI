@@ -120,7 +120,9 @@
 
 	<!-- 卡号生成 -->
 	<select id="findCardNoGenBatchList" resultType="CardNoGenBatch">
-		select * from xzh_card_no_gen_batch
+		select gen.*, card.card_name, company.company_name from xzh_card_no_gen_batch gen
+        left join xzh_card card on gen.card_id = card.id
+        left join pf_company2 company on card.company_id = company.id
 	</select>
 
 

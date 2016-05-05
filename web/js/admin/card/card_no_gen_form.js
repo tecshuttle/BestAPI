@@ -121,8 +121,8 @@ Ext.define('Best.card.BatchFormUI', {
                 xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
                 items: [
                     {xtype: 'numberfield', fieldLabel: '发卡数量', name: 'amount', minValue: 0, margin: 0, allowBlank: false, emptyText: '请输入…'},
-                    {xtype: 'displayfield'},
-                    {xtype: 'displayfield'}
+                    {xtype: 'textfield', fieldLabel: '批次号', name: 'batch_no', emptyText: '请输入…'},
+                    {xtype: 'textfield', fieldLabel: '提请人', name: 'proposer', emptyText: '请输入…'}
                 ]
             },
             {xtype: 'textarea', fieldLabel: '批次说明', name: 'batch_id', anchor: '100%', allowBlank: false, emptyText: '请输入…'},

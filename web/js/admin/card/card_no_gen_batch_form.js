@@ -19,20 +19,14 @@ Ext.define('Tomtalk.grid.FormUI', {
         var me = this;
 
         me.items = [
-            {
-                xtype: 'hiddenfield',
-                id: this.id + '_rec_id',
-                name: 'id',
-                value: 0
-            },
+            {xtype: 'hiddenfield', id: this.id + '_rec_id', name: 'id', value: 0},
+            {xtype: 'hiddenfield', name: 'card_id'},
+            {xtype: 'hiddenfield', name: 'gen_quantity'},
             {
                 xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
                 items: [
-                    {
-                        xtype: 'combo', fieldLabel: '发卡机构', id: this.id + '_company_combo', margin: 0, store: companyStore,
-                        displayField: 'company_name', valueField: 'id', name: 'company_id', queryMode: 'local', flex: 1
-                    },
-                    {xtype: 'textfield', fieldLabel: '卡名', name: 'card_id', allowBlank: false, emptyText: '请输入…'},
+                    {xtype: 'displayfield', fieldLabel: '发卡机构', name: 'company_name', margin: 0},
+                    {xtype: 'displayfield', fieldLabel: '卡名', name: 'card_name'},
                     {xtype: 'textfield', fieldLabel: '发卡区域', name: 'card_no_area', allowBlank: false, emptyText: '请输入…'},
                     {
                         xtype: 'combo', fieldLabel: '卡类型', store: cardTypeStore, displayField: 'name',
@@ -45,7 +39,7 @@ Ext.define('Tomtalk.grid.FormUI', {
                 items: [
                     {xtype: 'textfield', fieldLabel: '批次号', name: 'batch_no', margin: 0, allowBlank: false, emptyText: '请输入…'},
                     {xtype: 'textfield', fieldLabel: '提请人', name: 'proposer', allowBlank: false, emptyText: '请输入…'},
-                    {xtype: 'numberfield', fieldLabel: '数量', name: 'gen_quantity', minValue: 0, allowBlank: false, emptyText: '请输入…'},
+                    {xtype: 'displayfield', fieldLabel: '发卡数量', name: 'gen_quantity_for_display'},
                     {xtype: 'displayfield'}
                 ]
             },
@@ -88,7 +82,7 @@ Ext.define('Tomtalk.grid.FormAction', {
     },
 
     _afterrender: function () {
-        this.COMPONENTS.companyCombo.getStore().load();
+        
     },
 
     _return: function () {

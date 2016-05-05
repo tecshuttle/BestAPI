@@ -175,6 +175,7 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
         var $c = this.COMPONENTS;
 
         $c.grid.hide();
+        rec.data.gen_quantity_for_display = rec.data.gen_quantity;  //新增变量，用于给displayfield赋值。
         $c.form.getForm().setValues(rec.data);
         $c.form.show();
     },

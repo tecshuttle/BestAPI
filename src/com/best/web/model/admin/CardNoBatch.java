@@ -9,6 +9,8 @@ public class CardNoBatch {
     private int amount;
     private String batch_id;
     private String card_id;
+    private String batch_no;
+    private String proposer;
 
     public String getDept_id() {
         return dept_id;
@@ -62,6 +64,22 @@ public class CardNoBatch {
 
     public void setCard_id(String value) {
         this.card_id = value;
+    }
+
+    public String getBatch_no() {
+        return batch_no;
+    }
+
+    public void setBatch_no(String value) {
+        this.batch_no = value;
+    }
+
+    public String getProposer() {
+        return proposer;
+    }
+
+    public void setProposer(String value) {
+        this.proposer = value;
     }
 }
 

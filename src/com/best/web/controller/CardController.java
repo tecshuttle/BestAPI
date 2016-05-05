@@ -175,6 +175,8 @@ public class CardController {
         gen.setCard_id(batch.getCard_id());
         gen.setCard_type(batch.getCard_no_type());
         gen.setGen_quantity(batch.getAmount());
+        gen.setBatch_no(batch.getBatch_no());
+        gen.setProposer(batch.getProposer());
         gen.setMemo(batch.getBatch_id());
 
         service.insertCardNoGenBatch(gen);
