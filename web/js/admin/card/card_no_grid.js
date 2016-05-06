@@ -17,6 +17,7 @@ Tomtalk.IdcUI = Ext.extend(Ext.Panel, {
     initComponent: function () {
         var me = this;
         me.items = [
+            me._toolbar(),
             me._grid(),
             Ext.create('Tomtalk.grid.AccountForm', {
                 id: me.id + '_form',
@@ -31,6 +32,17 @@ Tomtalk.IdcUI = Ext.extend(Ext.Panel, {
         Tomtalk.IdcUI.superclass.initComponent.call(me);
     },
 
+    _toolbar: function () {
+        return {
+            xtype: 'fieldcontainer', layout: 'hbox', bodyPadding: 10,
+            id: this.id + '_toolbar',
+            items: [{
+                xtype: 'textfield', fieldLabel: '卡号', id: this.id + '_card_no', enableKeyEvents: true, name: 'card_no',
+                emptyText: '请输入…', labelWidth: 40
+            }]
+        }
+    },
+
     _grid: function () {
         var me = this;
 
@@ -42,7 +54,7 @@ Tomtalk.IdcUI = Ext.extend(Ext.Panel, {
                 type: 'ajax',
                 url: '/card/getCardNoList',
                 extraParams: {
-                    module: me.module
+                    card_no: ''
                 },
                 reader: {
                     type: 'json',
@@ -74,19 +86,6 @@ Tomtalk.IdcUI = Ext.extend(Ext.Panel, {
             columnLines: true,
             store: store,
             columns: me.columns,
-            dockedItems: [{
-                xtype: 'toolbar',
-                hidden: true,
-                items: [{
-                    text: '新建',
-                    hidden: true,
-                    id: this.id + '_add'
-                }, {
-                    text: '批量新建',
-                    hidden: true,
-                    id: this.id + '_add_batch'
-                }]
-            }],
             bbar: {
                 xtype: 'pagingtoolbar',
                 store: store,
@@ -120,6 +119,8 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
         Ext.apply(this.COMPONENTS, {
             addBtn: Ext.getCmp(this.id + '_add'),
             addBatchBtn: Ext.getCmp(this.id + '_add_batch'),
+            cardNo: Ext.getCmp(this.id + '_card_no'),
+
             grid: Ext.getCmp(this.id + '_grid'),
             form: Ext.getCmp(this.id + '_form'),
             batchForm: Ext.getCmp(this.id + '_batch_form')
@@ -133,12 +134,24 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
         Tomtalk.IdcAction.superclass.initEvents.call(me);
 
         this.on('boxready', me._afterrender, me);
-        $c.addBtn.on('click', me._add, me);
-        $c.addBatchBtn.on('click', me._add_batch, me);
+        $c.cardNo.on('keyup', me._onKeyUp, me);
     },
 
     _afterrender: function () {
         var $c = this.COMPONENTS;
+    },
+
+    _onKeyUp: function (txt, e, eOpts) {
+        if (e.keyCode === 13) {
+            var store = this.COMPONENTS.grid.getStore();
+            var proxy = store.getProxy();
+
+            Ext.apply(proxy.extraParams, {
+                card_no: txt.getValue().trim()
+            });
+
+            store.load();
+        }
     },
 
     _delete: function (id) {

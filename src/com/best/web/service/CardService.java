@@ -48,8 +48,8 @@ public class CardService {
     }
 
     //卡号管理
-    public List<CardNo> findCardNoList() {
-        return CardDao.findCardNoList();
+    public List<CardNo> findCardNoList(String card_no) {
+        return CardDao.findCardNoList(card_no);
     }
 
     public List<CardNo> findCardNoListByBatchId(String batch_id) {

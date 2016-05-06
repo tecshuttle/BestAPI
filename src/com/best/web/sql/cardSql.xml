@@ -75,11 +75,16 @@
 
 
     <!-- 卡号管理 -->
-    <select id="findCardNoList" resultType="CardNo">
-		select no.*, company.company_name from xzh_card_no no left join pf_company2 company on no.dept_id = company.id
-	</select>
+    <select id="findCardNoList" parameterType="Map" resultType="CardNo">
+        select non.*, company.company_name from xzh_card_no non left join pf_company2 company on non.dept_id = company.id
+        <where>
+            <if test="card_no != ''">
+                non.card_no like '%' || #{card_no} || '%'
+            </if>
+        </where>
+    </select>
 
-	<select id="findCardNoListByBatchId" parameterType="String" resultType="CardNo">
+    <select id="findCardNoListByBatchId" parameterType="String" resultType="CardNo">
 		select no.*, company.company_name from xzh_card_no no
 		left join pf_company2 company on no.dept_id = company.id
 		where no.batch_id = #{batch_id}
@@ -124,15 +129,15 @@
 	</update>
 
 
-	<!-- 卡号生成 -->
-	<select id="findCardNoGenBatchList" resultType="CardNoGenBatch">
+    <!-- 卡号生成 -->
+    <select id="findCardNoGenBatchList" resultType="CardNoGenBatch">
 		select gen.*, card.card_name, company.company_name from xzh_card_no_gen_batch gen
         left join xzh_card card on gen.card_id = card.id
         left join pf_company2 company on card.company_id = company.id
 	</select>
 
 
-	<insert id="insertCardNoGenBatch" parameterType="CardNoGenBatch">
+    <insert id="insertCardNoGenBatch" parameterType="CardNoGenBatch">
 		insert into xzh_card_no_gen_batch
 		( id, card_id, card_no_area, card_type, batch_no, proposer, gen_quantity, memo )
 		values
@@ -140,7 +145,7 @@
 	</insert>
 
 
-	<update id="updateCardNoGenBatch" parameterType="CardNoGenBatch">
+    <update id="updateCardNoGenBatch" parameterType="CardNoGenBatch">
 		update xzh_card_no_gen_batch
 		set card_id = #{card_id},
 		card_no_area = #{card_no_area},

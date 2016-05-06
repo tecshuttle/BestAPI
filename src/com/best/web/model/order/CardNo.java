@@ -86,6 +86,10 @@ public class CardNo {
         return card_no;
     }
 
+    public void setCard_no(String value) {
+        this.card_no = value;
+    }
+
     public String getCard_code() {
         return card_code;
     }
@@ -116,10 +120,6 @@ public class CardNo {
 
     public void setClose_date(String value) {
         this.close_date = value;
-    }
-
-    public void setCard_no(String card_no) {
-        this.card_no = card_no;
     }
 
     public String getStatus() {

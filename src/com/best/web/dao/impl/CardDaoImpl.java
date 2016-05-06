@@ -54,8 +54,12 @@ public class CardDaoImpl implements CardDao {
 
 
     //卡号管理
-    public List<CardNo> findCardNoList() {
-        return sqlSession.selectList("cardSql.findCardNoList");
+    public List<CardNo> findCardNoList(String card_no) {
+        HashMap<String, String> param = new HashMap<String, String>();
+        param.put("card_no", card_no);
+        param.put("card_xx", card_no);
+
+        return sqlSession.selectList("cardSql.findCardNoList", param);
     }
 
     public List<CardNo> findCardNoListByBatchId(String batch_id) {
