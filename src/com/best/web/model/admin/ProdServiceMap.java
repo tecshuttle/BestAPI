@@ -14,14 +14,14 @@ public class ProdServiceMap {
     private String active_flag;
     private String xzh_service_id;
     private String supplier_service_id;
-    private String service_type;
     private String status;
     private String seq;
-    private String supplier_id; //关联supplier
+    private String supplier_id;           //关联supplier
     private String supplier_service_name; //关联supplier
-    private String supplier_name;//关联supplier_service
-    private String market_price;//关联supplier_service
-    private String cost_price;//关联supplier_service
+    private String service_type;     //关联supplier_service
+    private String supplier_name;    //关联supplier_service
+    private String market_price;     //关联supplier_service
+    private String cost_price;       //关联supplier_service
 
     public String getId() {
         return id;
@@ -111,9 +111,13 @@ public class ProdServiceMap {
         this.seq = value;
     }
 
-    public String getSupplier_id() { return supplier_id; }
+    public String getSupplier_id() {
+        return supplier_id;
+    }
 
-    public void setSupplier_id(String value) { this.supplier_id = value; }
+    public void setSupplier_id(String value) {
+        this.supplier_id = value;
+    }
 
     public String getSupplier_service_name() {
         return supplier_service_name;

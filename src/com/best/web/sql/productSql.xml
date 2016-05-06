@@ -56,7 +56,8 @@
 
     <!-- 产品管理 - 服务产品映射关系 -->
     <select id="findProdServiceMapList" parameterType="String" resultType="ProdServiceMap">
-		select map.*, service.service_name as supplier_service_name, supplier.supplier_name, service.market_price, service.cost_price, supplier.id as supplier_id
+		select map.*, service.service_name as supplier_service_name, service.market_price, service.cost_price, service.service_type,
+		supplier.supplier_name,  supplier.id as supplier_id
 		from xzh_service_mapping map
 		left join xzh_supplier_service service on map.supplier_service_id = service.id
 		left join xzh_supplier supplier on service.supplier_id = supplier.id

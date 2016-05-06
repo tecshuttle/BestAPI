@@ -25,7 +25,7 @@ Ext.onReady(function () {
                     HEALTH_CARE: '护理',
                     MOUTH: '口腔',
                     PHYSICAL: '体检',
-                    WOMAN: '女科',
+                    WOMAN: '妇科',
                     HEALTH: '保健',
                     NUTRI: '营养',
                     SALES: '销售',
@@ -53,18 +53,6 @@ Ext.onReady(function () {
                     return '男';
                 } else if (v == 'F') {
                     return '女';
-                } else {
-                    return v;
-                }
-            }
-        },
-        {
-            header: "激活状态", dataIndex: 'active_flag', align: 'center',
-            renderer: function (v, b, rec) {
-                if (v == 0) {
-                    return '未激活';
-                } else if (v == 1) {
-                    return '已激活';
                 } else {
                     return v;
                 }

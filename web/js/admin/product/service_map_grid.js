@@ -51,12 +51,27 @@ Best.product.serviceListGridUI = Ext.extend(Ext.grid.GridPanel, {
             {header: '供应商', dataIndex: 'supplier_name'},
             {header: '服务名称', dataIndex: 'supplier_service_name'},
             {
-                header: "激活状态", dataIndex: 'active_flag', align: 'center',
+                header: '服务类型', dataIndex: 'service_type', align: 'center',
                 renderer: function (v, b, rec) {
-                    if (v == 0) {
-                        return '未激活';
-                    } else if (v == 1) {
-                        return '已激活';
+                    var type = {
+                        MAN: '男科',
+                        HEALTH_CARE: '护理',
+                        MOUTH: '口腔',
+                        PHYSICAL: '体检',
+                        WOMAN: '妇科',
+                        HEALTH: '保健',
+                        NUTRI: '营养',
+                        SALES: '销售',
+                        CHRONIC_ILLNESS: '慢性病',
+                        MSG: '消息',
+                        GENE: '基因',
+                        TEETH: '齿科',
+                        DOCTOR_ACCOMPANY: '名医会诊',
+                        DOCTOR_RESERVE: '名医预约'
+                    };
+
+                    if (type[v]) {
+                        return type[v];
                     } else {
                         return v;
                     }
@@ -144,6 +159,7 @@ Best.product.serviceListGridAction = Ext.extend(Best.product.serviceListGridUI, 
 
     loadList: function (rec) {
         this.xzh_service_id = rec.id;
+        this.rel_type = rec.rel_type;
 
         var store = this.getStore();
         var proxy = store.getProxy();
@@ -161,6 +177,7 @@ Best.product.serviceListGridAction = Ext.extend(Best.product.serviceListGridUI, 
         this.hide();
 
         form.getForm().reset();
+        form._loadServiceCombo();
         form.getForm().setValues({xzh_service_id: this.xzh_service_id});
         form.show();
     },
@@ -169,7 +186,7 @@ Best.product.serviceListGridAction = Ext.extend(Best.product.serviceListGridUI, 
         var form = this.parent.COMPONENTS.serviceListForm;
 
         this.hide();
-
+        form._loadServiceCombo();
         form.getForm().setValues(rec.data);
         form.show();
     },

@@ -62,6 +62,10 @@ public class SupplierService {
         return SupplierDao.findServiceListBySupplier(supplier_id);
     }
 
+    public List<SupplierProduct> findServiceListByType(String service_type) {
+        return SupplierDao.findServiceListByType(service_type);
+    }
+
     public void insertSupplierService(SupplierProduct model) {
         model.setId(BasicUtil.generateId());
         SupplierDao.insertSupplierService(model);

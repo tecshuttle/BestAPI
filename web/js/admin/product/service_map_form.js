@@ -1,10 +1,10 @@
 Ext.ns('Best.product');
 
-var supplierServiceStore = Ext.create('Ext.data.Store', {
-    fields: ['id', 'service_name'],
+var ServiceByTypeStore = Ext.create('Ext.data.Store', {
+    fields: ['id', 'supplier_service_name'],
     proxy: {
         type: 'ajax',
-        url: '/supplier/getServiceListBySupplier',
+        url: '/supplier/getServiceListByType',
         reader: {
             root: 'response',
             type: 'json'
@@ -46,12 +46,8 @@ Ext.define('Best.product.serviceListFormUI', {
                 xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
                 items: [
                     {
-                        xtype: 'combo', fieldLabel: '供应商', store: supplierStore, id: this.id + '_supplier_combo', allowBlank: false,
-                        displayField: 'supplier_name', margin: 0, valueField: 'id', name: 'supplier_id', queryMode: 'local'
-                    },
-                    {
-                        xtype: 'combo', fieldLabel: '服务', store: supplierServiceStore, displayField: 'service_name', allowBlank: false,
-                        id: this.id + '_supplier_service_combo', valueField: 'id', name: 'supplier_service_id', queryMode: 'local'
+                        xtype: 'combo', fieldLabel: '服务', store: ServiceByTypeStore, displayField: 'supplier_service_name', allowBlank: false, margin: 0,
+                        id: this.id + '_service_combo', valueField: 'id', name: 'supplier_service_id', queryMode: 'local'
                     },
 
                     {xtype: 'numberfield', fieldLabel: '显示顺序', name: 'seq', minValue: 0, emptyText: '请输入…'},
@@ -61,11 +57,7 @@ Ext.define('Best.product.serviceListFormUI', {
                 xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
                 items: [
                     {
-                        xtype: 'combo', fieldLabel: '激活标记', store: activeFlagStore, displayField: 'name', margin: 0,
-                        valueField: 'active_flag', name: 'active_flag', queryMode: 'local'
-                    },
-                    {
-                        xtype: 'combo', fieldLabel: '业务状态', store: serviceMapStatusStore, displayField: 'name',
+                        xtype: 'combo', fieldLabel: '业务状态', store: serviceMapStatusStore, displayField: 'name', margin: 0,
                         valueField: 'status', name: 'status', queryMode: 'local'
                     },
                     {xtype: 'displayfield'}
@@ -89,8 +81,7 @@ Ext.define('Best.product.serviceListFormAction', {
         Best.product.serviceListFormAction.superclass.initComponent.call(this);
 
         Ext.apply(this.COMPONENTS, {
-            supplierCombo: Ext.getCmp(this.id + '_supplier_combo'),
-            supplierServiceCombo: Ext.getCmp(this.id + '_supplier_service_combo'),
+            serviceCombo: Ext.getCmp(this.id + '_service_combo'),
             recId: Ext.getCmp(this.id + '_rec_id'),
             saveBtn: Ext.getCmp(this.id + '_save'),
             returnBtn: Ext.getCmp(this.id + '_return')
@@ -105,23 +96,22 @@ Ext.define('Best.product.serviceListFormAction', {
 
         this.on('boxready', me._afterrender, me);
 
-        $c.supplierCombo.on('change', me._onChangeSupplierCombo, me);
         $c.saveBtn.on('click', me._save, me);
         $c.returnBtn.on('click', me._return, me);
     },
 
     _afterrender: function () {
-        this.COMPONENTS.supplierCombo.getStore().load();
+
     },
 
-    _onChangeSupplierCombo: function (combo, supplier_id, oldValue, eOpts) {
-        var serviceCombo = this.COMPONENTS.supplierServiceCombo;
+    _loadServiceCombo: function (combo, supplier_id, oldValue, eOpts) {
+        var rel_type = this.up().COMPONENTS.serviceListGrid.rel_type;  //从上层获取当前服务的关联类型
 
-        var store = serviceCombo.getStore();
+        var store = this.COMPONENTS.serviceCombo.getStore();
         var proxy = store.getProxy();
 
         Ext.apply(proxy.extraParams, {
-            supplier_id: supplier_id
+            service_type: rel_type
         });
 
         store.load();

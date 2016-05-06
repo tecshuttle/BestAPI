@@ -12,7 +12,8 @@ public class SupplierProduct {
     private String modify_date;
     private String active_flag;
     private String supplier_id;
-    private String supplier_name; //关联xzh_supplier
+    private String supplier_name;         //关联xzh_supplier
+    private String supplier_service_name; //关联xzh_supplier
     private String service_code;
     private String service_name;
     private String service_type;
@@ -90,6 +91,12 @@ public class SupplierProduct {
 
     public void setSupplier_name(String supplier_name) {
         this.supplier_name = supplier_name;
+    }
+
+    public String getSupplier_service_name() { return supplier_service_name; }
+
+    public void setSupplier_service_name(String value) {
+        this.supplier_service_name = value;
     }
 
     public String getService_code() {

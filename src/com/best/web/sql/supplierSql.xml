@@ -104,6 +104,11 @@
 		select * from xzh_supplier_service where supplier_id = #{supplier_id}
 	</select>
 
+	<select id="findServiceListByType" parameterType="String" resultType="SupplierService">
+		select service.*, supplier.supplier_name || ' - ' || service.service_name as supplier_service_name from xzh_supplier_service service left join xzh_supplier supplier on service.supplier_id = supplier.id
+		where service.service_type = #{service_type} order by supplier.supplier_name, service.service_name
+	</select>
+
 	<insert id="insertSupplierService" parameterType="SupplierService">
 		insert into xzh_supplier_service
 		( id, active_flag, supplier_id, service_code, service_name, service_type, status, market_price,

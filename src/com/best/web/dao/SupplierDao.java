@@ -33,6 +33,8 @@ public interface SupplierDao {
 
     public List<SupplierProduct> findServiceListBySupplier(String supplier_id);
 
+    public List<SupplierProduct> findServiceListByType(String service_type);
+
     public void insertSupplierService(SupplierProduct model);
 
     public void updateSupplierService(SupplierProduct model);
