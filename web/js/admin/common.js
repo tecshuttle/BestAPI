@@ -71,6 +71,7 @@ var productServiceTypeStore = Ext.create('Ext.data.Store', {
 var productRelTypeStore = Ext.create('Ext.data.Store', {
     fields: ['rel_type', 'name'],
     data: [
+        {rel_type: '', name: '全部'},
         {rel_type: 'MAN', name: '男科'},
         {rel_type: 'HEALTH_CARE', name: '护理'},
         {rel_type: 'MOUTH', name: '口腔'},

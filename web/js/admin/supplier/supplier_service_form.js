@@ -126,8 +126,6 @@ Ext.define('Tomtalk.grid.FormAction', {
         var $c = this.COMPONENTS;
         var recId = $c.recId.getValue();
 
-        console.log('result');
-
         if (form.isValid()) {
             form.getForm().submit({
                 url: '/supplier/' + (recId == 0 ? 'insertSupplierService' : 'updateSupplierService'),   //后台处理的页面

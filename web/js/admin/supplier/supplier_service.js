@@ -3,14 +3,13 @@ Ext.onReady(function () {
     var columns = [
         {header: "ID", dataIndex: 'id', hidden: true},
         {header: '供应商', dataIndex: 'supplier_name', flex: 1},
-        {header: '产品名称', dataIndex: 'service_name', flex: 2},
         {
             header: '产品类型', dataIndex: 'service_type', align: 'center', width: 80,
             renderer: function (v, b, rec) {
                 if (v == 'PHYSICAL') {
                     return '体检';
                 } else if (v == 'TEETH') {
-                    return '护牙';
+                    return '齿科';
                 } else if (v == 'GENE') {
                     return '基因';
                 } else {
@@ -18,6 +17,7 @@ Ext.onReady(function () {
                 }
             }
         },
+        {header: '产品名称', dataIndex: 'service_name', flex: 2},
         {
             header: '性别要求', dataIndex: 'sex_select', align: 'center', width: 80,
             renderer: function (v, b, rec) {

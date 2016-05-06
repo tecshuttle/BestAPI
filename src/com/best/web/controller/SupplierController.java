@@ -111,9 +111,9 @@ public class SupplierController {
     }
 
     @RequestMapping(value = "getSupplierServiceList", method = RequestMethod.GET)
-    public void getSupplierServiceList(HttpServletRequest request, HttpServletResponse response, int start, int limit) throws Exception {
+    public void getSupplierServiceList(HttpServletRequest request, HttpServletResponse response, String supplier_id, String service_type, int start, int limit) throws Exception {
         ExtListResponse<SupplierProduct> listResponse = new ExtListResponse<SupplierProduct>();
-        listResponse.setResponse(service.findSupplierServiceList(), start, limit);
+        listResponse.setResponse(service.findSupplierServiceList(supplier_id, service_type), start, limit);
         AjaxUtil.sendJSON(response, listResponse);
     }
 

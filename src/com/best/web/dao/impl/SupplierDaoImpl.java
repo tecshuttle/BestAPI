@@ -62,8 +62,12 @@ public class SupplierDaoImpl implements SupplierDao {
 
 
     //供应商产品管理
-    public List<SupplierProduct> findSupplierServiceList() {
-        return sqlSession.selectList("supplierSql.findSupplierServiceList");
+    public List<SupplierProduct> findSupplierServiceList(String supplier_id, String service_type) {
+        HashMap<String, String> param = new HashMap<String, String>();
+        param.put("supplier_id", supplier_id);
+        param.put("service_type", service_type);
+
+        return sqlSession.selectList("supplierSql.findSupplierServiceList", param);
     }
 
     public List<SupplierProduct> findServiceListBySupplier(String supplier_id) {

@@ -123,6 +123,7 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
             supplierCombo: Ext.getCmp(this.id + '_supplier_combo'),
             orgName: Ext.getCmp(this.id + '_org_name'),
 
+            toolBar: Ext.getCmp(this.id + '_toolbar'),
             grid: Ext.getCmp(this.id + '_grid'),
             form: Ext.getCmp(this.id + '_form')
         });
@@ -151,8 +152,6 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
     },
 
     _onChangeSupplierCombo: function (combo, newValue, oldValue, eOpts) {
-        console.log(newValue);
-
         var store = this.COMPONENTS.grid.getStore();
         var proxy = store.getProxy();
 
@@ -165,8 +164,6 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
 
     _onKeyUp: function (txt, e, eOpts) {
         if (e.keyCode === 13) {
-            console.log(txt.getValue().trim());
-
             var store = this.COMPONENTS.grid.getStore();
             var proxy = store.getProxy();
 
@@ -198,6 +195,7 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
         var $c = this.COMPONENTS;
 
         $c.grid.hide();
+        $c.toolBar.hide();
         $c.form.getForm().reset();
         $c.form._loadSupplierCombo();
         $c.form.show();
@@ -207,6 +205,7 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
         var $c = this.COMPONENTS;
 
         $c.grid.hide();
+        $c.toolBar.hide();
         $c.form.getForm().setValues(rec.data);
         $c.form._loadSupplierCombo();
         $c.form.show();
@@ -218,6 +217,7 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
         $c.form.hide();
 
         $c.grid.show();
+        $c.toolBar.show();
         $c.grid.getStore().reload();
     }
 });

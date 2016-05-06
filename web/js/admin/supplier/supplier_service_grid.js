@@ -17,6 +17,7 @@ Tomtalk.IdcUI = Ext.extend(Ext.Panel, {
     initComponent: function () {
         var me = this;
         me.items = [
+            me._toolbar(),
             me._grid(),
             Ext.create('Tomtalk.grid.AccountForm', {
                 id: me.id + '_form',
@@ -25,6 +26,21 @@ Tomtalk.IdcUI = Ext.extend(Ext.Panel, {
         ];
 
         Tomtalk.IdcUI.superclass.initComponent.call(me);
+    },
+    _toolbar: function () {
+        return {
+            xtype: 'fieldcontainer', layout: 'hbox', bodyPadding: 10,
+            id: this.id + '_toolbar',
+            items: [{
+                xtype: 'button', text: '新建', margin: '0 20 0 0', id: this.id + '_add'
+            }, {
+                xtype: 'combo', fieldLabel: '供应商', labelWidth: 60, id: this.id + '_supplier_combo', store: supplierStore,
+                displayField: 'supplier_name', valueField: 'id', name: 'supplier_id', queryMode: 'local'
+            }, {
+                xtype: 'combo', fieldLabel: '产品类型', margin: '0 0 0 20', labelWidth: 80, id: this.id + '_service_type_combo', store: productRelTypeStore,
+                displayField: 'name', valueField: 'rel_type', name: 'rel_type', queryMode: 'local'
+            }]
+        }
     },
 
     _grid: function () {
@@ -38,7 +54,8 @@ Tomtalk.IdcUI = Ext.extend(Ext.Panel, {
                 type: 'ajax',
                 url: '/supplier/getSupplierServiceList',
                 extraParams: {
-                    module: me.module
+                    supplier_id: '',
+                    service_type: ''
                 },
                 reader: {
                     type: 'json',
@@ -72,17 +89,6 @@ Tomtalk.IdcUI = Ext.extend(Ext.Panel, {
             columnLines: true,
             store: store,
             columns: me.columns,
-            dockedItems: [
-                {
-                    xtype: 'toolbar',
-                    items: [
-                        {
-                            text: '新建',
-                            id: this.id + '_add'
-                        }
-                    ]
-                }
-            ],
             bbar: {
                 xtype: 'pagingtoolbar',
                 store: store,
@@ -115,15 +121,12 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
 
         Ext.apply(this.COMPONENTS, {
             addBtn: Ext.getCmp(this.id + '_add'),
-            saveBtn: Ext.getCmp(this.id + '_save'),
-            returnBtn: Ext.getCmp(this.id + '_return'),
+            supplierCombo: Ext.getCmp(this.id + '_supplier_combo'),
+            serviceTypeCombo: Ext.getCmp(this.id + '_service_type_combo'),
+
+            toolBar: Ext.getCmp(this.id + '_toolbar'),
             grid: Ext.getCmp(this.id + '_grid'),
-            form: Ext.getCmp(this.id + '_form'),
-            queryForm: Ext.getCmp(this.id + '_query'),
-            id: Ext.getCmp(this.id + '_id'),
-            name: Ext.getCmp(this.id + '_name'),
-            query: Ext.getCmp(this.id + '_btn_query'),
-            reset: Ext.getCmp(this.id + '_btn_reset')
+            form: Ext.getCmp(this.id + '_form')
         });
     },
 
@@ -134,11 +137,45 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
         Tomtalk.IdcAction.superclass.initEvents.call(me);
 
         this.on('boxready', me._afterrender, me);
+        $c.supplierCombo.getStore().on('load', me._onLoadSupplierCombo, me);
+        $c.supplierCombo.on('change', me._onChangeSupplierCombo, me);
+        $c.serviceTypeCombo.getStore().on('load', me._onLoadServiceTypeCombo, me);
+        $c.serviceTypeCombo.on('change', me._onChangeServiceTypeCombo, me);
         $c.addBtn.on('click', me._add, me);
     },
 
     _afterrender: function () {
-        var $c = this.COMPONENTS;
+        this.COMPONENTS.supplierCombo.getStore().load();
+    },
+
+    _onLoadSupplierCombo: function (store, records, successful, eOpts) {
+        store.insert(0, [{id: 0, supplier_name: '全部'}]);
+    },
+
+    _onLoadServiceTypeCombo: function (store, records, successful, eOpts) {
+        //store.insert(0, [{id: 0, rel_type: '', name: '全部'}]);
+    },
+
+    _onChangeSupplierCombo: function (combo, newValue, oldValue, eOpts) {
+        var store = this.COMPONENTS.grid.getStore();
+        var proxy = store.getProxy();
+
+        Ext.apply(proxy.extraParams, {
+            supplier_id: (newValue === 0 ? '' : newValue)
+        });
+
+        store.load();
+    },
+
+    _onChangeServiceTypeCombo: function (combo, newValue, oldValue, eOpts) {
+        var store = this.COMPONENTS.grid.getStore();
+        var proxy = store.getProxy();
+
+        Ext.apply(proxy.extraParams, {
+            service_type: newValue
+        });
+
+        store.load();
     },
 
     _delete: function (id) {
@@ -161,6 +198,7 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
         var $c = this.COMPONENTS;
 
         $c.grid.hide();
+        $c.toolBar.hide();
         $c.form.getForm().reset();
         $c.form._loadSupplierCombo();
         $c.form.show();
@@ -170,6 +208,7 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
         var $c = this.COMPONENTS;
 
         $c.grid.hide();
+        $c.toolBar.hide();
         $c.form.getForm().setValues(rec.data);
         $c.form._loadSupplierCombo();
         $c.form.show();
@@ -181,6 +220,7 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
         $c.form.hide();
 
         $c.grid.show();
+        $c.toolBar.show();
         $c.grid.getStore().reload();
     }
 });

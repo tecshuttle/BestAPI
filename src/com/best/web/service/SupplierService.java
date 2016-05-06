@@ -54,8 +54,8 @@ public class SupplierService {
 
 
     //供应商产品管理
-    public List<SupplierProduct> findSupplierServiceList() {
-        return SupplierDao.findSupplierServiceList();
+    public List<SupplierProduct> findSupplierServiceList(String supplier_id, String service_type) {
+        return SupplierDao.findSupplierServiceList(supplier_id, service_type);
     }
 
     public List<SupplierProduct> findServiceListBySupplier(String supplier_id) {

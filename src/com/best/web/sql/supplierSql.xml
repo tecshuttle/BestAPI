@@ -105,8 +105,18 @@
 
 
     <!-- 供应商服务管理 -->
-    <select id="findSupplierServiceList" resultType="SupplierService">
-		select service.*, supplier.supplier_name from xzh_supplier_service service left join xzh_supplier supplier on service.supplier_id = supplier.id
+    <select id="findSupplierServiceList" parameterType="Map" resultType="SupplierService">
+		select service.*, supplier.supplier_name
+		from xzh_supplier_service service left join xzh_supplier supplier on service.supplier_id = supplier.id
+		<where>
+			<if test="supplier_id != ''">
+				service.supplier_id = #{supplier_id}
+			</if>
+
+			<if test="service_type != ''">
+				and service.service_type = #{service_type}
+			</if>
+		</where>
 	</select>
 
     <select id="findServiceListBySupplier" parameterType="String" resultType="SupplierService">

@@ -29,7 +29,7 @@ public interface SupplierDao {
 
 
     //供应商产品管理
-    public List<SupplierProduct> findSupplierServiceList();
+    public List<SupplierProduct> findSupplierServiceList(String supplier_id, String service_type);
 
     public List<SupplierProduct> findServiceListBySupplier(String supplier_id);
 
