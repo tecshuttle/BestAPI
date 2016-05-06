@@ -8,7 +8,6 @@
 	</select>
 
 
-
     <insert id="insertSupplier" parameterType="Supplier">
 		insert into xzh_supplier
 		( id, active_flag, supplier_name, supplier_abbr, supplier_code, status, intro, contact,
@@ -45,12 +44,22 @@
 	</update>
 
 
-	<!-- 供应商门店管理 -->
-	<select id="findSupplierOrgList" resultType="SupplierOrg">
-		select org.*, supplier.supplier_name from xzh_supplier_org org left join xzh_supplier supplier on org.supplier_id = supplier.id
-	</select>
+    <!-- 供应商门店管理 -->
+    <select id="findSupplierOrgList" parameterType="Map" resultType="SupplierOrg">
+        select org.*, supplier.supplier_name from xzh_supplier_org org
+        left join xzh_supplier supplier on org.supplier_id = supplier.id
+        <where>
+            <if test="supplier_id != ''">
+                org.supplier_id = #{supplier_id}
+            </if>
 
-	<insert id="insertSupplierOrg" parameterType="SupplierOrg">
+            <if test="org_name != ''">
+                and org.org_name like '%' || #{org_name} || '%'
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertSupplierOrg" parameterType="SupplierOrg">
 		insert into xzh_supplier_org
 		( id, active_flag, supplier_id, org_name, province_id, city_id, area_id, address, contact_phone,
 		  traffic_guide, has_physical, has_tooth_care, has_gene, review_score, business_hours,
@@ -64,7 +73,7 @@
 		)
 	</insert>
 
-	<update id="updateSupplierOrg" parameterType="SupplierOrg">
+    <update id="updateSupplierOrg" parameterType="SupplierOrg">
 		update xzh_supplier_org
 		set active_flag = #{active_flag},
 		    supplier_id = #{supplier_id},
@@ -88,28 +97,28 @@
 		where id = #{id}
 	</update>
 
-	<update id="deleteSupplierOrg">
+    <update id="deleteSupplierOrg">
 		update xzh_supplier_org
 		set modifier = null, modify_date = sysdate, active_flag = '0'
 		where id = #{id}
 	</update>
 
 
-	<!-- 供应商服务管理 -->
-	<select id="findSupplierServiceList" resultType="SupplierService">
+    <!-- 供应商服务管理 -->
+    <select id="findSupplierServiceList" resultType="SupplierService">
 		select service.*, supplier.supplier_name from xzh_supplier_service service left join xzh_supplier supplier on service.supplier_id = supplier.id
 	</select>
 
-	<select id="findServiceListBySupplier" parameterType="String" resultType="SupplierService">
+    <select id="findServiceListBySupplier" parameterType="String" resultType="SupplierService">
 		select * from xzh_supplier_service where supplier_id = #{supplier_id}
 	</select>
 
-	<select id="findServiceListByType" parameterType="String" resultType="SupplierService">
+    <select id="findServiceListByType" parameterType="String" resultType="SupplierService">
 		select service.*, supplier.supplier_name || ' - ' || service.service_name as supplier_service_name from xzh_supplier_service service left join xzh_supplier supplier on service.supplier_id = supplier.id
 		where service.service_type = #{service_type} order by supplier.supplier_name, service.service_name
 	</select>
 
-	<insert id="insertSupplierService" parameterType="SupplierService">
+    <insert id="insertSupplierService" parameterType="SupplierService">
 		insert into xzh_supplier_service
 		( id, active_flag, supplier_id, service_code, service_name, service_type, status, market_price,
 		  cost_price, is_use_verify_code, logo_img, sex_select, city_select, business_hours,
@@ -123,7 +132,7 @@
         )
 	</insert>
 
-	<update id="updateSupplierService" parameterType="SupplierService">
+    <update id="updateSupplierService" parameterType="SupplierService">
 		update xzh_supplier_service
 		set active_flag = #{active_flag},
 		    supplier_id = #{supplier_id},
@@ -145,7 +154,7 @@
 		where id = #{id}
 	</update>
 
-	<update id="deleteSupplierService">
+    <update id="deleteSupplierService">
 		update xzh_supplier_service
 		set modifier = null, modify_date = sysdate, active_flag = '0'
 		where id = #{id}

@@ -70,7 +70,6 @@ Ext.onReady(function () {
         style: 'background-color: white;',
         items: [
             new Tomtalk.Idc({
-                module: 'admins',
                 fields: fields,
                 columns: columns
             })

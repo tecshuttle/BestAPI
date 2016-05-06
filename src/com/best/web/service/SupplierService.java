@@ -35,8 +35,8 @@ public class SupplierService {
 
 
     //供应商门店管理
-    public List<SupplierOrg> findSupplierOrgList() {
-        return SupplierDao.findSupplierOrgList();
+    public List<SupplierOrg> findSupplierOrgList(String supplier_id, String org_name) {
+        return SupplierDao.findSupplierOrgList(supplier_id, org_name);
     }
 
     public void insertSupplierOrg(SupplierOrg model) {

@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 
 @Repository
@@ -37,10 +38,13 @@ public class SupplierDaoImpl implements SupplierDao {
 
 
     //供应商门店管理
-    public List<SupplierOrg> findSupplierOrgList() {
-        return sqlSession.selectList("supplierSql.findSupplierOrgList");
-    }
+    public List<SupplierOrg> findSupplierOrgList(String supplier_id, String org_name) {
+        HashMap<String, String> param = new HashMap<String, String>();
+        param.put("supplier_id", supplier_id);
+        param.put("org_name", org_name);
 
+        return sqlSession.selectList("supplierSql.findSupplierOrgList", param);
+    }
 
     public void insertSupplierOrg(SupplierOrg model) {
         sqlSession.insert("supplierSql.insertSupplierOrg", model);

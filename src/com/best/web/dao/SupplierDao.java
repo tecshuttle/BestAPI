@@ -19,7 +19,7 @@ public interface SupplierDao {
 
 
     //供应商门店管理
-    public List<SupplierOrg> findSupplierOrgList();
+    public List<SupplierOrg> findSupplierOrgList(String supplier_id, String org_name);
 
     public void insertSupplierOrg(SupplierOrg model);
 
