@@ -1,4 +1,6 @@
 <%@page contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix='security' uri='http://www.springframework.org/security/tags' %>
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -39,7 +41,11 @@
     <div class="user-wrap f_r">
         <div class="user-options-wrap">
             <ul>
-                <li><b class="user-role" id="lblAppNames">Good luck：admin</b></li>
+                <li>
+                    <b class="user-role" id="lblAppNames">
+                        Good luck：<security:authentication property="principal.username"></security:authentication>
+                    </b>
+                </li>
                 <li><s class="sepe-hr"></s></li>
                 <li><a target='_self' href="/j_spring_security_logout" id="lnkLogout" class="layout" title="退出"></a></li>
             </ul>
