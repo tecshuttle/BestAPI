@@ -35,6 +35,47 @@
             margin-top: 0px;
             padding-top: 8px;
         }
+
+        /* 删除按钮 */
+        .x-btn-focus.del-btn {
+            background: #c9302c;
+            border-color: #ac2925;
+        }
+
+        .del-btn {
+            background: #d9534f;
+            border-color: #d43f3a;
+        }
+
+        .del-btn .x-btn-inner {
+            color: #ffffff;
+            border-color: #ac2925;
+        }
+
+        .del-btn-over {
+            background: #c9302c;
+            border-color: #ac2925;
+        }
+
+        .x-btn-over.del-btn {
+            background: #c9302c;
+            border-color: #ac2925;
+        }
+
+        .x-btn-pressed.del-btn {
+            background: #ac2925 !important;
+            border-color: #ac2925 !important;
+        }
+
+        .x-btn-disabled.del-btn {
+            background: #ac2925 !important;
+            border-color: #ac2925 !important;
+        }
+
+        .x-btn-focus.del-btn {
+            background: #c9302c;
+            border-color: #ac2925;
+        }
     </style>
 </head>
 
