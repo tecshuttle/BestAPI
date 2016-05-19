@@ -53,13 +53,10 @@ Ext.define('Tomtalk.grid.FormUI', {
             }, {
                 xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, padding: '0 0 0 10'},
                 items: [
-                    {
-                        xtype: 'combo', fieldLabel: '激活标记', store: activeFlagStore, displayField: 'name', margin: '0 0 0 0',
-                        valueField: 'active_flag', name: 'active_flag', queryMode: 'local'
-                    },
-                    {xtype: 'numberfield', fieldLabel: '套餐总数', name: 'package_total', minValue: 0, allowBlank: false, emptyText: '请输入…'},
+                    {xtype: 'numberfield', fieldLabel: '套餐总数', name: 'package_total', minValue: 0, margin: '0 0 0 0', allowBlank: false, emptyText: '请输入…'},
                     {xtype: 'numberfield', fieldLabel: '可选套餐数', name: 'select_count', minValue: 0, allowBlank: false, emptyText: '请输入…'},
-                    {xtype: 'numberfield', fieldLabel: '允许修改套餐数', name: 'allow_change_count', minValue: 0, allowBlank: false, emptyText: '请输入…'}
+                    {xtype: 'numberfield', fieldLabel: '允许修改套餐数', name: 'allow_change_count', minValue: 0, allowBlank: false, emptyText: '请输入…'},
+                    {xtype: 'displayfield'}
                 ]
             }, {
                 xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, padding: '0 0 0 10'},

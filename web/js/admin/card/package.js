@@ -5,18 +5,6 @@ Ext.onReady(function () {
         {header: "卡名", dataIndex: 'card_name', flex: 1},
         {header: "套餐名称", dataIndex: 'package_name', flex: 2},
         {
-            header: '激活状态', dataIndex: 'active_flag', align: 'center', width: 80,
-            renderer: function (v, b, rec) {
-                if (v == 0) {
-                    return '未激活';
-                } else if (v == 1) {
-                    return '已激活';
-                } else {
-                    return v;
-                }
-            }
-        },
-        {
             header: "性别要求", dataIndex: 'sex_select', align: 'center', width: 80,
             renderer: function (v, b, rec) {
                 if (v == 'ALL') {

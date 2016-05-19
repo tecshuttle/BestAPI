@@ -5,18 +5,6 @@ Ext.onReady(function () {
         {header: "供应商", dataIndex: 'supplier_name', flex: 1},
         {header: "门店名称", dataIndex: 'org_name', flex: 2},
         {
-            header: "激活状态", dataIndex: 'active_flag', align: 'center', width: 80,
-            renderer: function (v, b, rec) {
-                if (v == 0) {
-                    return '未激活';
-                } else if (v == 1) {
-                    return '已激活';
-                } else {
-                    return v;
-                }
-            }
-        },
-        {
             header: '是否体检', dataIndex: 'has_physical', align: 'center', width: 80,
             renderer: function (v, b, rec) {
                 if (v == 'Y') {

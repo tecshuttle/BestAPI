@@ -23,18 +23,6 @@ Ext.onReady(function () {
             }
         },
         {
-            header: '激活标记', dataIndex: 'active_flag', align: 'center', width: 80,
-            renderer: function (v, b, rec) {
-                if (v == 0) {
-                    return '未激活';
-                } else if (v == 1) {
-                    return '已激活';
-                } else {
-                    return v;
-                }
-            }
-        },
-        {
             header: "价格", dataIndex: 'price', align: 'right',
             renderer: function (val) {
                 var out = Ext.util.Format.number(val, '0.00');

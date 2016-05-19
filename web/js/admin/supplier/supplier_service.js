@@ -43,18 +43,6 @@ Ext.onReady(function () {
             }
         },
         {
-            header: '激活标记', dataIndex: 'active_flag', align: 'center', width: 80,
-            renderer: function (v, b, rec) {
-                if (v == 0) {
-                    return '未激活';
-                } else if (v == 1) {
-                    return '已激活';
-                } else {
-                    return v;
-                }
-            }
-        },
-        {
             header: '状态', dataIndex: 'status', align: 'center', width: 80,
             renderer: function (v, b, rec) {
                 if (v == 0) {

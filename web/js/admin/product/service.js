@@ -2,7 +2,7 @@ Ext.onReady(function () {
     var fields = ['id', 'name', 'password'];
     var columns = [
         {header: "ID", dataIndex: 'id', hidden: true},
-        {header: '服务名称', dataIndex: 'service_name', width: 200},
+        {header: '服务名称', dataIndex: 'service_name', flex: 3},
         {
             header: '服务类型', dataIndex: 'service_type', align: 'center',
             renderer: function (v, b, rec) {
@@ -70,7 +70,6 @@ Ext.onReady(function () {
                 }
             }
         },
-        {header: '服务数', dataIndex: 'count_service_map', align: 'right'},
         {
             header: '售价', dataIndex: 'price', align: 'right',
             renderer: function (val) {

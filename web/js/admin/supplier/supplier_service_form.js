@@ -38,15 +38,12 @@ Ext.define('Tomtalk.grid.FormUI', {
                 xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
                 items: [
                     {
-                        xtype: 'combo', fieldLabel: '激活标记', store: activeFlagStore, displayField: 'name', margin: 0,
-                        valueField: 'active_flag', name: 'active_flag', queryMode: 'local'
-                    },
-                    {
-                        xtype: 'combo', fieldLabel: '状态', store: statusStore, displayField: 'name',
+                        xtype: 'combo', fieldLabel: '状态', store: statusStore, displayField: 'name', margin: 0,
                         valueField: 'status', name: 'status', queryMode: 'local'
                     },
                     {xtype: 'numberfield', fieldLabel: '市场价格', name: 'market_price', minValue: 0, emptyText: '请输入…'},
-                    {xtype: 'numberfield', fieldLabel: '采购价格', name: 'cost_price', minValue: 0, emptyText: '请输入…'}
+                    {xtype: 'numberfield', fieldLabel: '采购价格', name: 'cost_price', minValue: 0, emptyText: '请输入…'},
+                    {xtype: 'displayfield'}
                 ]
             }, {
                 xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},

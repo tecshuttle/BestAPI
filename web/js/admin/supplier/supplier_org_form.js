@@ -28,11 +28,8 @@ Ext.define('Tomtalk.grid.FormUI', {
                         xtype: 'combo', fieldLabel: '供应商', id: this.id + '_supplier_combo', allowBlank: false, store: supplierStore,
                         displayField: 'supplier_name', valueField: 'id', name: 'supplier_id', queryMode: 'local'
                     },
-                    {
-                        xtype: 'combo', fieldLabel: '激活标记', store: activeFlagStore, displayField: 'name',
-                        valueField: 'active_flag', name: 'active_flag', queryMode: 'local'
-                    },
-                    {xtype: 'textfield', fieldLabel: '联系电话', name: 'contact_phone', emptyText: '请输入…'}
+                    {xtype: 'textfield', fieldLabel: '联系电话', name: 'contact_phone', emptyText: '请输入…'},
+                    {xtype: 'displayfield'}
                 ]
             },
             {

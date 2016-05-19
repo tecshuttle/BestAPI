@@ -29,6 +29,12 @@
         }
 
         /* text for actioncolumn end */
+
+        /* 发现一个displayfield的bug */
+        .x-form-display-field-default {
+            margin-top: 0px;
+            padding-top: 8px;
+        }
     </style>
 </head>
 
