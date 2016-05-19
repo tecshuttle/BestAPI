@@ -34,11 +34,7 @@ Ext.define('Tomtalk.grid.FormUI', {
                 items: [
                     {xtype: 'textfield', fieldLabel: '分类名称', name: 'card_name', margin: '0 0 0 0', allowBlank: false, emptyText: '请输入…'},
                     {xtype: 'textfield', fieldLabel: '分类代号', name: 'card_code', allowBlank: false, emptyText: '请输入…'},
-                    {
-                        xtype: 'combo', fieldLabel: '卡类型', store: cardTypeStore, displayField: 'name',
-                        valueField: 'cardType', name: 'card_type', queryMode: 'local', flex: 1
-                    },
-                    {xtype: 'textfield', fieldLabel: 'LOGO', name: 'logo_img', emptyText: '请输入…'}
+                    {xtype: 'textfield', fieldLabel: 'LOGO', name: 'logo_img', flex: 2.02, emptyText: '请输入…'}
                 ]
             }, {
                 xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},

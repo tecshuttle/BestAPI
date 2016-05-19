@@ -19,12 +19,12 @@ Docs.Menu = [
                 href: "/card/noGen",
                 text: "卡号生成",
                 leaf: true
-            },
-            {
-                href: "/card/no",
-                text: "卡号管理",
-                leaf: true
-            }
+            }/*,
+             {
+             href: "/card/no",
+             text: "卡号管理",
+             leaf: true
+             }*/
         ]
     },
     {
