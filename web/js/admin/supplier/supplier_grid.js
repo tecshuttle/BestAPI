@@ -163,19 +163,8 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
 
         $c.grid.hide();
         $c.form.getForm().reset();
+        $c.form._delToggle(-1);
         $c.form.show();
-
-        if (this.module === 'site_settings') {
-            var KE = this.KE;
-
-            if (KE) {
-                KE.data("kendoEditor").value('');
-            } else {
-                this.KE = $("#kendoeditor-inputEl").kendoEditor(ke_config);
-            }
-        }
-
-
     },
 
     _edit: function (rec) {
@@ -183,17 +172,8 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
 
         $c.grid.hide();
         $c.form.getForm().setValues(rec.data);
+        $c.form._delToggle(rec.data.status);
         $c.form.show();
-
-        if (this.module === 'site_settings') {
-            var KE = this.KE;
-
-            if (KE) {
-                KE.data("kendoEditor").value(rec.data.value);
-            } else {
-                this.KE = $("#kendoeditor-inputEl").kendoEditor(ke_config);
-            }
-        }
     },
 
     _returnFrom: function () {

@@ -7,6 +7,7 @@
 		select card.*, company.company_name
 		from XZH_CARD card
 		left join pf_company2 company on card.company_id = company.id
+		where card.active_flag != 0
 	</select>
 
     <select id="findCardTypeById" parameterType="String" resultType="CardType">
@@ -160,7 +161,9 @@
 
     <!-- 卡套餐管理 -->
     <select id="findCardPackageList" resultType="CardPackage">
-		select package.*, card.card_name from xzh_card_package package left join xzh_card card on package.card_id = card.id
+		select package.*, card.card_name
+		from xzh_card_package package left join xzh_card card on package.card_id = card.id
+		where package.active_flag != 0
 	</select>
 
     <select id="findCardPackageListByCardId" parameterType="String" resultType="CardPackage">

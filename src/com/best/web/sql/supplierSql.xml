@@ -4,7 +4,7 @@
 
     <!-- 供应商管理 -->
     <select id="findSupplierList" resultType="Supplier">
-		select * from XZH_supplier
+		select * from XZH_supplier where active_flag != 0
 	</select>
 
 
@@ -49,8 +49,10 @@
         select org.*, supplier.supplier_name from xzh_supplier_org org
         left join xzh_supplier supplier on org.supplier_id = supplier.id
         <where>
+                org.active_flag != 0
+
             <if test="supplier_id != ''">
-                org.supplier_id = #{supplier_id}
+                and org.supplier_id = #{supplier_id}
             </if>
 
             <if test="org_name != ''">
@@ -109,8 +111,10 @@
 		select service.*, supplier.supplier_name
 		from xzh_supplier_service service left join xzh_supplier supplier on service.supplier_id = supplier.id
 		<where>
+			service.active_flag != 0
+
 			<if test="supplier_id != ''">
-				service.supplier_id = #{supplier_id}
+				and service.supplier_id = #{supplier_id}
 			</if>
 
 			<if test="service_type != ''">

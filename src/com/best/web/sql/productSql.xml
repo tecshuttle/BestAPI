@@ -4,7 +4,7 @@
 
     <!-- 产品管理 - 服务 -->
     <select id="findProdServiceList" resultType="ProdService">
-		select * from xzh_service
+		select * from xzh_service where active_flag != 0
 	</select>
 
 	<select id="findProdServiceListByPackageId" parameterType="String" resultType="CardPackageDtl">

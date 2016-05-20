@@ -200,6 +200,7 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
         $c.grid.hide();
         $c.toolBar.hide();
         $c.form.getForm().reset();
+        $c.form._delToggle(-1);
         $c.form._loadSupplierCombo();
         $c.form.show();
     },
@@ -210,6 +211,7 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
         $c.grid.hide();
         $c.toolBar.hide();
         $c.form.getForm().setValues(rec.data);
+        $c.form._delToggle(rec.data.status);
         $c.form._loadSupplierCombo();
         $c.form.show();
     },

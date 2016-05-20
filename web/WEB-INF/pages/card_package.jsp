@@ -10,26 +10,7 @@
     <base href="/">
 
     <link rel="stylesheet" type="text/css" href="/js/extjs6/build/MyApp-all.css"/>
-
-    <style>
-
-        /* text for actioncolumn start */
-        .x-action-col-icon {
-            width: auto;
-            margin-left: 1em;
-            font: 300 13px/19px 'Open Sans', 'Helvetica Neue', helvetica, arial, verdana, sans-serif;
-            border: 1px solid #5897ce;
-            background-color: #5fa2dd;
-            color: white;
-            padding: 0px 8px;
-        }
-
-        .x-action-col-icon:first-child {
-            margin-left: 0em;
-        }
-
-        /* text for actioncolumn end */
-    </style>
+    <link rel="stylesheet" type="text/css" href="/css/admin.css"/>
 </head>
 
 <body></body>
