@@ -38,7 +38,7 @@ public interface CardDao {
     public void deleteCardNo(CardNo model);
 
     //卡号生成
-    public List<CardNoGenBatch> findCardNoGenBatchList();
+    public List<CardNoGenBatch> findCardNoGenBatchList(CardNoGenBatch model);
 
     public void insertCardNoGenBatch(CardNoGenBatch model);
 

@@ -131,11 +131,42 @@
 
 
     <!-- 卡号生成 -->
-    <select id="findCardNoGenBatchList" resultType="CardNoGenBatch">
-		select gen.*, card.card_name, company.company_name from xzh_card_no_gen_batch gen
+    <select id="findCardNoGenBatchList" parameterType="Map" resultType="CardNoGenBatch">
+        select gen.*, card.card_name, company.company_name
+        from xzh_card_no_gen_batch gen
         left join xzh_card card on gen.card_id = card.id
         left join pf_company2 company on card.company_id = company.id
-	</select>
+
+        <if test="card_no != null and card_no != ''">
+            left join xzh_card_no no on gen.id = no.batch_id
+        </if>
+
+        <where>
+            <if test="proposer != null and proposer != ''">
+                gen.proposer like '%' || #{proposer} || '%'
+            </if>
+
+            <if test="card_type != null and card_type != ''">
+                and gen.card_type = #{card_type}
+            </if>
+
+            <if test="batch_no != null and batch_no != ''">
+                and gen.batch_no like '%' || #{batch_no} || '%'
+            </if>
+
+            <if test="card_id != null and card_id != ''">
+                and gen.card_id = #{card_id}
+            </if>
+
+            <if test="card_no != null and card_no != ''">
+                and no.card_no like '%' || #{card_no} || '%'
+            </if>
+
+            <if test="company_id != null and company_id != ''">
+                and card.company_id = #{company_id}
+            </if>
+        </where>
+    </select>
 
 
     <insert id="insertCardNoGenBatch" parameterType="CardNoGenBatch">

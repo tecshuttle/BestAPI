@@ -70,8 +70,8 @@ public class CardService {
     }
 
     //卡号生成
-    public List<CardNoGenBatch> findCardNoGenBatchList() {
-        return CardDao.findCardNoGenBatchList();
+    public List<CardNoGenBatch> findCardNoGenBatchList(CardNoGenBatch model) {
+        return CardDao.findCardNoGenBatchList(model);
     }
 
     public void insertCardNoGenBatch(CardNoGenBatch model) {

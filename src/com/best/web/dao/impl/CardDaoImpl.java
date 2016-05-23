@@ -1,5 +1,7 @@
 package com.best.web.dao.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.best.web.dao.CardDao;
 import com.best.web.model.admin.CardNoGenBatch;
 import com.best.web.model.admin.CardType;
@@ -80,8 +82,16 @@ public class CardDaoImpl implements CardDao {
 
 
     //卡号生成
-    public List<CardNoGenBatch> findCardNoGenBatchList() {
-        return sqlSession.selectList("cardSql.findCardNoGenBatchList");
+    public List<CardNoGenBatch> findCardNoGenBatchList(CardNoGenBatch model) {
+        HashMap<String, String> param = new HashMap<String, String>();
+        param.put("company_id", model.getCompany_id());
+        param.put("card_id", model.getCard_id());
+        param.put("card_type", model.getCard_type());
+        param.put("batch_no", model.getBatch_no());
+        param.put("card_no", model.getCard_no());
+        param.put("proposer", model.getProposer());
+
+        return sqlSession.selectList("cardSql.findCardNoGenBatchList", param);
     }
 
     public void insertCardNoGenBatch(CardNoGenBatch model) {

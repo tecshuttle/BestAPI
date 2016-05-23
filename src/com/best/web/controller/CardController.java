@@ -142,9 +142,9 @@ public class CardController {
 
     //卡号生成
     @RequestMapping(value = "getCardNoGenBatchList", method = RequestMethod.GET)
-    public void getCardNoGenBatchList(HttpServletRequest request, HttpServletResponse response, int start, int limit) throws Exception {
+    public void getCardNoGenBatchList(HttpServletRequest request, HttpServletResponse response, CardNoGenBatch model, int start, int limit) throws Exception {
         ExtListResponse<CardNoGenBatch> listResponse = new ExtListResponse<CardNoGenBatch>();
-        listResponse.setResponse(service.findCardNoGenBatchList(), start, limit);
+        listResponse.setResponse(service.findCardNoGenBatchList(model), start, limit);
         AjaxUtil.sendJSON(response, listResponse);
     }
 

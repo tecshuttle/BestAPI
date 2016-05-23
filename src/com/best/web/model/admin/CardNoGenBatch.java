@@ -17,6 +17,8 @@ public class CardNoGenBatch {
     private String card_type;
     private String card_name;    //关联xzh_card表
     private String company_name; //关联pf_company2表
+    private String company_id;   //用于表单取值
+    private String card_no;   //用于表单取值
 
     public String getCard_id() {
         return card_id;
@@ -136,6 +138,22 @@ public class CardNoGenBatch {
 
     public void setCard_name(String value) {
         this.card_name = value;
+    }
+
+    public String getCompany_id() {
+        return company_id;
+    }
+
+    public void setCompany_id(String value) {
+        this.company_id = value;
+    }
+
+    public String getCard_no() {
+        return card_no;
+    }
+
+    public void setCard_no(String value) {
+        this.card_no = value;
     }
 }
 
