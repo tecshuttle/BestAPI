@@ -162,20 +162,31 @@ Best.product.packageGridAction = Ext.extend(Best.product.packageGridUI, {
 
     initComponent: function () {
         Best.product.packageGridAction.superclass.initComponent.call(this);
+
+        Ext.apply(this.COMPONENTS, {
+            addBtn: this.down('button[ref*=add]')
+        });
     },
 
     initEvents: function () {
         var me = this;
         var $c = this.COMPONENTS;
+
         Best.product.packageGridAction.superclass.initEvents.call(me);
 
         this.on('boxready', me._afterrender, me);
+        this.on('boxready', me._afterrender, me);
+        this.getStore().on('load', me._onLoad, me);
         this.down('button[ref*=return]').on('click', me._returnFrom, me);
         this.down('button[ref*=add]').on('click', me._add, me);
     },
 
     _afterrender: function () {
         var $c = this.COMPONENTS;
+    },
+
+    _onLoad: function (store, records, successful, eOpts) {
+        this.COMPONENTS.addBtn.setDisabled(store.totalCount >= 4);
     },
 
     loadList: function (rec) {
@@ -198,6 +209,7 @@ Best.product.packageGridAction = Ext.extend(Best.product.packageGridUI, {
 
         form.getForm().reset();
         form.getForm().setValues({package_id: this.package_id});
+        form._delToggle(-1);
         form.show();
     },
 
@@ -205,12 +217,8 @@ Best.product.packageGridAction = Ext.extend(Best.product.packageGridUI, {
         var form = this.parent.COMPONENTS.packageForm;
 
         this.hide();
-        //rec.data.service_id = rec.data.id;
-        //rec.data.id = rec.data.dtl_id;
-
-        //console.log(rec.data)
-
         form.getForm().setValues(rec.data);
+        form._delToggle(0);
         form.show();
     },
 

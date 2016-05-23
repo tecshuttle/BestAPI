@@ -246,7 +246,8 @@
     <update id="updateCardPackageDtl" parameterType="CardPackageDtl">
 		update xzh_card_package_dtl
 		set package_id = #{package_id},
-		    service_id = #{service_id}
+		    service_id = #{service_id},
+		    active_flag = #{active_flag}
 		where id = #{id}
 	</update>
 </mapper>

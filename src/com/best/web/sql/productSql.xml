@@ -8,9 +8,10 @@
 	</select>
 
 	<select id="findProdServiceListByPackageId" parameterType="String" resultType="CardPackageDtl">
-		select dtl.id, dtl.package_id, dtl.service_id, service.status, service.service_name, service.service_type, service.rel_type, service.sex_select, service.price
+		select dtl.id, dtl.package_id, dtl.active_flag, dtl.service_id, service.status, service.service_name,
+		       service.service_type, service.rel_type, service.sex_select, service.price
 		from xzh_card_package_dtl dtl left join xzh_service service on dtl.service_id = service.id
-		where dtl.package_id = #{package_id}
+		where dtl.package_id = #{package_id} and dtl.active_flag != 0
 	</select>
 
     <select id="getCountServiceMap" parameterType="String" resultType="ProdService">

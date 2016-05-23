@@ -45,6 +45,7 @@ Ext.define('Best.product.packageFormUI', {
         me.items = [
             {xtype: 'hiddenfield', id: this.id + '_rec_id', name: 'id', value: 0},
             {xtype: 'hiddenfield', fieldLabel: '套餐ID', name: 'package_id'},
+            {xtype: 'hiddenfield', id: this.id + '_active_flag', name: 'active_flag', value: 1},
             {
                 xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
                 items: [
@@ -57,8 +58,15 @@ Ext.define('Best.product.packageFormUI', {
                     {xtype: 'displayfield'}
                 ]
             },
-            {xtype: 'button', text: '保存', id: this.id + '_save', width: 100},
-            {xtype: 'button', text: '返回', id: this.id + '_return', style: 'margin-left: 50px;', width: 100}
+            {
+                xtype: 'fieldcontainer', layout: 'hbox', defaults: {}, margin: 0,
+                items: [
+                    {xtype: 'button', text: '保存', id: this.id + '_save', width: 100},
+                    {xtype: 'button', text: '返回', id: this.id + '_return', style: 'margin-left: 50px;', width: 100},
+                    {xtype: 'displayfield', flex: 1},
+                    {xtype: 'button', text: '删除', cls: 'del-btn', id: this.id + '_delete', style: 'margin-left: 50px;', width: 100}
+                ]
+            }
         ];
 
         Best.product.packageFormUI.superclass.initComponent.call(me);
@@ -78,7 +86,9 @@ Ext.define('Best.product.packageFormAction', {
             supplierCombo: Ext.getCmp(this.id + '_supplier_combo'),
             supplierServiceCombo: Ext.getCmp(this.id + '_supplier_service_combo'),
             recId: Ext.getCmp(this.id + '_rec_id'),
+            activeFlag: Ext.getCmp(this.id + '_active_flag'),
             saveBtn: Ext.getCmp(this.id + '_save'),
+            delBtn: Ext.getCmp(this.id + '_delete'),
             returnBtn: Ext.getCmp(this.id + '_return')
         });
     },
@@ -92,6 +102,7 @@ Ext.define('Best.product.packageFormAction', {
         //$c.supplierCombo.on('change', me._onChangeSupplierCombo, me);
 
         $c.saveBtn.on('click', me._save, me);
+        $c.delBtn.on('click', me._del, me);
         $c.returnBtn.on('click', me._return, me);
     },
 
@@ -141,6 +152,29 @@ Ext.define('Best.product.packageFormAction', {
                 }
             });
         }
+    },
+
+    _del: function () {
+        var me = this;
+        var $c = this.COMPONENTS;
+
+        Ext.Msg.buttonText = {
+            yes: '是',
+            no: '否',
+            ok: '确定',
+            cancel: '取消'
+        };
+
+        Ext.MessageBox.confirm('确认', '真的要删除吗?', function (btn, text) {
+            if (btn === 'yes') {
+                $c.activeFlag.setValue(0);
+                me._save();
+            }
+        }, this);
+    },
+
+    _delToggle: function (status) {
+        this.COMPONENTS.delBtn.setHidden(status === -1);     //新增隐藏删除按钮
     },
 
     _getValue: function () {
