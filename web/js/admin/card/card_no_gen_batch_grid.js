@@ -19,10 +19,6 @@ Tomtalk.IdcUI = Ext.extend(Ext.Panel, {
         me.items = [
             me._toolbar(),
             me._grid(),
-            Ext.create('Tomtalk.grid.AccountForm', {
-                id: me.id + '_form',
-                hidden: true
-            }),
             Ext.create('Best.card.BatchForm', {
                 id: me.id + '_batch_form',
                 hidden: true
@@ -139,7 +135,6 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
         Tomtalk.IdcAction.superclass.initComponent.call(this);
 
         Ext.apply(this.COMPONENTS, {
-            addBtn: Ext.getCmp(this.id + '_add'),
             addBatchBtn: Ext.getCmp(this.id + '_add_batch'),
 
             companyCombo: Ext.getCmp(this.id + '_company_combo'),
@@ -273,21 +268,13 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
         });
     },
 
-    _add: function () {
-        var $c = this.COMPONENTS;
-
-        $c.grid.hide();
-        $c.toolBar.hide();
-        $c.form.getForm().reset();
-        $c.form.show();
-    },
-
     _add_batch: function () {
         var $c = this.COMPONENTS;
 
         $c.grid.hide();
         $c.toolBar.hide();
         $c.batchForm.getForm().reset();
+        $c.batchForm._delToggle(-1);
         $c.batchForm.show();
     },
 
@@ -296,9 +283,9 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
 
         $c.grid.hide();
         $c.toolBar.hide();
-        rec.data.gen_quantity_for_display = rec.data.gen_quantity;  //新增变量，用于给displayfield赋值。
-        $c.form.getForm().setValues(rec.data);
-        $c.form.show();
+        $c.batchForm.getForm().setValues(rec.data);
+        $c.batchForm._delToggle(rec.data.status);
+        $c.batchForm.show();
     },
 
     _export: function (rec) {
@@ -308,7 +295,7 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
     _returnFrom: function () {
         var $c = this.COMPONENTS;
 
-        $c.form.hide();
+        $c.batchForm.hide();
         $c.grid.show();
         $c.toolBar.show();
         $c.grid.getStore().reload();

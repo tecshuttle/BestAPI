@@ -7,6 +7,7 @@ public class CardNoBatch {
     private String card_no_type;
     private String card_code_type;
     private int amount;
+    private int gen_quantity;
     private String batch_id;
     private String card_id;
     private String batch_no;
@@ -44,10 +45,20 @@ public class CardNoBatch {
         this.card_code_type = value;
     }
 
-    public int getAmount() { return amount; }
+    public int getAmount() {
+        return amount;
+    }
 
     public void setAmount(int value) {
         this.amount = value;
+    }
+
+    public int getGen_quantity() {
+        return gen_quantity;
+    }
+
+    public void setGen_quantity(int value) {
+        this.gen_quantity = value;
     }
 
     public String getBatch_id() {

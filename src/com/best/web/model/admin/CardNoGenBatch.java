@@ -4,7 +4,7 @@ public class CardNoGenBatch {
 
     private String id;
     private String creator;
-    private String creat_date;
+    private String create_date;
     private String modifier;
     private String modify_date;
     private String active_flag;
@@ -18,7 +18,11 @@ public class CardNoGenBatch {
     private String card_name;    //关联xzh_card表
     private String company_name; //关联pf_company2表
     private String company_id;   //用于表单取值
-    private String card_no;   //用于表单取值
+    private String card_no;      //用于表单取值
+    private String dept_id;
+    private String dept2_id;
+    private String status;
+    private String card_code_gen_type;
 
     public String getCard_id() {
         return card_id;
@@ -44,12 +48,12 @@ public class CardNoGenBatch {
         this.creator = value;
     }
 
-    public String getCreat_date() {
-        return creat_date;
+    public String getCreate_date() {
+        return create_date;
     }
 
-    public void setCreat_date(String value) {
-        this.creat_date = value;
+    public void setCreate_date(String value) {
+        this.create_date = value;
     }
 
     public String getModifier() {
@@ -154,6 +158,38 @@ public class CardNoGenBatch {
 
     public void setCard_no(String value) {
         this.card_no = value;
+    }
+
+    public String getDept_id() {
+        return dept_id;
+    }
+
+    public void setDept_id(String value) {
+        this.dept_id = value;
+    }
+
+    public String getDept2_id() {
+        return dept2_id;
+    }
+
+    public void setDept2_id(String value) {
+        this.dept2_id = value;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String value) {
+        this.status = value;
+    }
+
+    public String getCard_code_gen_type() {
+        return card_code_gen_type;
+    }
+
+    public void setCard_code_gen_type(String value) {
+        this.card_code_gen_type = value;
     }
 }
 

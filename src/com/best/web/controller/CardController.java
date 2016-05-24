@@ -33,10 +33,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.text.DecimalFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 @Controller
 @RequestMapping("/card")
@@ -165,31 +162,59 @@ public class CardController {
         AjaxUtil.sendJSON(response, genResponse);
     }
 
-
-    @RequestMapping(value = "/insertCardNoBatch", method = RequestMethod.POST)
-    public void insertCardNoBatch(HttpServletRequest request, HttpServletResponse response, CardNoBatch batch) throws Exception {
+    @RequestMapping(value = "/previewGenNo", method = RequestMethod.POST)
+    public void previewGenNo(HttpServletRequest request, HttpServletResponse response, CardNoBatch batch) throws Exception {
         //取卡信息，获取卡号生成规则
         CardType card = service.findCardTypeById(batch.getCard_id());
 
-        //登记批次记录
-        CardNoGenBatch gen = new CardNoGenBatch();
-        gen.setCard_id(batch.getCard_id());
-        gen.setCard_type(batch.getCard_no_type());
-        gen.setGen_quantity(batch.getAmount());
-        gen.setBatch_no(batch.getBatch_no());
-        gen.setProposer(batch.getProposer());
-        gen.setMemo(batch.getBatch_id());
+        //获取最大卡号流水
+        CardType card_max_card_sn = service.findMaxCardSn(card.getCard_no_prefix());
 
-        service.insertCardNoGenBatch(gen);
+        //没有记录，则流水号从1开始。
+        int card_no_max = 1;
+        if (card_max_card_sn != null) {
+            card_no_max = Integer.parseInt(card_max_card_sn.getMax_sn()) + 1;
+        }
+
+        //流水号和前缀有效性检查
+        //todo
+
+        //生成卡号
+        int gen_quantity = batch.getGen_quantity();
+        List<String> no_list = new ArrayList<String>();
+        for (int i = 0; i < gen_quantity; i++) {
+            String card_sn = new DecimalFormat(repeat("0", card.getCard_no_sn_length())).format(card_no_max + i);
+            String card_no = card.getCard_no_prefix() + card_sn;
+            no_list.add(card_no);
+        }
+
+        GenResponse<String> genResponse = new GenResponse<String>();
+        genResponse.setResponse(JSON.toJSONString(no_list, SerializerFeature.WriteMapNullValue));
+        AjaxUtil.sendJSON(response, genResponse);
+    }
+
+    @RequestMapping(value = "/insertCardNoBatch", method = RequestMethod.POST)
+    public void insertCardNoBatch(HttpServletRequest request, HttpServletResponse response, CardNoGenBatch batch) throws Exception {
+        //保存批量设置
+        batch.setStatus("GEN");
+        service.updateCardNoGenBatch(batch);
+
+        //取卡信息，获取卡号生成规则
+        CardType card = service.findCardTypeById(batch.getCard_id());
 
         //获取最大卡号流水
         CardType card_max_card_sn = service.findMaxCardSn(card.getCard_no_prefix());
-        int card_no_max = Integer.parseInt(card_max_card_sn.getMax_sn()) + 1;
+
+        //没有记录，则流水号从1开始。
+        int card_no_max = 1;
+        if (card_max_card_sn != null) {
+            card_no_max = Integer.parseInt(card_max_card_sn.getMax_sn()) + 1;
+        }
 
         //生成卡号
-        int amount = batch.getAmount();
+        int amount = batch.getGen_quantity();
         for (int i = 0; i < amount; i++) {
-            String card_code = RandomString(card.getCard_code_length(), batch.getCard_code_type());
+            String card_code = RandomString(card.getCard_code_length(), batch.getCard_code_gen_type());
             String card_sn = new DecimalFormat(repeat("0", card.getCard_no_sn_length())).format(card_no_max + i);
             String card_no = card.getCard_no_prefix() + card_sn;
 
@@ -198,12 +223,12 @@ public class CardController {
             newNo.setCard_id(batch.getCard_id());
             newNo.setCard_no(newCardNo(card_no));
             newNo.setCard_code(card_code);
-            newNo.setCard_no_type(batch.getCard_no_type());
+            newNo.setCard_no_type(batch.getCard_type());
             newNo.setDept_id(batch.getDept_id());
             newNo.setDept2_id(batch.getDept2_id());
             newNo.setActive_flag("1");
             newNo.setStatus("1");
-            newNo.setBatch_id(gen.getId());
+            newNo.setBatch_id(batch.getId());
 
             service.insertCardNo(newNo);
         }

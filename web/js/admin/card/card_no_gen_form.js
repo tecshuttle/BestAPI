@@ -75,6 +75,8 @@ Ext.define('Best.card.BatchFormUI', {
         var me = this;
 
         me.items = [
+            {xtype: 'hiddenfield', id: this.id + '_rec_id', name: 'id', value: 0},
+            {xtype: 'hiddenfield', name: 'status'},
             {
                 xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
                 items: [
@@ -107,12 +109,12 @@ Ext.define('Best.card.BatchFormUI', {
                 xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
                 items: [
                     {
-                        xtype: 'combo', fieldLabel: '卡类型', store: cardTypeStore, displayField: 'name', margin: 0,
-                        valueField: 'cardType', name: 'card_no_type', allowBlank: false, queryMode: 'local'
+                        xtype: 'combo', fieldLabel: '卡类型', id: this.id + '_card_type_combo', store: cardTypeStore, displayField: 'name', margin: 0,
+                        valueField: 'cardType', name: 'card_type', allowBlank: false, queryMode: 'local'
                     },
                     {
-                        xtype: 'combo', fieldLabel: '卡密规则', store: cardCodeTypeStore, displayField: 'name',
-                        valueField: 'code_type', name: 'card_code_type', allowBlank: false, queryMode: 'local'
+                        xtype: 'combo', fieldLabel: '卡密规则', id: this.id + '_code_type_combo', store: cardCodeTypeStore, displayField: 'name',
+                        valueField: 'code_type', name: 'card_code_gen_type', allowBlank: false, queryMode: 'local'
                     },
                     {xtype: 'displayfield'}
                 ]
@@ -120,13 +122,18 @@ Ext.define('Best.card.BatchFormUI', {
             {
                 xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
                 items: [
-                    {xtype: 'numberfield', fieldLabel: '发卡数量', name: 'amount', minValue: 0, margin: 0, allowBlank: false, emptyText: '请输入…'},
+                    {
+                        xtype: 'numberfield', fieldLabel: '发卡数量', id: this.id + '_gen_quantity', name: 'gen_quantity',
+                        minValue: 0, margin: 0, allowBlank: false, emptyText: '请输入…'
+                    },
                     {xtype: 'textfield', fieldLabel: '批次号', name: 'batch_no', emptyText: '请输入…'},
                     {xtype: 'textfield', fieldLabel: '提请人', name: 'proposer', emptyText: '请输入…'}
                 ]
             },
-            {xtype: 'textarea', fieldLabel: '批次说明', name: 'batch_id', anchor: '100%', allowBlank: false, emptyText: '请输入…'},
+            {xtype: 'textarea', fieldLabel: '批次说明', name: 'memo', anchor: '100%', emptyText: '请输入…'},
+            {xtype: 'textarea', fieldLabel: '卡号列表', height: 250, id: this.id + '_gen_no', anchor: '100%', emptyText: '卡号…', editable: false},
             {xtype: 'button', text: '保存', id: this.id + '_save', width: 100},
+            {xtype: 'button', text: '生成', id: this.id + '_gen', style: 'margin-left: 50px;', width: 100},
             {xtype: 'button', text: '返回', id: this.id + '_return', style: 'margin-left: 50px;', width: 100}
         ];
 
@@ -144,12 +151,19 @@ Ext.define('Best.card.BatchFormAction', {
         Best.card.BatchFormAction.superclass.initComponent.call(this);
 
         Ext.apply(this.COMPONENTS, {
+            recId: Ext.getCmp(this.id + '_rec_id'),
             companyCombo: Ext.getCmp(this.id + '_company_combo'),
             cardCombo: Ext.getCmp(this.id + '_card_combo'),
+            codeTypeCombo: Ext.getCmp(this.id + '_code_type_combo'),
+            cardTypeCombo: Ext.getCmp(this.id + '_card_type_combo'),
             dept1Combo: Ext.getCmp(this.id + '_dept1_combo'),
             dept2Combo: Ext.getCmp(this.id + '_dept2_combo'),
 
+            genQuantity: Ext.getCmp(this.id + '_gen_quantity'),
+            genNo: Ext.getCmp(this.id + '_gen_no'),
+
             saveBtn: Ext.getCmp(this.id + '_save'),
+            genBtn: Ext.getCmp(this.id + '_gen'),
             returnBtn: Ext.getCmp(this.id + '_return')
         });
     },
@@ -164,9 +178,53 @@ Ext.define('Best.card.BatchFormAction', {
 
         $c.saveBtn.on('click', me._save, me);
         $c.returnBtn.on('click', me._return, me);
+        $c.genBtn.on('click', me._gen, me);
 
         $c.companyCombo.on('change', me._onChangeCompanyCombo, me);
         $c.dept1Combo.on('change', me._onChangeDept1Combo, me);
+        $c.cardCombo.getStore().on('load', me._onLoadCardCombo, me);
+        $c.dept2Combo.getStore().on('load', me._onLoadDept2Combo, me);
+
+        $c.genQuantity.on('change', me._previewGenNo, me);
+        $c.cardCombo.on('change', me._previewGenNo, me);
+    },
+
+    _previewGenNo: function () {
+        var $c = this.COMPONENTS;
+        var card_id = $c.cardCombo.getValue();
+        var gen_quantity = $c.genQuantity.getValue();
+
+        if (card_id && gen_quantity) {
+            Ext.Ajax.request({
+                url: '/card/previewGenNo',
+                params: {
+                    card_id: card_id,
+                    gen_quantity: gen_quantity
+                },
+                success: function (res) {
+                    var result = Ext.decode(res.responseText);
+                    var no_list = Ext.decode(result.response);
+
+                    $c.genNo.setValue(no_list.join('   '));
+                }
+            });
+        }
+    },
+
+
+    _onLoadCardCombo: function (combo, company_id, oldValue, eOpts) {
+        var cardCombo = this.COMPONENTS.cardCombo;
+        cardCombo.setValue(cardCombo.getValue());
+    },
+
+    _onLoadDept2Combo: function (combo, company_id, oldValue, eOpts) {
+        var dept2Combo = this.COMPONENTS.dept2Combo;
+        dept2Combo.setValue(dept2Combo.getValue());
+    },
+
+    _onLoadCardCombo: function (combo, company_id, oldValue, eOpts) {
+        var cardCombo = this.COMPONENTS.cardCombo;
+        cardCombo.setValue(cardCombo.getValue());
     },
 
     _onChangeCompanyCombo: function (combo, company_id, oldValue, eOpts) {
@@ -195,7 +253,13 @@ Ext.define('Best.card.BatchFormAction', {
         store1.load();
 
         //清除表单值：卡名、一级部门、二级部门
-        this.COMPONENTS.cardCombo.setValue('');
+        var recId = this.COMPONENTS.recId.getValue();
+        if (cardCombo.oldValue) {
+            cardCombo.setValue('');
+        } else {
+            cardCombo.oldValue = true;
+        }
+
         this.COMPONENTS.dept1Combo.setValue('');
         this.COMPONENTS.dept2Combo.setValue('');
     },
@@ -212,6 +276,13 @@ Ext.define('Best.card.BatchFormAction', {
         });
 
         store2.load();
+
+        //清除表单值：二级部门
+        if (dept2Combo.oldValue) {
+            this.COMPONENTS.dept2Combo.setValue('');
+        } else {
+            dept2Combo.oldValue = true;
+        }
     },
 
     _afterrender: function () {
@@ -223,6 +294,9 @@ Ext.define('Best.card.BatchFormAction', {
 
         this.hide();
 
+        this.COMPONENTS.dept2Combo.oldValue = null;
+        this.COMPONENTS.cardCombo.oldValue = null;
+
         if (this.up()) {
             this.up()._returnFrom();
         }
@@ -232,6 +306,30 @@ Ext.define('Best.card.BatchFormAction', {
         var me = this;
         var form = me;
         var $c = this.COMPONENTS;
+        var recId = $c.recId.getValue();
+
+        if (form.isValid()) {
+            form.getForm().submit({
+                url: '/card/' + (recId == 0 ? 'insertCardNoGenBatch' : 'updateCardNoGenBatch'),   //后台处理的页面
+                submitEmptyText: false,
+                success: function (fp, o) {
+                    var result = Ext.decode(o.response.responseText);
+
+                    if (result.success) {
+                        me._return();
+                    } else {
+                        alert('See error info by console.');
+                    }
+                }
+            });
+        }
+    },
+
+    _gen: function () {
+        var me = this;
+        var form = me;
+        var $c = this.COMPONENTS;
+        var recId = $c.recId.getValue();
 
         if (form.isValid()) {
             form.getForm().submit({
@@ -244,10 +342,30 @@ Ext.define('Best.card.BatchFormAction', {
                         me._return();
                     } else {
                         alert('See error info by console.');
-                        console.log(result);
                     }
                 }
             });
+        }
+    },
+
+    _delToggle: function (status) {
+        var genBtn = this.COMPONENTS.genBtn;
+        var $c = this.COMPONENTS;
+
+        if (status === -1 || status === 'GEN') {
+            genBtn.setHidden(true);
+        } else {
+            genBtn.setHidden(false);
+        }
+
+        if (status === 'GEN') {
+            $c.companyCombo.disable();
+            $c.cardCombo.disable();
+            $c.dept1Combo.disable();
+            $c.dept2Combo.disable();
+            $c.codeTypeCombo.disable();
+            $c.genQuantity.disable();
+            $c.cardTypeCombo.disable();
         }
     },
 

@@ -24,7 +24,7 @@
 		select card.*, company.company_name
 		from XZH_CARD card
 		left join pf_company2 company on card.company_id = company.id
-		where card.company_id = #{company_id}
+		where card.company_id = #{company_id} and card.active_flag != 0
 	</select>
 
     <insert id="insertCardType" parameterType="CardType">
@@ -132,7 +132,7 @@
 
     <!-- 卡号生成 -->
     <select id="findCardNoGenBatchList" parameterType="Map" resultType="CardNoGenBatch">
-        select gen.*, card.card_name, company.company_name
+        select gen.*, card.card_name, card.company_id, company.company_name
         from xzh_card_no_gen_batch gen
         left join xzh_card card on gen.card_id = card.id
         left join pf_company2 company on card.company_id = company.id
@@ -171,23 +171,35 @@
 
     <insert id="insertCardNoGenBatch" parameterType="CardNoGenBatch">
 		insert into xzh_card_no_gen_batch
-		( id, card_id, card_no_area, card_type, batch_no, proposer, gen_quantity, memo )
+		(
+		  id, card_id, card_no_area, card_type, batch_no, proposer, gen_quantity,
+		  memo, dept_id, dept2_id, status, card_code_gen_type
+		)
 		values
-		( #{id}, #{card_id}, #{card_no_area}, #{card_type}, #{batch_no}, #{proposer}, #{gen_quantity}, #{memo} )
+		(
+		  #{id}, #{card_id}, #{card_no_area}, #{card_type}, #{batch_no}, #{proposer}, #{gen_quantity},
+		  #{memo}, #{dept_id}, #{dept2_id}, 'INIT', #{card_code_gen_type}
+		)
 	</insert>
 
 
     <update id="updateCardNoGenBatch" parameterType="CardNoGenBatch">
-		update xzh_card_no_gen_batch
-		set card_id = #{card_id},
-		card_no_area = #{card_no_area},
-		card_type = #{card_type},
-		batch_no = #{batch_no},
-		proposer = #{proposer},
-		gen_quantity = #{gen_quantity},
-		memo = #{memo}
-		where id = #{id}
-	</update>
+        update xzh_card_no_gen_batch
+        <set>
+            <if test="card_id != null">card_id=#{card_id},</if>
+            <if test="card_no_area != null">card_no_area=#{card_no_area},</if>
+            <if test="card_type != null">card_type=#{card_type},</if>
+            <if test="batch_no != null">batch_no=#{batch_no},</if>
+            <if test="proposer != null">proposer=#{proposer},</if>
+            <if test="gen_quantity != null">gen_quantity=#{gen_quantity},</if>
+            <if test="memo != null">memo=#{memo},</if>
+            <if test="card_code_gen_type != null">card_code_gen_type=#{card_code_gen_type},</if>
+            <if test="dept_id != null">dept_id=#{dept_id},</if>
+            <if test="dept2_id != null">dept2_id=#{dept2_id},</if>
+            <if test="status != null">status=#{status}</if>
+        </set>
+        where id = #{id}
+    </update>
 
 
     <!-- 卡套餐管理 -->
@@ -197,12 +209,14 @@
 		where package.active_flag != 0
 	</select>
 
+
     <select id="findCardPackageListByCardId" parameterType="String" resultType="CardPackage">
 		select package.*, card.card_name
 		from xzh_card_package package
 		left join xzh_card card on package.card_id = card.id
 		where card_id = #{card_id} order by seq ASC
 	</select>
+
 
     <insert id="insertCardPackage" parameterType="CardPackage">
 		insert into xzh_card_package
@@ -212,6 +226,7 @@
           #{dtl_count}, #{intro}, #{price}
         )
 	</insert>
+
 
     <update id="updateCardPackage" parameterType="CardPackage">
 		update xzh_card_package
@@ -225,6 +240,7 @@
 		    price = #{price}
 		where id = #{id}
 	</update>
+
 
     <update id="deleteCardPackage">
 		update xzh_card_package
@@ -242,6 +258,7 @@
 		values
 		( sys_guid(), #{package_id}, #{service_id} )
 	</insert>
+
 
     <update id="updateCardPackageDtl" parameterType="CardPackageDtl">
 		update xzh_card_package_dtl

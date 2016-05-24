@@ -99,9 +99,6 @@ Ext.onReady(function () {
                         return this.disabledCls;
                     }
                 },
-                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                    return 'aa';
-                },
                 handler: function (grid, rowIndex, colIndex) {
                     var rec = grid.getStore().getAt(rowIndex);
                     grid.grid.up()._service_list(rec);

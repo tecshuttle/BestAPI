@@ -110,7 +110,6 @@ Ext.define('Tomtalk.grid.FormAction', {
                         me._return();
                     } else {
                         alert('See error info by console.');
-                        console.log(result);
                     }
                 }
             });

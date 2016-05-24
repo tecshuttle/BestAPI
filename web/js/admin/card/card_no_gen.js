@@ -2,7 +2,7 @@ Ext.onReady(function () {
     var fields = ['id', 'name', 'password'];
     var columns = [
         {header: "ID", dataIndex: 'id', hidden: true},
-        {header: "发卡机构", dataIndex: 'company_name', flex: 1},
+        {header: "发卡机构", dataIndex: 'company_name', flex: 2},
         {header: "卡名", dataIndex: 'card_name', align: 'center', flex: 2},
         {
             header: "卡类型", dataIndex: 'card_type', align: 'center', width: 80,
@@ -19,6 +19,7 @@ Ext.onReady(function () {
         {header: "批次号", dataIndex: 'batch_no', align: 'center'},
         {header: "提请人", dataIndex: 'proposer', align: 'center'},
         {header: "发卡数量", dataIndex: 'gen_quantity', align: 'center'},
+        {header: "状态", dataIndex: 'status', align: 'center'},
         {header: "备注", dataIndex: 'memo', flex: 2}
     ];
 
