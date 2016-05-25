@@ -113,9 +113,9 @@ public class CardController {
 
 
     @RequestMapping(value = "getCardNoList", method = RequestMethod.GET)
-    public void getCardNoList(HttpServletRequest request, HttpServletResponse response, String card_no, int start, int limit) throws Exception {
+    public void getCardNoList(HttpServletRequest request, HttpServletResponse response, CardNo model, int start, int limit) throws Exception {
         ExtListResponse<CardNo> listResponse = new ExtListResponse<CardNo>();
-        listResponse.setResponse(service.findCardNoList(card_no), start, limit);
+        listResponse.setResponse(service.findCardNoList(model), start, limit);
         AjaxUtil.sendJSON(response, listResponse);
     }
 

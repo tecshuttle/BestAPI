@@ -82,6 +82,10 @@
             <if test="card_no != ''">
                 non.card_no like '%' || #{card_no} || '%'
             </if>
+
+            <if test="batch_id != ''">
+                and non.batch_id = #{batch_id}
+            </if>
         </where>
     </select>
 

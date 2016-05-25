@@ -81,18 +81,12 @@ Tomtalk.IdcUI = Ext.extend(Ext.Panel, {
             align: 'center',
             xtype: 'actioncolumn',
             name: 'opertation',
-            width: 120,
+            width: 80,
             items: [{
                 glyph: '编辑',
                 handler: function (grid, rowIndex, colIndex) {
                     var rec = grid.getStore().getAt(rowIndex);
                     me._edit(rec);
-                }
-            }, {
-                glyph: '导出',
-                handler: function (grid, rowIndex, colIndex) {
-                    var rec = grid.getStore().getAt(rowIndex);
-                    me._export(rec);
                 }
             }]
         });
@@ -286,10 +280,6 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
         $c.batchForm.getForm().setValues(rec.data);
         $c.batchForm._delToggle(rec.data.status);
         $c.batchForm.show();
-    },
-
-    _export: function (rec) {
-        window.location.href = '/card/batchCardNoExport?batch_id=' + rec.data.id;
     },
 
     _returnFrom: function () {

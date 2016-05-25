@@ -48,7 +48,7 @@ public class CardService {
     }
 
     //卡号管理
-    public List<CardNo> findCardNoList(String card_no) {
+    public List<CardNo> findCardNoList(CardNo card_no) {
         return CardDao.findCardNoList(card_no);
     }
 
