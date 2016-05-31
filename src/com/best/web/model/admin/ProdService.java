@@ -13,6 +13,7 @@ public class ProdService {
     private String modify_date;
     private String active_flag;
     private String service_name;
+    private String service_name_combo; //用于表单显示
     private String service_code;
     private String service_type;
     private String rel_type;
@@ -23,8 +24,8 @@ public class ProdService {
     private String price;
     private String intro;
     private String count_service_map; //所属产品数
-    private String package_id; //关联xzh_card_package_dtl
-    private String dtl_id; //关联xzh_card_package_dtl
+    private String package_id;        //关联xzh_card_package_dtl
+    private String dtl_id;            //关联xzh_card_package_dtl
 
     public String getId() {
         return id;
@@ -80,6 +81,14 @@ public class ProdService {
 
     public void setService_name(String value) {
         this.service_name = value;
+    }
+
+    public String getService_name_combo() {
+        return service_name_combo;
+    }
+
+    public void setService_name_combo(String value) {
+        this.service_name_combo = value;
     }
 
     public String getService_code() {

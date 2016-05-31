@@ -124,6 +124,22 @@ Best.product.packageGridUI = Ext.extend(Ext.grid.GridPanel, {
                     return '￥' + out;
                 }
             },
+            {header: '数量', dataIndex: 'quantity', align: 'right'},
+            {
+                header: '状态', dataIndex: 'status',
+                renderer: function (v, b, rec) {
+                    if (v == 0) {
+                        return '新建立';
+                    } else if (v == 1) {
+                        return '使用中';
+                    } else if (v == 2) {
+                        return '下线';
+                    } else {
+                        return v;
+                    }
+                }
+            },
+            {header: '排序', dataIndex: 'seq', align: 'right'},
             {
                 header: "操作",
                 dataIndex: 'id',

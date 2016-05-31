@@ -232,7 +232,7 @@ Ext.onReady(function () {
         boxMinWidth: 1130,
         listeners: {
             afterrender: function () {//如果有默认首页就打开设置的页面
-                mainPanel.createNewTab('/card/type', Math.random(), '卡类型');
+                mainPanel.createNewTab('/card/type', Math.random(), '卡管理');
             }
         }
     });

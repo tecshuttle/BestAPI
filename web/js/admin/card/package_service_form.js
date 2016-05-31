@@ -1,7 +1,7 @@
 Ext.ns('Best.product');
 
 var productServiceStore = Ext.create('Ext.data.Store', {
-    fields: ['id', 'service_name'],
+    fields: ['id', 'service_name_combo'],
     autoLoad: true,
     pageSize: 9999,
     proxy: {
@@ -50,12 +50,21 @@ Ext.define('Best.product.packageFormUI', {
                 xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
                 items: [
                     {
-                        xtype: 'combo', fieldLabel: '服务', store: productServiceStore, displayField: 'service_name', margin: '0 0 0 0',
-                        valueField: 'id', name: 'service_id', queryMode: 'local'
+                        xtype: 'combo', fieldLabel: '服务', store: productServiceStore, displayField: 'service_name_combo', margin: '0 0 0 0',
+                        valueField: 'id', name: 'service_id', allowBlank: false, queryMode: 'local'
                     },
                     {xtype: 'displayfield'},
-                    {xtype: 'displayfield'},
                     {xtype: 'displayfield'}
+                ]
+            }, {
+                xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
+                items: [
+                    {
+                        xtype: 'combo', fieldLabel: '状态', store: statusStore, displayField: 'name', allowBlank: false, margin: '0 0 0 0',
+                        valueField: 'status', name: 'status', queryMode: 'local'
+                    },
+                    {xtype: 'numberfield', fieldLabel: '数量', name: 'quantity', minValue: 0, allowBlank: false, emptyText: '请输入…'},
+                    {xtype: 'numberfield', fieldLabel: '排序', name: 'seq', minValue: 0, allowBlank: false, emptyText: '请输入…'}
                 ]
             },
             {

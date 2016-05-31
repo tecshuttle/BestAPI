@@ -17,6 +17,7 @@ public class CardPackageDtl {
     private String service_alias;
     private String quantity;
     private String status;
+    private String seq;
     private String valid_date_begin;
     private String valid_date_end;
     private String service_type; //关联xzh_service
@@ -111,6 +112,14 @@ public class CardPackageDtl {
 
     public void setStatus(String value) {
         this.status = value;
+    }
+
+    public String getSeq() {
+        return seq;
+    }
+
+    public void setSeq(String value) {
+        this.seq = value;
     }
 
     public String getValid_date_begin() {

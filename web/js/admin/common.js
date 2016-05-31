@@ -9,8 +9,9 @@ var cardTypeStore = Ext.create('Ext.data.Store', {
 var statusStore = Ext.create('Ext.data.Store', {
     fields: ['validDateType', 'name'],
     data: [
-        {status: 0, name: "禁用"},
-        {status: 1, name: "启用"}
+        {status: 0, name: "新建立"},
+        {status: 1, name: "使用中"},
+        {status: 2, name: "下线"}
     ]
 });
 

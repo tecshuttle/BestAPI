@@ -3,7 +3,8 @@ Ext.onReady(function () {
     var columns = [
         {header: "ID", dataIndex: 'id', hidden: true},
         {header: "供应商", dataIndex: 'supplier_name', flex: 1},
-        {header: "门店名称", dataIndex: 'org_name', flex: 2},
+        {header: "门店名称", dataIndex: 'org_name', flex: 1.5},
+        {header: "门店地址", dataIndex: 'address', flex: 2},
         {
             header: '是否体检', dataIndex: 'has_physical', align: 'center', width: 80,
             renderer: function (v, b, rec) {
@@ -41,7 +42,7 @@ Ext.onReady(function () {
                 return data.province_id + data.city_id;
             }
         },
-        {header: '联系电话', dataIndex: 'contact_phone', flex: 2},
+        {header: '联系电话', dataIndex: 'contact_phone', flex: 1.5},
         {header: '评分', dataIndex: 'review_score', align: 'right', width: 70},
         {
             header: "创建时间", dataIndex: 'create_date',

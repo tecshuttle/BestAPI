@@ -240,6 +240,7 @@
 		    package_code = #{package_code},
 		    sex_select = #{sex_select},
 		    dtl_count = #{dtl_count},
+		    seq = #{seq},
 		    intro = #{intro},
 		    price = #{price}
 		where id = #{id}
@@ -268,7 +269,10 @@
 		update xzh_card_package_dtl
 		set package_id = #{package_id},
 		    service_id = #{service_id},
-		    active_flag = #{active_flag}
+		    active_flag = #{active_flag},
+		    status = #{status},
+		    seq = #{seq},
+		    quantity = #{quantity}
 		where id = #{id}
 	</update>
 </mapper>

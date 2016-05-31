@@ -49,18 +49,7 @@ Best.product.packageGridUI = Ext.extend(Ext.grid.GridPanel, {
         me.columns = [
             {header: "ID", dataIndex: 'id', hidden: true},
             {header: "名称", dataIndex: 'package_name'},
-            {
-                header: '激活状态', dataIndex: 'active_flag', align: 'center',
-                renderer: function (v, b, rec) {
-                    if (v == 0) {
-                        return '未激活';
-                    } else if (v == 1) {
-                        return '已激活';
-                    } else {
-                        return v;
-                    }
-                }
-            },
+
             {
                 header: "性别要求", dataIndex: 'sex_select', align: 'center',
                 renderer: function (v, b, rec) {
@@ -85,6 +74,7 @@ Best.product.packageGridUI = Ext.extend(Ext.grid.GridPanel, {
                     return '￥' + out;
                 }
             },
+            {header: '排序', dataIndex: 'seq', align: 'right'},
             {
                 header: "操作",
                 dataIndex: 'id',
