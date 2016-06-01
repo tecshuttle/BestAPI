@@ -29,7 +29,21 @@ Ext.onReady(function () {
                 return '￥' + out;
             }
         },
-        {header: '套餐总数', dataIndex: 'package_total', align: 'right', width: 100}
+        {header: '套餐总数', dataIndex: 'package_total', align: 'right', width: 100},
+        {
+            header: '状态', dataIndex: 'status', align: 'center', width: 100,
+            renderer: function (v, b, rec) {
+                if (v == '0') {
+                    return '新建立';
+                } else if (v == '1') {
+                    return '使用中';
+                } else if (v == '2') {
+                    return '下线';
+                } else {
+                    return v;
+                }
+            }
+        }
     ];
 
     new Ext.Viewport({
