@@ -4,11 +4,32 @@
 
     <!-- 卡类型 -->
     <select id="findCardTypeList" resultType="CardType">
-		select card.*, company.company_name
-		from XZH_CARD card
-		left join pf_company2 company on card.company_id = company.id
-		where card.active_flag != 0
-	</select>
+        select card.*, company.company_name
+        from XZH_CARD card
+        left join pf_company2 company on card.company_id = company.id
+        <where>
+            card.active_flag != 0
+            <if test="card_name != null and card_name != ''">
+                and card.card_name like '%' || #{card_name} || '%'
+            </if>
+
+            <if test="card_code != null and card_code != ''">
+                and card.card_code like '%' || #{card_code} || '%'
+            </if>
+
+            <if test="company_name != null and company_name != ''">
+                and company.company_name like '%' || #{company_name} || '%'
+            </if>
+
+            <if test="service_name != null and service_name != ''">
+                and EXISTS (
+                SELECT 1 FROM XZH_CARD_PACKAGE aa, XZH_CARD_PACKAGE_DTL bb, XZH_SERVICE cc
+                WHERE  aa.id = bb.package_id AND bb.service_id = cc.id AND card.id = aa.card_id
+                and cc.service_name like '%'|| #{service_name} ||'%'
+                )
+            </if>
+        </where>
+    </select>
 
     <select id="findCardTypeById" parameterType="String" resultType="CardType">
 		select * from XZH_CARD where id = #{id}

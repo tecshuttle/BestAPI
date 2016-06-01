@@ -100,17 +100,6 @@ Tomtalk.IdcUI = Ext.extend(Ext.Panel, {
             columnLines: true,
             store: store,
             columns: me.columns,
-            /*dockedItems: [
-             {
-             xtype: 'toolbar',
-             items: [
-             {
-             text: '新建',
-             id: this.id + '_add'
-             }
-             ]
-             }
-             ],*/
             bbar: {
                 xtype: 'pagingtoolbar',
                 store: store,

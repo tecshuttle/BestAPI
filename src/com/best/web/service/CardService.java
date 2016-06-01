@@ -18,8 +18,8 @@ public class CardService {
     private CardDao CardDao;
 
     //卡类型
-    public List<CardType> findCardTypeList() {
-        return CardDao.findCardTypeList();
+    public List<CardType> findCardTypeList(CardType model) {
+        return CardDao.findCardTypeList(model);
     }
 
     public CardType findCardTypeById(String id) {
@@ -28,10 +28,6 @@ public class CardService {
 
     public CardType findMaxCardSn(String card_no_prefix) {
         return CardDao.findMaxCardSn(card_no_prefix);
-    }
-
-    public List<CardType> findCardTypeListByCompany(String company_id) {
-        return CardDao.findCardTypeListByCompany(company_id);
     }
 
     public void insertCardType(CardType model) {

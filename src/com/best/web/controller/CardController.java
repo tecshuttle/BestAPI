@@ -53,15 +53,9 @@ public class CardController {
     }
 
     @RequestMapping(value = "getTypeList", method = RequestMethod.GET)
-    public void getTypeList(HttpServletRequest request, HttpServletResponse response, String company_id) throws Exception {
+    public void getTypeList(HttpServletRequest request, HttpServletResponse response, CardType model) throws Exception {
         ListResponse<CardType> listResponse = new ListResponse<CardType>();
-
-        if (company_id == null) {
-            listResponse.setResponse(service.findCardTypeList());
-        } else {
-            listResponse.setResponse(service.findCardTypeListByCompany(company_id));
-        }
-
+        listResponse.setResponse(service.findCardTypeList(model));
         AjaxUtil.sendJSON(response, listResponse);
     }
 

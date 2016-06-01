@@ -28,7 +28,7 @@ public class CardType {
     private String card_no_prefix;
     private String card_no_prefix_length; //获取最大卡号流水时用
     private String max_sn;                //最大卡号流水
-    private String sn;                //最大卡号流水
+    private String sn;                    //最大卡号流水
     private int card_no_length;
     private int card_code_length;
     private int card_no_sn_length;
@@ -36,6 +36,7 @@ public class CardType {
     private String valid_date_value;
     private String company_abbr;
     private String city_select;
+    private String service_name;          //用于查询字段
 
     public String getId() {
         return id;
@@ -305,6 +306,14 @@ public class CardType {
 
     public void setCity_select(String value) {
         this.city_select = value;
+    }
+
+    public String getService_name() {
+        return service_name;
+    }
+
+    public void setService_name(String value) {
+        this.service_name = value;
     }
 }
 

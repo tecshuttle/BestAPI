@@ -22,8 +22,8 @@ public class CardDaoImpl implements CardDao {
     private SqlSession sqlSession;
 
     //卡类型
-    public List<CardType> findCardTypeList() {
-        return sqlSession.selectList("cardSql.findCardTypeList");
+    public List<CardType> findCardTypeList(CardType model) {
+        return sqlSession.selectList("cardSql.findCardTypeList", model);
     }
 
     public CardType findCardTypeById(String id) {
@@ -36,10 +36,6 @@ public class CardDaoImpl implements CardDao {
         param.put("card_no_prefix", card_no_prefix);
 
         return sqlSession.selectOne("cardSql.findMaxCardSn", param);
-    }
-
-    public List<CardType> findCardTypeListByCompany(String company_id) {
-        return sqlSession.selectList("cardSql.findCardTypeListByCompany", company_id);
     }
 
     public void insertCardType(CardType model) {
