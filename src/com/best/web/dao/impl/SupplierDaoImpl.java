@@ -38,12 +38,8 @@ public class SupplierDaoImpl implements SupplierDao {
 
 
     //供应商门店管理
-    public List<SupplierOrg> findSupplierOrgList(String supplier_id, String org_name) {
-        HashMap<String, String> param = new HashMap<String, String>();
-        param.put("supplier_id", supplier_id);
-        param.put("org_name", org_name);
-
-        return sqlSession.selectList("supplierSql.findSupplierOrgList", param);
+    public List<SupplierOrg> findSupplierOrgList(SupplierOrg model) {
+        return sqlSession.selectList("supplierSql.findSupplierOrgList", model);
     }
 
     public void insertSupplierOrg(SupplierOrg model) {

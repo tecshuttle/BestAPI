@@ -40,6 +40,16 @@ Tomtalk.IdcUI = Ext.extend(Ext.Panel, {
             }, {
                 xtype: 'textfield', fieldLabel: '门点名称', id: this.id + '_org_name', enableKeyEvents: true, name: 'org_name',
                 margin: '0 0 0 20', emptyText: '请输入…', labelWidth: 80
+            }, {
+                xtype: 'textfield', fieldLabel: '省份', id: this.id + '_province', enableKeyEvents: true,
+                margin: '0 0 0 20', emptyText: '请输入…', labelWidth: 40
+            }, {
+                xtype: 'textfield', fieldLabel: '城市', id: this.id + '_city', enableKeyEvents: true,
+                margin: '0 0 0 20', emptyText: '请输入…', labelWidth: 40
+            }, {
+                xtype: 'checkboxfield', id: this.id + '_has_physical', hideLabel: true, margin: '0 20 0 20', boxLabel: '是否体检'
+            }, {
+                xtype: 'checkboxfield', id: this.id + '_has_tooth_care', hideLabel: true, boxLabel: '是否洁牙'
             }]
         }
     },
@@ -120,8 +130,14 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
 
         Ext.apply(this.COMPONENTS, {
             addBtn: Ext.getCmp(this.id + '_add'),
+
+            //搜索项
             supplierCombo: Ext.getCmp(this.id + '_supplier_combo'),
             orgName: Ext.getCmp(this.id + '_org_name'),
+            province: Ext.getCmp(this.id + '_province'),
+            city: Ext.getCmp(this.id + '_city'),
+            hasPhysical: Ext.getCmp(this.id + '_has_physical'),
+            hasToothCare: Ext.getCmp(this.id + '_has_tooth_care'),
 
             toolBar: Ext.getCmp(this.id + '_toolbar'),
             grid: Ext.getCmp(this.id + '_grid'),
@@ -140,6 +156,10 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
         $c.supplierCombo.on('change', me._onChangeSupplierCombo, me);
         $c.supplierCombo.getStore().on('load', me._onLoadSupplierCombo, me);
         $c.orgName.on('keyup', me._onKeyUp, me);
+        $c.province.on('keyup', me._onKeyUp, me);
+        $c.city.on('keyup', me._onKeyUp, me);
+        $c.hasPhysical.on('change', me._chkChange, me);
+        $c.hasToothCare.on('change', me._chkChange, me);
         $c.addBtn.on('click', me._add, me);
     },
 
@@ -162,13 +182,31 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
         store.load();
     },
 
+    _chkChange: function (chk, newValue, oldValue, eOpts) {
+        var $c = this.COMPONENTS;
+
+        var store = this.COMPONENTS.grid.getStore();
+        var proxy = store.getProxy();
+
+        Ext.apply(proxy.extraParams, {
+            has_physical: ($c.hasPhysical.getValue() ? 'Y' : ''),
+            has_tooth_care: ($c.hasToothCare.getValue() ? 'Y' : '')
+        });
+
+        store.load();
+    },
+
     _onKeyUp: function (txt, e, eOpts) {
+        var $c = this.COMPONENTS;
+
         if (e.keyCode === 13) {
             var store = this.COMPONENTS.grid.getStore();
             var proxy = store.getProxy();
 
             Ext.apply(proxy.extraParams, {
-                org_name: txt.getValue().trim()
+                org_name: $c.orgName.getValue().trim(),
+                province_id: $c.province.getValue().trim(),
+                city_id: $c.city.getValue().trim()
             });
 
             store.load();

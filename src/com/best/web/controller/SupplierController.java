@@ -75,9 +75,9 @@ public class SupplierController {
     }
 
     @RequestMapping(value = "getSupplierOrgList", method = RequestMethod.GET)
-    public void getSupplierOrgList(HttpServletRequest request, HttpServletResponse response, String supplier_id, String org_name, int start, int limit) throws Exception {
+    public void getSupplierOrgList(HttpServletRequest request, HttpServletResponse response, SupplierOrg model, int start, int limit) throws Exception {
         ExtListResponse<SupplierOrg> listResponse = new ExtListResponse<SupplierOrg>();
-        listResponse.setResponse(service.findSupplierOrgList(supplier_id, org_name), start, limit);
+        listResponse.setResponse(service.findSupplierOrgList(model), start, limit);
         AjaxUtil.sendJSON(response, listResponse);
     }
 

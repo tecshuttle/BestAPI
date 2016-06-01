@@ -49,14 +49,30 @@
         select org.*, supplier.supplier_name from xzh_supplier_org org
         left join xzh_supplier supplier on org.supplier_id = supplier.id
         <where>
-                org.active_flag != 0
+            org.active_flag != 0
 
-            <if test="supplier_id != ''">
+            <if test="supplier_id != null and supplier_id != ''">
                 and org.supplier_id = #{supplier_id}
             </if>
 
-            <if test="org_name != ''">
+            <if test="org_name != null and org_name != ''">
                 and org.org_name like '%' || #{org_name} || '%'
+            </if>
+
+            <if test="province_id != null and province_id != ''">
+                and org.province_id like '%' || #{province_id} || '%'
+            </if>
+
+            <if test="city_id != null and city_id != ''">
+                and org.city_id like '%' || #{city_id} || '%'
+            </if>
+
+            <if test="has_physical != null and has_physical != ''">
+                and org.has_physical = #{has_physical}
+            </if>
+
+            <if test="has_tooth_care != null and has_tooth_care != ''">
+                and org.has_tooth_care = #{has_tooth_care}
             </if>
         </where>
     </select>
@@ -108,20 +124,20 @@
 
     <!-- 供应商服务管理 -->
     <select id="findSupplierServiceList" parameterType="Map" resultType="SupplierService">
-		select service.*, supplier.supplier_name
-		from xzh_supplier_service service left join xzh_supplier supplier on service.supplier_id = supplier.id
-		<where>
-			service.active_flag != 0
+        select service.*, supplier.supplier_name
+        from xzh_supplier_service service left join xzh_supplier supplier on service.supplier_id = supplier.id
+        <where>
+            service.active_flag != 0
 
-			<if test="supplier_id != ''">
-				and service.supplier_id = #{supplier_id}
-			</if>
+            <if test="supplier_id != ''">
+                and service.supplier_id = #{supplier_id}
+            </if>
 
-			<if test="service_type != ''">
-				and service.service_type = #{service_type}
-			</if>
-		</where>
-	</select>
+            <if test="service_type != ''">
+                and service.service_type = #{service_type}
+            </if>
+        </where>
+    </select>
 
     <select id="findServiceListBySupplier" parameterType="String" resultType="SupplierService">
 		select * from xzh_supplier_service where supplier_id = #{supplier_id}
