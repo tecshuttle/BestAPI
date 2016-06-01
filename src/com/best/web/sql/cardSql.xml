@@ -24,7 +24,7 @@
             <if test="service_name != null and service_name != ''">
                 and EXISTS (
                 SELECT 1 FROM XZH_CARD_PACKAGE aa, XZH_CARD_PACKAGE_DTL bb, XZH_SERVICE cc
-                WHERE  aa.id = bb.package_id AND bb.service_id = cc.id AND card.id = aa.card_id
+                WHERE aa.id = bb.package_id AND bb.service_id = cc.id AND card.id = aa.card_id
                 and cc.service_name like '%'|| #{service_name} ||'%'
                 )
             </if>
@@ -239,7 +239,7 @@
 		select package.*, card.card_name
 		from xzh_card_package package
 		left join xzh_card card on package.card_id = card.id
-		where card_id = #{card_id} order by seq ASC
+		where card_id = #{card_id} and package.active_flag != 0 order by seq ASC
 	</select>
 
 
@@ -263,7 +263,8 @@
 		    dtl_count = #{dtl_count},
 		    seq = #{seq},
 		    intro = #{intro},
-		    price = #{price}
+		    price = #{price},
+		    status = #{status}
 		where id = #{id}
 	</update>
 

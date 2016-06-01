@@ -33,6 +33,7 @@ Ext.define('Best.product.packageFormUI', {
 
         me.items = [
             {xtype: 'hiddenfield', id: this.id + '_rec_id', name: 'id', value: 0},
+            {xtype: 'hiddenfield', id: this.id + '_active_flag', name: 'active_flag', value: 1},
             {xtype: 'hiddenfield', fieldLabel: '健康卡ID', name: 'card_id'},
             {
                 xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
@@ -41,8 +42,7 @@ Ext.define('Best.product.packageFormUI', {
                     {xtype: 'textfield', fieldLabel: '套餐代码', name: 'package_code', emptyText: '请输入…'},
                     {xtype: 'numberfield', fieldLabel: '排序', name: 'seq', minValue: 0, emptyText: '请输入…'}
                 ]
-            },
-            {
+            }, {
                 xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
                 items: [
                     {
@@ -52,10 +52,27 @@ Ext.define('Best.product.packageFormUI', {
                     {xtype: 'numberfield', fieldLabel: '服务总数', name: 'dtl_count', minValue: 0, emptyText: '请输入…'},
                     {xtype: 'numberfield', fieldLabel: '价格', name: 'price', minValue: 0, emptyText: '请输入…'},
                 ]
+            },{
+                xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
+                items: [
+                    {
+                        xtype: 'combo', fieldLabel: '状态', store: statusStore, displayField: 'name', margin: '0 0 0 0',
+                        valueField: 'status', name: 'status', queryMode: 'local'
+                    },
+                    {xtype: 'displayfield'},
+                    {xtype: 'displayfield'}
+                ]
             },
             {xtype: 'textarea', fieldLabel: '说明', name: 'intro', anchor: '100%', emptyText: '请输入…'},
-            {xtype: 'button', text: '保存', id: this.id + '_save', width: 100},
-            {xtype: 'button', text: '返回', id: this.id + '_return', style: 'margin-left: 50px;', width: 100}
+            {
+                xtype: 'fieldcontainer', layout: 'hbox', defaults: {}, margin: 0,
+                items: [
+                    {xtype: 'button', text: '保存', id: this.id + '_save', width: 100},
+                    {xtype: 'button', text: '返回', id: this.id + '_return', style: 'margin-left: 50px;', width: 100},
+                    {xtype: 'displayfield', flex: 1},
+                    {xtype: 'button', text: '删除', cls: 'del-btn', id: this.id + '_delete', style: 'margin-left: 50px;', width: 100}
+                ]
+            }
         ];
 
         Best.product.packageFormUI.superclass.initComponent.call(me);
@@ -72,10 +89,12 @@ Ext.define('Best.product.packageFormAction', {
         Best.product.packageFormAction.superclass.initComponent.call(this);
 
         Ext.apply(this.COMPONENTS, {
+            recId: Ext.getCmp(this.id + '_rec_id'),
+            activeFlag: Ext.getCmp(this.id + '_active_flag'),
             supplierCombo: Ext.getCmp(this.id + '_supplier_combo'),
             supplierServiceCombo: Ext.getCmp(this.id + '_supplier_service_combo'),
-            recId: Ext.getCmp(this.id + '_rec_id'),
             saveBtn: Ext.getCmp(this.id + '_save'),
+            delBtn: Ext.getCmp(this.id + '_delete'),
             returnBtn: Ext.getCmp(this.id + '_return')
         });
     },
@@ -89,6 +108,7 @@ Ext.define('Best.product.packageFormAction', {
         //$c.supplierCombo.on('change', me._onChangeSupplierCombo, me);
 
         $c.saveBtn.on('click', me._save, me);
+        $c.delBtn.on('click', me._del, me);
         $c.returnBtn.on('click', me._return, me);
     },
 
@@ -114,7 +134,7 @@ Ext.define('Best.product.packageFormAction', {
             this.up().COMPONENTS.packageGrid.show();
         }
     },
-
+    
     _save: function () {
         var me = this;
         var form = me;
@@ -138,6 +158,30 @@ Ext.define('Best.product.packageFormAction', {
                 }
             });
         }
+    },
+
+    _del: function () {
+        var me = this;
+        var $c = this.COMPONENTS;
+
+        Ext.Msg.buttonText = {
+            yes: '是',
+            no: '否',
+            ok: '确定',
+            cancel: '取消'
+        };
+
+        Ext.MessageBox.confirm('确认', '真的要删除吗?', function (btn, text) {
+            if (btn === 'yes') {
+                $c.activeFlag.setValue(0);
+                me._save();
+            }
+        }, this);
+    },
+
+    _delToggle: function (status) {
+        this.COMPONENTS.delBtn.setHidden(status === -1);     //新增隐藏删除按钮
+        this.COMPONENTS.delBtn.setDisabled(status === '1');  //仅禁用的项目可删除
     },
 
     _getValue: function () {

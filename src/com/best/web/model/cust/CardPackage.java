@@ -31,6 +31,7 @@ public class CardPackage {
     private String intro;
     private String useRule;
     private String card_name; //关联xzh_card
+    private String status;
 
     private List<PackageService> serviceList;
 
@@ -248,6 +249,14 @@ public class CardPackage {
 
     public void setCard_name(String value) {
         this.card_name = value;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String value) {
+        this.status = value;
     }
 
     public List<PackageService> getServiceList() {

@@ -237,6 +237,7 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
         var $c = this.COMPONENTS;
 
         $c.grid.hide();
+        $c.toolbar.hide();
         $c.packageGrid.loadList(rec.data);
         $c.packageGrid.show();
     },

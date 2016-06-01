@@ -149,6 +149,7 @@ Best.product.packageGridAction = Ext.extend(Best.product.packageGridUI, {
 
         form.getForm().reset();
         form.getForm().setValues({card_id: this.card_id});
+        form._delToggle(-1);
         form.show();
     },
 
@@ -158,6 +159,7 @@ Best.product.packageGridAction = Ext.extend(Best.product.packageGridUI, {
         this.hide();
 
         form.getForm().setValues(rec.data);
+        form._delToggle(rec.data.status);
         form.show();
     },
 
