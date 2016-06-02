@@ -235,7 +235,10 @@
 	</select>
 
 
-    <select id="findCardPackageListByCardId" parameterType="String" resultType="CardPackage">
+
+
+
+	<select id="findCardPackageListByCardId" parameterType="String" resultType="CardPackage">
 		select package.*, card.card_name
 		from xzh_card_package package
 		left join xzh_card card on package.card_id = card.id

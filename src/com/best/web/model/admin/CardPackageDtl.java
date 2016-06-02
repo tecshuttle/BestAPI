@@ -25,6 +25,7 @@ public class CardPackageDtl {
     private String rel_type;     //关联xzh_service
     private String sex_select;   //关联xzh_service
     private String price;        //关联xzh_service
+    private String cp_code_name; //关联cp_code
 
     public String getId() {
         return id;
@@ -176,6 +177,14 @@ public class CardPackageDtl {
 
     public void setPrice(String value) {
         this.price = value;
+    }
+
+    public String getCp_code_name() {
+        return cp_code_name;
+    }
+
+    public void setCp_code_name(String value) {
+        this.cp_code_name = value;
     }
 }
 
