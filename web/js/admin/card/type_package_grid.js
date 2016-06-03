@@ -4,11 +4,13 @@ Best.product.packageGridUI = Ext.extend(Ext.grid.GridPanel, {
     constructor: function (config) {
         var me = this;
         config = Ext.apply({
+            title: '卡套餐列表',
             columnLines: true,
+            margin: '10 0 0 0',
             dockedItems: [{
                 xtype: 'toolbar',
                 items: [
-                    {text: '返回', id: this.id + '_return', ref: 'return'},
+                    {text: '返回', hidden: true, id: this.id + '_return', ref: 'return'},
                     {text: '新建', id: this.id + '_add', ref: 'add'}
                 ]
             }],
@@ -48,7 +50,7 @@ Best.product.packageGridUI = Ext.extend(Ext.grid.GridPanel, {
 
         me.columns = [
             {header: "ID", dataIndex: 'id', hidden: true},
-            {header: "名称", dataIndex: 'package_name'},
+            {header: "名称", dataIndex: 'package_name', flex: 1},
 
             {
                 header: "性别要求", dataIndex: 'sex_select', align: 'center',
@@ -80,6 +82,7 @@ Best.product.packageGridUI = Ext.extend(Ext.grid.GridPanel, {
                 dataIndex: 'id',
                 align: 'center',
                 xtype: 'actioncolumn',
+                width: 80,
                 name: 'opertation',
                 items: [{
                     glyph: '编辑',
@@ -151,20 +154,34 @@ Best.product.packageGridAction = Ext.extend(Best.product.packageGridUI, {
         form.getForm().setValues({card_id: this.card_id});
         form._delToggle(-1);
         form.show();
+        form.setTitle('新建套餐');
     },
 
     _edit: function (rec) {
-        var form = this.parent.COMPONENTS.packageForm;
-
         this.hide();
 
-        form.getForm().setValues(rec.data);
-        form._delToggle(rec.data.status);
-        form.show();
+        var typeForm = this.parent.COMPONENTS.form;
+        typeForm.setCollapsed(true);
+
+        var packageForm = this.parent.COMPONENTS.packageForm;
+        packageForm.getForm().setValues(rec.data);
+        packageForm._delToggle(rec.data.status);
+        packageForm.show();
+        packageForm.setTitle(rec.data.package_name + '编辑');
+
+        var serviceGrid = this.parent.COMPONENTS.packageServiceGrid;
+        serviceGrid.show();
+        serviceGrid.loadList(rec.data);
     },
 
     _returnFrom: function () {
         this.hide();
+
+        var typeForm = this.parent.COMPONENTS.form;
+        console.log(22);
+        typeForm.setCollapsed(false);
+
+
         this.parent.COMPONENTS.grid.getStore().load();
         this.parent._return();
     }

@@ -18,7 +18,9 @@ Ext.define('Best.product.packageFormUI', {
     constructor: function (config) {
         var me = this;
         config = Ext.apply({
-            title: '编辑',
+            title: '卡套餐编辑',
+            collapsible: true,
+            margin: '10 0 0 0',
             bodyStyle: 'padding:10px;',
             layout: 'anchor'
         }, config);
@@ -52,7 +54,7 @@ Ext.define('Best.product.packageFormUI', {
                     {xtype: 'numberfield', fieldLabel: '服务总数', name: 'dtl_count', minValue: 0, emptyText: '请输入…'},
                     {xtype: 'numberfield', fieldLabel: '价格', name: 'price', minValue: 0, emptyText: '请输入…'},
                 ]
-            },{
+            }, {
                 xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
                 items: [
                     {
@@ -131,10 +133,13 @@ Ext.define('Best.product.packageFormAction', {
         this.hide();
 
         if (this.up()) {
+            this.up().COMPONENTS.packageServiceGrid.hide();
             this.up().COMPONENTS.packageGrid.show();
+            var typeForm = this.up().COMPONENTS.form;
+            typeForm.setCollapsed(false);
         }
     },
-    
+
     _save: function () {
         var me = this;
         var form = me;

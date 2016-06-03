@@ -32,6 +32,16 @@ Tomtalk.IdcUI = Ext.extend(Ext.Panel, {
                 id: me.id + '_package_form',
                 parent: me,
                 hidden: true
+            }),
+            Ext.create('Best.product.packageServiceGrid', {
+                id: me.id + '_package_service_grid',
+                hidden: true,
+                parent: me
+            }),
+            Ext.create('Best.product.packageServiceForm', {
+                id: me.id + '_package_service_form',
+                hidden: true,
+                parent: me
             })
         ];
 
@@ -79,28 +89,20 @@ Tomtalk.IdcUI = Ext.extend(Ext.Panel, {
             }
         });
 
-        var linkcolumn = [{
-            glyph: '编辑',
-            handler: function (grid, rowIndex, colIndex) {
-                var rec = grid.getStore().getAt(rowIndex);
-                me._edit(rec);
-            }
-        }, {
-            glyph: '套餐',
-            handler: function (grid, rowIndex, colIndex) {
-                var rec = grid.getStore().getAt(rowIndex);
-                me._package_edit(rec);
-            }
-        }];
-
         me.columns.push({
             header: "操作",
             dataIndex: 'id',
             align: 'center',
             xtype: 'actioncolumn',
-            width: 120,
+            width: 80,
             name: 'opertation',
-            items: linkcolumn
+            items: [{
+                glyph: '编辑',
+                handler: function (grid, rowIndex, colIndex) {
+                    var rec = grid.getStore().getAt(rowIndex);
+                    me._edit(rec);
+                }
+            }]
         });
 
         var grid = new Ext.grid.GridPanel({
@@ -158,6 +160,10 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
             //套餐管理
             packageGrid: Ext.getCmp(this.id + '_package_grid'),
             packageForm: Ext.getCmp(this.id + '_package_form'),
+
+            //套餐服务管理
+            packageServiceGrid: Ext.getCmp(this.id + '_package_service_grid'),
+            packageServiceForm: Ext.getCmp(this.id + '_package_service_form'),
 
             queryForm: Ext.getCmp(this.id + '_query'),
             id: Ext.getCmp(this.id + '_id'),
@@ -221,6 +227,7 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
         $c.form.getForm().reset();
         $c.form._delToggle(-1);
         $c.form.show();
+        $c.form.setTitle('建新卡');
     },
 
     _edit: function (rec) {
@@ -231,6 +238,10 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
         $c.form.getForm().setValues(rec.data);
         $c.form._delToggle(rec.data.status);
         $c.form.show();
+        $c.form.setTitle(rec.data.card_name + '编辑');
+
+        $c.packageGrid.loadList(rec.data);
+        $c.packageGrid.show();
     },
 
     _package_edit: function (rec) {
@@ -246,6 +257,8 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
         var $c = this.COMPONENTS;
 
         $c.form.hide();
+        $c.packageGrid.hide();
+        $c.packageForm.hide();
 
         $c.grid.show();
         $c.toolbar.show();

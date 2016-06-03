@@ -1,15 +1,17 @@
 Ext.ns('Best.product');
 
-Best.product.packageGridUI = Ext.extend(Ext.grid.GridPanel, {
+Best.product.packageServiceGridUI = Ext.extend(Ext.grid.GridPanel, {
     constructor: function (config) {
         var me = this;
         config = Ext.apply({
+            title: '套餐服务列表',
+            margin: '10 0 0 0',
             columnLines: true,
             dockedItems: [{
                 xtype: 'toolbar',
                 items: [
-                    {text: '返回', id: this.id + '_return', ref: 'return'},
-                    {text: '新建', id: this.id + '_add', ref: 'add'}
+                    {text: '返回', hidden: true, ref: 'return'},
+                    {text: '新建', ref: 'add'}
                 ]
             }],
 
@@ -23,7 +25,7 @@ Best.product.packageGridUI = Ext.extend(Ext.grid.GridPanel, {
 
         me.COMPONENTS = {};
 
-        Best.product.packageGridUI.superclass.constructor.call(me, config);
+        Best.product.packageServiceGridUI.superclass.constructor.call(me, config);
     },
 
     initComponent: function () {
@@ -48,7 +50,8 @@ Best.product.packageGridUI = Ext.extend(Ext.grid.GridPanel, {
 
         me.columns = [
             {header: "ID", dataIndex: 'id', hidden: true},
-            {header: '服务名称', dataIndex: 'service_name', width: 200,
+            {
+                header: '服务名称', dataIndex: 'service_name', width: 200,
                 renderer: function (v, b, rec) {
                     return v ? v : rec.data.service_alias;
                 }
@@ -124,17 +127,17 @@ Best.product.packageGridUI = Ext.extend(Ext.grid.GridPanel, {
             emptyMsg: "没有记录"
         };
 
-        Best.product.packageGridUI.superclass.initComponent.call(me);
+        Best.product.packageServiceGridUI.superclass.initComponent.call(me);
     }
 });
 
-Best.product.packageGridAction = Ext.extend(Best.product.packageGridUI, {
+Best.product.packageServiceGridAction = Ext.extend(Best.product.packageServiceGridUI, {
     constructor: function (config) {
-        Best.product.packageGridAction.superclass.constructor.call(this, config);
+        Best.product.packageServiceGridAction.superclass.constructor.call(this, config);
     },
 
     initComponent: function () {
-        Best.product.packageGridAction.superclass.initComponent.call(this);
+        Best.product.packageServiceGridAction.superclass.initComponent.call(this);
 
         Ext.apply(this.COMPONENTS, {
             addBtn: this.down('button[ref*=add]')
@@ -145,7 +148,7 @@ Best.product.packageGridAction = Ext.extend(Best.product.packageGridUI, {
         var me = this;
         var $c = this.COMPONENTS;
 
-        Best.product.packageGridAction.superclass.initEvents.call(me);
+        Best.product.packageServiceGridAction.superclass.initEvents.call(me);
 
         this.on('boxready', me._afterrender, me);
         this.on('boxready', me._afterrender, me);
@@ -176,23 +179,31 @@ Best.product.packageGridAction = Ext.extend(Best.product.packageGridUI, {
     },
 
     _add: function () {
-        var form = this.parent.COMPONENTS.packageForm;
-
         this.hide();
 
-        form.getForm().reset();
-        form.getForm().setValues({package_id: this.package_id});
-        form._delToggle(-1);
-        form.show();
+        var packageForm = this.parent.COMPONENTS.packageForm;
+        packageForm.setCollapsed(true);
+
+        var packageServiceForm = this.parent.COMPONENTS.packageServiceForm;
+        packageServiceForm.getForm().reset();
+        packageServiceForm.getForm().setValues({package_id: this.package_id});
+        packageServiceForm._delToggle(-1);
+        packageServiceForm.show();
+        packageServiceForm.setTitle('新建套餐服务');
     },
 
     _edit: function (rec) {
-        var form = this.parent.COMPONENTS.packageForm;
-
         this.hide();
-        form.getForm().setValues(rec.data);
-        form._delToggle(0);
-        form.show();
+
+        var packageForm = this.parent.COMPONENTS.packageForm;
+        packageForm.setCollapsed(true);
+
+        var packageServiceform = this.parent.COMPONENTS.packageServiceForm;
+
+        packageServiceform.getForm().setValues(rec.data);
+        packageServiceform._delToggle(0);
+        packageServiceform.show();
+        packageServiceForm.setTitle('套餐服务编辑');
     },
 
     _returnFrom: function () {
@@ -202,6 +213,6 @@ Best.product.packageGridAction = Ext.extend(Best.product.packageGridUI, {
     }
 });
 
-Best.product.packageGrid = Best.product.packageGridAction;
+Best.product.packageServiceGrid = Best.product.packageServiceGridAction;
 
 //end file

@@ -23,12 +23,12 @@ Tomtalk.IdcUI = Ext.extend(Ext.Panel, {
                 id: me.id + '_form',
                 hidden: true
             }),
-            Ext.create('Best.product.packageGrid', {
+            Ext.create('Best.product.packageServiceGrid', {
                 id: me.id + '_package_grid',
                 parent: me,
                 hidden: true
             }),
-            Ext.create('Best.product.packageForm', {
+            Ext.create('Best.product.packageServiceForm', {
                 id: me.id + '_package_form',
                 parent: me,
                 hidden: true

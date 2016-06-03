@@ -22,6 +22,8 @@
 <script src="/js/admin/card/type_form.js"></script>
 <script src="/js/admin/card/type_package_grid.js"></script>
 <script src="/js/admin/card/type_package_form.js"></script>
+<script src="/js/admin/card/package_service_grid.js"></script>
+<script src="/js/admin/card/package_service_form.js"></script>
 <script src="/js/admin/card/type.js"></script>
 
 </html>

@@ -14,7 +14,8 @@ Ext.define('Tomtalk.grid.FormUI', {
     constructor: function (config) {
         var me = this;
         config = Ext.apply({
-            title: '编辑',
+            title: '卡编辑',
+            collapsible: true,
             bodyStyle: 'padding:10px;',
             layout: 'anchor'
         }, config);

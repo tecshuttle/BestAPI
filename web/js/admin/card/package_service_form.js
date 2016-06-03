@@ -24,19 +24,20 @@ var serviceMapStatusStore = Ext.create('Ext.data.Store', {
     ]
 });
 
-Ext.define('Best.product.packageFormUI', {
+Ext.define('Best.product.packageFormServiceUI', {
     extend: 'Ext.form.Panel',
     constructor: function (config) {
         var me = this;
         config = Ext.apply({
-            title: '编辑',
+            title: '套餐服务编辑',
+            margin: '10 0 0 0',
             bodyStyle: 'padding:10px;',
             layout: 'anchor'
         }, config);
 
         me.COMPONENTS = {};
 
-        Best.product.packageFormUI.superclass.constructor.call(me, config);
+        Best.product.packageFormServiceUI.superclass.constructor.call(me, config);
     },
 
     initComponent: function () {
@@ -78,18 +79,18 @@ Ext.define('Best.product.packageFormUI', {
             }
         ];
 
-        Best.product.packageFormUI.superclass.initComponent.call(me);
+        Best.product.packageFormServiceUI.superclass.initComponent.call(me);
     }
 });
 
-Ext.define('Best.product.packageFormAction', {
-    extend: 'Best.product.packageFormUI',
+Ext.define('Best.product.packageFormServiceAction', {
+    extend: 'Best.product.packageFormServiceUI',
     constructor: function (config) {
-        Best.product.packageFormAction.superclass.constructor.call(this, config);
+        Best.product.packageFormServiceAction.superclass.constructor.call(this, config);
     },
 
     initComponent: function () {
-        Best.product.packageFormAction.superclass.initComponent.call(this);
+        Best.product.packageFormServiceAction.superclass.initComponent.call(this);
 
         Ext.apply(this.COMPONENTS, {
             supplierCombo: Ext.getCmp(this.id + '_supplier_combo'),
@@ -106,7 +107,7 @@ Ext.define('Best.product.packageFormAction', {
         var me = this;
         var $c = this.COMPONENTS;
 
-        Best.product.packageFormAction.superclass.initEvents.call(me);
+        Best.product.packageFormServiceAction.superclass.initEvents.call(me);
 
         //$c.supplierCombo.on('change', me._onChangeSupplierCombo, me);
 
@@ -134,7 +135,10 @@ Ext.define('Best.product.packageFormAction', {
         this.hide();
 
         if (this.up()) {
-            this.up().COMPONENTS.packageGrid.show();
+            this.up().COMPONENTS.packageServiceGrid.show();
+
+            var packageForm = this.up().COMPONENTS.packageForm;
+            packageForm.setCollapsed(false);
         }
     },
 
@@ -143,7 +147,7 @@ Ext.define('Best.product.packageFormAction', {
         var form = me;
         var $c = this.COMPONENTS;
         var recId = $c.recId.getValue();
-        packageGrid = this.up().COMPONENTS.packageGrid;
+        var packageServiceGrid = this.up().COMPONENTS.packageServiceGrid;
 
         if (form.isValid()) {
             form.getForm().submit({
@@ -154,7 +158,7 @@ Ext.define('Best.product.packageFormAction', {
 
                     if (result.success) {
                         me._return();
-                        packageGrid.getStore().load();
+                        packageServiceGrid.getStore().load();
                     } else {
                         alert('See error info by console.');
                     }
@@ -198,6 +202,6 @@ Ext.define('Best.product.packageFormAction', {
     }
 });
 
-Best.product.packageForm = Best.product.packageFormAction;
+Best.product.packageServiceForm = Best.product.packageFormServiceAction;
 
 //end file
