@@ -5,7 +5,7 @@ Ext.define('Best.product.FormUI', {
     constructor: function (config) {
         var me = this;
         config = Ext.apply({
-            title: '编辑',
+            title: '选最好服务',
             bodyStyle: 'padding:10px;',
             layout: 'anchor'
         }, config);
@@ -26,6 +26,16 @@ Ext.define('Best.product.FormUI', {
                 items: [
                     {xtype: 'textfield', fieldLabel: '服务名称', name: 'service_name', margin: 0, allowBlank: false, emptyText: '请输入…'},
                     {xtype: 'textfield', fieldLabel: '服务代码', name: 'service_code', emptyText: '请输入…'},
+                    {xtype: 'textfield', fieldLabel: 'LOGO', name: 'logo_img', emptyText: '请输入…'}
+
+                ]
+            }, {
+                xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
+                items: [
+                    {
+                        xtype: 'combo', fieldLabel: '状态', store: statusStore, displayField: 'name', margin: 0,
+                        valueField: 'status', name: 'status', queryMode: 'local'
+                    },
                     {
                         xtype: 'combo', fieldLabel: '服务类型', store: productServiceTypeStore, displayField: 'name',
                         valueField: 'service_type', name: 'service_type', queryMode: 'local'
@@ -39,23 +49,11 @@ Ext.define('Best.product.FormUI', {
                 xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
                 items: [
                     {
-                        xtype: 'combo', fieldLabel: '状态', store: statusStore, displayField: 'name', margin: 0,
-                        valueField: 'status', name: 'status', queryMode: 'local'
-                    },
-                    {xtype: 'textfield', fieldLabel: 'LOGO', name: 'logo_img', emptyText: '请输入…'},
-                    {xtype: 'numberfield', fieldLabel: '价格', name: 'price', minValue: 0, emptyText: '请输入…'},
-                    {xtype: 'displayfield'}
-                ]
-            }, {
-                xtype: 'fieldcontainer', layout: 'hbox', defaults: {flex: 1, margin: '0 0 0 10'},
-                items: [
-                    {
                         xtype: 'combo', fieldLabel: '性别要求', store: sexSelectStore, displayField: 'name', margin: 0,
                         valueField: 'sex_select', name: 'sex_select', queryMode: 'local'
                     },
-                    {xtype: 'textfield', fieldLabel: '覆盖城市', name: 'city_select', emptyText: '请输入…'},
-                    {xtype: 'displayfield'},
-                    {xtype: 'displayfield'}
+                    {xtype: 'numberfield', fieldLabel: '价格', name: 'price', minValue: 0, emptyText: '请输入…'},
+                    {xtype: 'textfield', fieldLabel: '覆盖城市', name: 'city_select', emptyText: '请输入…'}
                 ]
             },
             {xtype: 'textarea', fieldLabel: '服务简介', name: 'intro', anchor: '100%', emptyText: '请输入…'},

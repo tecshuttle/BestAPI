@@ -26,7 +26,8 @@ Ext.define('Best.product.serviceListFormUI', {
     constructor: function (config) {
         var me = this;
         config = Ext.apply({
-            title: '编辑',
+            title: '供应商服务编辑',
+            margin: '10 0 0 0',
             bodyStyle: 'padding:10px;',
             layout: 'anchor'
         }, config);

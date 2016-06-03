@@ -4,15 +4,16 @@ Best.product.serviceListGridUI = Ext.extend(Ext.grid.GridPanel, {
     constructor: function (config) {
         var me = this;
         config = Ext.apply({
+            title: '供应商服务列表',
+            margin: '10 0 0 0',
             columnLines: true,
             dockedItems: [{
                 xtype: 'toolbar',
                 items: [
-                    {text: '返回', id: this.id + '_return', ref: 'return'},
+                    {text: '返回', hidden: true, id: this.id + '_return', ref: 'return'},
                     {text: '新建', id: this.id + '_add', ref: 'add'}
                 ]
             }],
-
             forceFit: true,
             viewConfig: {
                 stripeRows: true,
@@ -49,7 +50,7 @@ Best.product.serviceListGridUI = Ext.extend(Ext.grid.GridPanel, {
         me.columns = [
             {header: "ID", dataIndex: 'id', hidden: true},
             {header: '供应商', dataIndex: 'supplier_name'},
-            {header: '服务名称', dataIndex: 'supplier_service_name'},
+            {header: '服务名称', dataIndex: 'supplier_service_name', flex: 1},
             {
                 header: '服务类型', dataIndex: 'service_type', align: 'center',
                 renderer: function (v, b, rec) {
@@ -78,16 +79,6 @@ Best.product.serviceListGridUI = Ext.extend(Ext.grid.GridPanel, {
                 }
             },
             {
-                header: '业务状态', dataIndex: 'status', align: 'center',
-                renderer: function (v, b, rec) {
-                    if (v == 'IN_SERVICE') {
-                        return '使用中';
-                    } else {
-                        return v;
-                    }
-                }
-            },
-            {
                 header: '市场价格', dataIndex: 'market_price', align: 'right',
                 renderer: function (val) {
                     if (val == null) return val;
@@ -104,11 +95,25 @@ Best.product.serviceListGridUI = Ext.extend(Ext.grid.GridPanel, {
                 }
             },
             {
+                header: '业务状态', dataIndex: 'status', align: 'center',
+                renderer: function (v, b, rec) {
+                    if (v == 'IN_SERVICE') {
+                        return '使用中';
+                    } else {
+                        return v;
+                    }
+                }
+            },
+            {
+                header: '排序', dataIndex: 'seq', align: 'right'
+            },
+            {
                 header: "操作",
                 dataIndex: 'id',
                 align: 'center',
                 xtype: 'actioncolumn',
                 name: 'opertation',
+                width: 80,
                 items: [{
                     glyph: '编辑',
                     handler: function (grid, rowIndex, colIndex) {

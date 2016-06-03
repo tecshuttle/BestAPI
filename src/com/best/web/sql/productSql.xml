@@ -65,7 +65,7 @@
 		from xzh_service_mapping map
 		left join xzh_supplier_service service on map.supplier_service_id = service.id
 		left join xzh_supplier supplier on service.supplier_id = supplier.id
-		where xzh_service_id = #{xzh_service_id}
+		where xzh_service_id = #{xzh_service_id} order by map.seq asc
 	</select>
 
     <insert id="insertProdServiceMap" parameterType="ProdServiceMap">

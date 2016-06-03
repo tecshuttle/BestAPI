@@ -71,7 +71,7 @@ Ext.onReady(function () {
             }
         },
         {
-            header: '售价', dataIndex: 'price', align: 'right',
+            header: '价格', dataIndex: 'price', align: 'right',
             renderer: function (val) {
                 if (val == null) return val;
                 var out = Ext.util.Format.number(val, '0.00');
@@ -83,25 +83,12 @@ Ext.onReady(function () {
             align: 'center',
             xtype: 'actioncolumn',
             name: 'opertation',
-            width: 120,
+            width: 80,
             items: [{
                 glyph: '编辑',
                 handler: function (grid, rowIndex, colIndex) {
                     var rec = grid.getStore().getAt(rowIndex);
                     grid.grid.up()._edit(rec);
-                }
-            }, {
-                glyph: '服务',
-                getClass: function (v) {
-                    if (v == 'OUTSOURCE') {
-                        return '';
-                    } else {
-                        return this.disabledCls;
-                    }
-                },
-                handler: function (grid, rowIndex, colIndex) {
-                    var rec = grid.getStore().getAt(rowIndex);
-                    grid.grid.up()._service_list(rec);
                 }
             }]
         }

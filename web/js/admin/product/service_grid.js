@@ -154,6 +154,11 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
         $c.form.getForm().setValues(rec.data);
         $c.form._delToggle(rec.data.status);
         $c.form.show();
+
+        if (rec.data.service_type === 'OUTSOURCE') {
+            $c.serviceListGrid.loadList(rec.data);
+            $c.serviceListGrid.show();
+        }
     },
 
     _service_list: function (rec) {
@@ -167,6 +172,9 @@ Tomtalk.IdcAction = Ext.extend(Tomtalk.IdcUI, {
     _returnFrom: function () {
         var $c = this.COMPONENTS;
         $c.form.hide();
+        $c.serviceListGrid.hide();
+        $c.serviceListForm.hide();
+        
         $c.grid.show();
         $c.grid.getStore().reload();
     },
